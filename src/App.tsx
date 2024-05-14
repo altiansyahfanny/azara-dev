@@ -1,3 +1,13 @@
-export default function App() {
-	return <h1 className="text-3xl font-bold underline">Hello azara admin dashboard!</h1>;
-}
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import Router from './routes';
+
+const App: React.FC = () => {
+	return (
+		<BrowserRouter>
+			<Router />
+		</BrowserRouter>
+	);
+};
+
+export default App;
