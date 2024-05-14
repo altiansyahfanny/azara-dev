@@ -1,13 +1,14 @@
 import { Route, Routes } from 'react-router-dom';
 import Public from '../layouts/Public';
 import Welcome from '../pages/common/Welcome';
-import SignIn from '../pages/SignIn';
+import SignIn from '../pages/auth/SignIn';
 import Forbidden from '../pages/common/Forbidden';
 import NotFound from '../pages/common/NotFound';
 import DashboardLayout from '@/layouts/DashboardLayout';
 import Dashboard from '@/pages/panel/Dashboard';
 import Products from '@/pages/panel/Products';
 import Orders from '@/pages/panel/Orders';
+import SignUp from '@/pages/auth/SignUp';
 
 const Router = () => {
 	return (
@@ -15,6 +16,7 @@ const Router = () => {
 			<Route element={<Public />}>
 				<Route path="/" element={<Welcome />} />
 				<Route path="/sign-in" element={<SignIn />} />
+				<Route path="/sign-up" element={<SignUp />} />
 			</Route>
 			{/* <Route element={<PersistLogin />}>
 				<Route element={<RequireAuth allowedRoles={['Admin']} />}> */}
