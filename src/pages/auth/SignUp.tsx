@@ -9,19 +9,18 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 
 export default function SignUp() {
+	const navigate = useNavigate();
+
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<SignUpRequest>({ resolver: zodResolver(signUpSchema) });
-	const navigate = useNavigate();
 
 	const onSubmit = (data: SignUpRequest) => {
 		console.log(data);
 		navigate('/sign-in');
 	};
-
-	console.log('errors', errors);
 
 	return (
 		<div className="w-full grid grid-cols-3 min-h-screen">
@@ -52,11 +51,7 @@ export default function SignUp() {
 								placeholder="m@example.com"
 								{...register('email', { required: true })}
 							/>
-							{errors.email && (
-								<span className="text-red-500 text-sm">
-									{(errors.email.message as string) ?? 'Error pada email'}
-								</span>
-							)}
+							{errors.email && <span className="text-red-500 text-sm">{errors.email.message}</span>}
 						</div>
 						<div className="grid gap-2">
 							<div className="flex items-center">
@@ -69,9 +64,7 @@ export default function SignUp() {
 								autoComplete="off"
 							/>
 							{errors.password && (
-								<span className="text-red-500 text-sm">
-									{(errors.password.message as string) ?? 'Error pada password'}
-								</span>
+								<span className="text-red-500 text-sm">{errors.password.message}</span>
 							)}
 						</div>
 						<div className="grid gap-2">
@@ -85,9 +78,7 @@ export default function SignUp() {
 								autoComplete="off"
 							/>
 							{errors.confirmPassword && (
-								<span className="text-red-500 text-sm">
-									{(errors.confirmPassword.message as string) ?? 'Error pada konfirmasi password'}
-								</span>
+								<span className="text-red-500 text-sm">{errors.confirmPassword.message}</span>
 							)}
 						</div>
 						<Button type="submit" className="w-full">

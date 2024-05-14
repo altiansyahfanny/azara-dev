@@ -2,13 +2,18 @@ import { z } from 'zod';
 
 const signUpSchema = z
 	.object({
-		email: z.string().email({ message: 'Email tidak valid' }),
-		password: z.string().min(8, { message: 'Password harus minimal 8 karakter' }),
-		confirmPassword: z.string(),
+		email: z.string().email(),
+		password: z.string().min(8),
+		confirmPassword: z.string().min(8),
 	})
 	.refine((data) => data.password === data.confirmPassword, {
-		message: 'Password dan konfirmasi password harus sama',
+		message: 'Password do not match',
 		path: ['confirmPassword'],
 	});
 
-export { signUpSchema };
+const signInSchema = z.object({
+	email: z.string().email(),
+	password: z.string().min(1),
+});
+
+export { signUpSchema, signInSchema };
