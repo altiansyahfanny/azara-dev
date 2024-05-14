@@ -2,34 +2,23 @@ import { SignInImg } from '@/assets/img';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { SignUpRequest } from '@/model/auth';
+import { signUpSchema } from '@/schema/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-
-import { z } from 'zod';
-
-const signUpSchema = z
-	.object({
-		email: z.string().email({ message: 'Email tidak valid' }),
-		password: z.string().min(8, { message: 'Password harus minimal 8 karakter' }),
-		confirmPassword: z.string(),
-	})
-	.refine((data) => data.password === data.confirmPassword, {
-		message: 'Password dan konfirmasi password harus sama',
-		path: ['confirmPassword'],
-	});
 
 export default function SignUp() {
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm({ resolver: zodResolver(signUpSchema) });
-	// const navigate = useNavigate();
+	} = useForm<SignUpRequest>({ resolver: zodResolver(signUpSchema) });
+	const navigate = useNavigate();
 
-	const onSubmit = (data: any) => {
+	const onSubmit = (data: SignUpRequest) => {
 		console.log(data);
-		// navigate('/dashboard');
+		navigate('/sign-in');
 	};
 
 	console.log('errors', errors);
