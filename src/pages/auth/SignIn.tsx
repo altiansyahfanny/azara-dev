@@ -6,7 +6,8 @@ import { SignInRequest } from '@/model/auth';
 import { signInSchema } from '@/schema/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { FaGoogle } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignIn() {
 	const navigate = useNavigate();
@@ -24,7 +25,11 @@ export default function SignIn() {
 
 	return (
 		<AuthLayout>
-			<form className="mx-auto grid w-[350px]" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+			<form
+				className="mx-auto grid min-w-[270px] md:min-w-[350px]"
+				onSubmit={handleSubmit(onSubmit)}
+				autoComplete="off"
+			>
 				<div className="grid gap-2 text-center">
 					<h1 className="text-3xl font-bold">Welcome back</h1>
 					<p className="text-sm text-muted-foreground">Login to continue to your account</p>
@@ -48,16 +53,22 @@ export default function SignIn() {
 						<Input id="password" type="password" autoComplete="off" {...register('password')} />
 						{errors.password && <p className="text-red-500">{errors.password.message}</p>}
 					</div>
-					<Button type="submit" className="w-full">
-						Login
-					</Button>
+					<div className="grid gap-2">
+						<Button type="button" className="w-full flex items-center gap-2" variant="outline">
+							<FaGoogle />
+							Login with Google
+						</Button>
+						<Button type="submit" className="w-full">
+							Login
+						</Button>
+					</div>
 				</div>
-				<div className="mt-4 text-center text-sm">
+				{/* <div className="mt-4 text-center text-sm">
 					Don&apos;t have an account? &nbsp;
 					<Link to="/sign-up" className="underline">
 						Sign up
 					</Link>
-				</div>
+				</div> */}
 			</form>
 		</AuthLayout>
 	);
