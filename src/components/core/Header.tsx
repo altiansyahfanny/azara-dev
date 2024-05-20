@@ -1,6 +1,6 @@
 import { Home, LineChart, Package, Package2, PanelLeft, ShoppingCart, Users2 } from 'lucide-react';
 
-import { ProfileImg } from '@/assets/img';
+import { ProfileImg } from '@/assets/dashboard/img';
 import {
 	Breadcrumb,
 	BreadcrumbItem,

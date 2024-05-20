@@ -15,7 +15,7 @@ export default function SignIn() {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<SignInRequest>({ resolver: zodResolver(signInSchema) });
+	} = useForm<SignInRequest>({ resolver: zodResolver(signInSchema), mode: 'onBlur' });
 
 	const onSubmit = (data: SignInRequest) => {
 		console.log(data);
@@ -34,7 +34,7 @@ export default function SignIn() {
 						<Label htmlFor="email">Email</Label>
 						<Input
 							id="email"
-							type="email"
+							type="text"
 							placeholder="m@example.com"
 							autoComplete="off"
 							{...register('email')}

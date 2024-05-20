@@ -9,12 +9,13 @@ import Dashboard from '@/pages/panel/Dashboard';
 import Products from '@/pages/panel/Products';
 import Orders from '@/pages/panel/Orders';
 import SignUp from '@/pages/auth/SignUp';
+import LandingPage from '@/pages/landing-page';
 
 const Router = () => {
 	return (
 		<Routes>
 			<Route element={<Public />}>
-				<Route path="/" element={<Welcome />} />
+				<Route path="/" element={<LandingPage />} />
 				<Route path="/sign-in" element={<SignIn />} />
 				<Route path="/sign-up" element={<SignUp />} />
 			</Route>

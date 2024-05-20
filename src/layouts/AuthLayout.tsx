@@ -1,5 +1,5 @@
-import { SignInImg } from '@/assets/img';
-import { PatternBottom, PatternLeft } from '@/assets/svg';
+import { SignInImg } from '@/assets/dashboard/img';
+import { PatternBottom, PatternLeft } from '@/assets/dashboard/svg';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
 	return (
