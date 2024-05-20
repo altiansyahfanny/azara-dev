@@ -1,6 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
 import Public from '../layouts/Public';
-import Welcome from '../pages/common/Welcome';
 import SignIn from '../pages/auth/SignIn';
 import Forbidden from '../pages/common/Forbidden';
 import NotFound from '../pages/common/NotFound';

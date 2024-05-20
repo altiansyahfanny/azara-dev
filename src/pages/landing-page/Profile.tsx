@@ -1,5 +1,5 @@
 import { DummyImg1, DummyImg2 } from '@/assets/landing/img';
-import { PatternProfile } from '@/assets/landing/svg';
+// import { PatternProfile } from '@/assets/landing/svg';
 import Statistic from '@/components/landing-page/profile/Statistic';
 
 const Profile = () => {
