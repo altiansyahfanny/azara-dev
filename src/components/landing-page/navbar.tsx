@@ -86,11 +86,12 @@ const Navbar = () => {
 
 	return (
 		<div
-			className={`box-border flex justify-between items-center px-5 md:px-10 xl:px-[72px] h-[${NAV_HEIGHT}px] w-full fixed top-0 z-50 ${cssOnScroll} transition-all ease-in-out ${
+			className={`box-border flex justify-between items-center px-5 md:px-10 xl:px-[72px] w-full fixed top-0 z-50 ${cssOnScroll} transition-all ease-in-out ${
 				cssOnScrollPaket
 					? 'bg-custom-black text-white border-b border-white'
 					: 'bg-white border-b border-transparent'
 			}`}
+			style={{ height: NAV_HEIGHT }}
 		>
 			{/* LOGO */}
 			<img src={cssOnScrollPaket ? LogoWhite : Logo} alt="logo" className="h-[50px] w-[100px]" />
