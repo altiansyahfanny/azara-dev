@@ -1,5 +1,14 @@
-import { Home, Package, Package2, Settings, ShoppingCart } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import {
+	BookText,
+	CalendarRange,
+	Home,
+	Package,
+	Package2,
+	Settings,
+	ShoppingCart,
+	Users,
+} from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 const NAVLINK = [
@@ -7,6 +16,21 @@ const NAVLINK = [
 		name: 'Dashboard',
 		href: '/dashboard',
 		icon: Home,
+	},
+	{
+		name: 'Pengguna',
+		href: '/user',
+		icon: Users,
+	},
+	{
+		name: 'Mata Pelajaran',
+		href: '/course',
+		icon: BookText,
+	},
+	{
+		name: 'Tahun Ajaran',
+		href: '/cycle',
+		icon: CalendarRange,
 	},
 	{
 		name: 'Products',
@@ -25,9 +49,9 @@ const Sidebar = () => {
 
 	const renderNavLink = () => {
 		const currentPath = location.pathname;
-		return NAVLINK.map((link) => {
+		return NAVLINK.map((link, i) => {
 			return (
-				<Tooltip>
+				<Tooltip key={i}>
 					<TooltipTrigger asChild>
 						<Link
 							to={link.href}

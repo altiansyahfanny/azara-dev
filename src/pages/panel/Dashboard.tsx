@@ -1,3 +1,5 @@
+import Container from '@/components/core/container';
+
 export default function Dashboard() {
-	return <div>Dashboard</div>;
+	return <Container title="Dashboard">Dashboard</Container>;
 }

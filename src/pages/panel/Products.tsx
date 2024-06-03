@@ -1,5 +1,11 @@
+import Container from '@/components/core/container';
+// import { useGetTodosQuery } from '@/services/api';
+
 const Products = () => {
-	return <div>Products</div>;
+	// const { data: todos, error, isLoading } = useGetTodosQuery();
+
+	// console.log('data : ', todos);
+	return <Container title="Product">Products</Container>;
 };
 
 export default Products;

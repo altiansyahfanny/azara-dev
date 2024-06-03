@@ -1,5 +1,7 @@
+import CenterLayout from '@/layouts/CenterLayout';
+
 const NotFound = () => {
-	return <div>NotFound</div>;
+	return <CenterLayout>Not Found</CenterLayout>;
 };
 
 export default NotFound;

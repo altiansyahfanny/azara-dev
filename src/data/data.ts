@@ -1,15 +1,15 @@
 export const NAVLINK = [
 	{
 		id: 'home',
-		name: 'Home',
+		name: 'Beranda',
 	},
 	{
 		id: 'profile',
-		name: 'Profile',
+		name: 'Profil',
 	},
 	{
 		id: 'service',
-		name: 'Service',
+		name: 'Layanan',
 	},
 	{
 		id: 'testimoni',
@@ -17,7 +17,7 @@ export const NAVLINK = [
 	},
 	{
 		id: 'footer',
-		name: 'About Us',
+		name: 'Hubungi Kami',
 	},
 ];
 

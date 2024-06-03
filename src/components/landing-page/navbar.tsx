@@ -1,8 +1,17 @@
+import { DummyProfile, Logo, LogoWhite } from '@/assets/landing/img';
 import { NAVLINK } from '@/data/data';
+import useAuth from '@/hooks/useAuth';
 import { useEffect, useState } from 'react';
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
-import { Logo, LogoWhite } from '@/assets/landing/img';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
 
 interface NavLink {
 	id: string;
@@ -12,9 +21,10 @@ interface NavLink {
 const NAV_HEIGHT = 80;
 
 const Navbar = () => {
+	const navigate = useNavigate();
 	const [isOpen, setIsOpen] = useState(false);
 	const [cssOnScroll, setCssOnScroll] = useState('');
-	const [cssOnScrollPaket, setCssOnScrollService] = useState(false);
+	const [cssOnScrollService, setCssOnScrollService] = useState(false);
 	const [activeMenu, setActiveMenu] = useState('home');
 
 	useEffect(() => {
@@ -54,6 +64,8 @@ const Navbar = () => {
 		return () => window.removeEventListener('scroll', handleScroll);
 	}, []);
 
+	const auth = useAuth();
+
 	const handleNavLinkClick = (id: string) => {
 		const element = document.getElementById(id);
 		if (element) {
@@ -68,11 +80,17 @@ const Navbar = () => {
 		}
 	};
 
+	const handleLogout = () => {
+		localStorage.removeItem('token');
+		localStorage.removeItem('refreshToken');
+		navigate('/sign-in');
+	};
+
 	const renderNavLinks = (links: NavLink[]) =>
 		links.map((item) => (
 			<li
 				key={item.id}
-				className={`hover:text-custom-green hover:cursor-pointer text-sm md:text-base ${
+				className={`hover:text-custom-green hover:cursor-pointer text-sm md:text-base min-w-24x text-center ${
 					activeMenu === item.id ? 'text-custom-green' : ''
 				}`}
 				onClick={() => {
@@ -86,23 +104,47 @@ const Navbar = () => {
 
 	return (
 		<div
-			className={`box-border flex justify-between items-center px-5 md:px-10 xl:px-[72px] w-full fixed top-0 z-50 ${cssOnScroll} transition-all ease-in-out ${
-				cssOnScrollPaket
+			className={`box-border flex justify-between items-center px-5 md:px-10 xl:px-[72px] w-full fixed top-0 left-0 right-0 z-50 ${cssOnScroll} transition-all ease-in-out ${
+				cssOnScrollService
 					? 'bg-custom-black text-white border-b border-white'
 					: 'bg-white border-b border-transparent'
 			}`}
 			style={{ height: NAV_HEIGHT }}
 		>
 			{/* LOGO */}
-			<img src={cssOnScrollPaket ? LogoWhite : Logo} alt="logo" className="h-[50px] w-[100px]" />
+			<img src={cssOnScrollService ? LogoWhite : Logo} alt="logo" className="h-[50px] w-[100px]" />
 
 			{/* MENU > lg */}
 			<ul className="gap-x-4 items-center hidden md:flex">{renderNavLinks(NAVLINK)}</ul>
 
-			{/* LOGIN */}
-			<Link to="/sign-in" className="hidden md:block">
-				<button className="bg-custom-green text-white px-5 py-1.5 rounded-full">Login</button>
-			</Link>
+			{auth.isAuthenticated ? (
+				<DropdownMenu>
+					<DropdownMenuTrigger asChild>
+						<button className="flex gap-x-2 items-center outline-none bg-green-200x">
+							<img
+								src={auth.imageUrl ?? DummyProfile}
+								alt="user"
+								className="w-8 h-8 rounded-full"
+							/>
+							<p className={` text-sm  ${cssOnScrollService ? 'text-white' : 'text-gray-700'}`}>
+								{`${auth.firstName} ${auth.lastName}`}
+							</p>
+						</button>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent align="end">
+						<DropdownMenuLabel>My Account</DropdownMenuLabel>
+						<DropdownMenuSeparator />
+						<DropdownMenuItem>Settings</DropdownMenuItem>
+						<DropdownMenuItem>Support</DropdownMenuItem>
+						<DropdownMenuSeparator />
+						<DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
+			) : (
+				<Link to="/sign-in" className="hidden md:block">
+					<button className="bg-custom-green text-white px-5 py-1.5 rounded-full">Login</button>
+				</Link>
+			)}
 
 			{/* HUMBURGER MENU */}
 			<div className="block md:hidden">

@@ -55,9 +55,9 @@ const Service = () => {
 					<div className="mt-16 gap-8 flex flex-wrap justify-center">
 						{isPrivate ? <Private isPrivate={isPrivate} /> : <Course isPrivate={isPrivate} />}
 					</div>
-					<div className="absolute -bottom-5 left-0 right-0 mx-auto w-12 h-12 bg-custom-gray grid place-content-center rounded-full cursor-pointer">
+					{/* <div className="absolute -bottom-5 left-0 right-0 mx-auto w-12 h-12 bg-custom-gray grid place-content-center rounded-full cursor-pointer">
 						<MdKeyboardDoubleArrowDown className="text-white text-2xl" />
-					</div>
+					</div> */}
 				</div>
 
 				<DialogContent className="min-w-max max-h-[500px] overflow-scroll">

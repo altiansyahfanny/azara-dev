@@ -23,10 +23,13 @@ const Header = () => {
 	const navigate = useNavigate();
 
 	const handleLogout = () => {
+		localStorage.removeItem('token');
+		localStorage.removeItem('refreshToken');
 		navigate('/sign-in');
 	};
+
 	return (
-		<header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-4 border-b  px-4 pb-4 sm:static sm:h-auto sm:bg-transparent sm:px-6">
+		<header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-4 border-b px-4 pb-4 sm:static sm:h-auto sm:bg-transparent sm:px-6">
 			<div>
 				<Sheet>
 					<SheetTrigger asChild>
@@ -89,6 +92,8 @@ const Header = () => {
 					</BreadcrumbList>
 				</Breadcrumb>
 			</div>
+
+			{/* <div className="bg-red-300 flex-1">oke</div> */}
 
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
