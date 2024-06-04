@@ -16,7 +16,6 @@ import {
 import { setModalState, setPaginationState } from '@/store/features/cycleSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { PlusCircle } from 'lucide-react';
-import { isError } from 'react-query';
 
 const Cycle = () => {
 	const dispatch = useAppDispatch();
@@ -27,7 +26,6 @@ const Cycle = () => {
 		data: cycles,
 		isLoading,
 		isSuccess,
-		isError,
 	} = useGetCyclesQuery({ page: paginationState.page, limit: paginationState.pageSize });
 
 	const onOpenChange = (value: boolean) => {

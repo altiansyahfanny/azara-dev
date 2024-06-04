@@ -3,7 +3,6 @@ import { Dialog, DialogContent } from '@/components/landing-page/dialog';
 import Course from '@/components/landing-page/service/course';
 import Private from '@/components/landing-page/service/private';
 import { useState } from 'react';
-import { MdKeyboardDoubleArrowDown } from 'react-icons/md';
 
 const Service = () => {
 	const [isPrivate, setIsPrivate] = useState(true);

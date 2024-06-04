@@ -23,7 +23,7 @@ const Teacher = () => {
 		data: students,
 		isLoading,
 		isSuccess,
-	} = useGetStudentsQuery({ page: paginationState.page, pageSize: paginationState.pageSize });
+	} = useGetStudentsQuery({ page: paginationState.page, limit: paginationState.pageSize });
 
 	let content;
 
@@ -75,7 +75,10 @@ const Teacher = () => {
 
 				<Pagination
 					totalItems={paginationState.total}
-					itemsPerPage={10}
+					itemsPerPage={paginationState.pageSize}
+					onPageSizeChange={(number) =>
+						dispatch(setPaginationState({ value: { pageSize: number } }))
+					}
 					currentPage={paginationState.page}
 					onPageChange={(number) => {
 						dispatch(setPaginationState({ value: { page: number } }));

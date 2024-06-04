@@ -19,7 +19,6 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 
 const Header = () => {
 	const navigate = useNavigate();
@@ -30,7 +29,7 @@ const Header = () => {
 		navigate('/sign-in');
 	};
 
-	const [isOpen, setIsOpen] = useState(false);
+	// const [isOpen, setIsOpen] = useState(false);
 
 	const location = useLocation();
 	const pathnames = location.pathname.split('/').filter((x) => x);
@@ -126,7 +125,7 @@ const Header = () => {
 						variant="outline"
 						size="icon"
 						className="overflow-hidden rounded-full"
-						onClick={() => setIsOpen(true)}
+						// onClick={() => setIsOpen(true)}
 					>
 						<img
 							src={ProfileImg}
@@ -137,7 +136,10 @@ const Header = () => {
 						/>
 					</Button>
 				</DropdownMenuTrigger>
-				<DropdownMenuContent align="end" onClick={() => setIsOpen(false)}>
+				<DropdownMenuContent
+					align="end"
+					//  onClick={() => setIsOpen(false)}
+				>
 					<DropdownMenuLabel>Altiansyah Fanny</DropdownMenuLabel>
 					<DropdownMenuSeparator />
 					<DropdownMenuItem>

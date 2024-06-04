@@ -3,7 +3,7 @@ import {
 	Card,
 	CardContent,
 	// CardDescription,
-	CardFooter,
+	// CardFooter,
 	CardHeader,
 	CardTitle,
 } from '../ui/card';
