@@ -8,6 +8,7 @@ import PatternProfile from './pattern-profile.svg';
 import PatternReview from './pattern-review.svg';
 import PatternRight from './pattern-right.svg';
 import PatternLeft from './pattern-left.svg';
+import IcWhatsapp from './whatsapp.svg';
 
 export {
 	BadgeBestSeller,
@@ -20,4 +21,5 @@ export {
 	PatternReview,
 	PatternRight,
 	PatternLeft,
+	IcWhatsapp,
 };

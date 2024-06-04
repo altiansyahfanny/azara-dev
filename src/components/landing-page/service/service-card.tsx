@@ -7,14 +7,14 @@ const ServiceCard = ({ text, isPrivate }: { text: string; isPrivate: boolean }) 
 		<div className="grid place-content-center">
 			<div className="bg-custom-gray text-white w-[250px] pb-4 px-4 pt-10 rounded-xl relative">
 				<div className="absolute -top-4 bg-white w-10 aspect-square grid place-content-center rounded-full">
-					{isPrivate ? (
+					{!isPrivate ? (
 						<FaBook className="text-custom-green" />
 					) : (
 						<MdGroups className="text-custom-yellow" />
 					)}
 				</div>
 				<h1 className="text-2xl">
-					PRIVAT <br /> {text}
+					{!isPrivate ? 'KURSUS' : 'PRIVAT'} <br /> {text}
 				</h1>
 				<p className="mt-4 text-sm">
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vitae malesuada arcu, nec
@@ -26,7 +26,7 @@ const ServiceCard = ({ text, isPrivate }: { text: string; isPrivate: boolean }) 
 					<DialogTrigger asChild>
 						<button
 							className={`bg-[#303237] text-custom-green  px-5 py-1 text-xs rounded-lg ${
-								isPrivate ? 'text-custom-green' : 'text-custom-yellow'
+								!isPrivate ? 'text-custom-green' : 'text-custom-yellow'
 							}`}
 						>
 							Preview

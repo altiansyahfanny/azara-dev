@@ -163,7 +163,7 @@ export default function SignIn() {
 					</Link>
 				</div> */}
 				<div className="mt-4 text-center text-sm">
-					Kemali ke &nbsp;
+					Kembali ke &nbsp;
 					<Link to="/" className="underline">
 						Beranda
 					</Link>

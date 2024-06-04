@@ -90,7 +90,7 @@ const Navbar = () => {
 		links.map((item) => (
 			<li
 				key={item.id}
-				className={`hover:text-custom-green hover:cursor-pointer text-sm md:text-base min-w-24x text-center ${
+				className={`hover:text-custom-green hover:cursor-pointer text-sm md:text-base min-w-24x ${
 					activeMenu === item.id ? 'text-custom-green' : ''
 				}`}
 				onClick={() => {
@@ -118,31 +118,32 @@ const Navbar = () => {
 			<ul className="gap-x-4 items-center hidden md:flex">{renderNavLinks(NAVLINK)}</ul>
 
 			{auth.isAuthenticated ? (
-				<DropdownMenu>
-					<DropdownMenuTrigger asChild>
-						<button className="flex gap-x-2 items-center outline-none bg-green-200x">
-							<img
-								src={auth.imageUrl ?? DummyProfile}
-								alt="user"
-								className="w-8 h-8 rounded-full"
-							/>
-							<p className={` text-sm  ${cssOnScrollService ? 'text-white' : 'text-gray-700'}`}>
-								{`${auth.firstName} ${auth.lastName}`}
-							</p>
-						</button>
-					</DropdownMenuTrigger>
-					<DropdownMenuContent align="end">
-						<DropdownMenuLabel>My Account</DropdownMenuLabel>
-						<DropdownMenuSeparator />
-						<DropdownMenuItem>Settings</DropdownMenuItem>
-						<DropdownMenuItem>Support</DropdownMenuItem>
-						<DropdownMenuSeparator />
-						<DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
-					</DropdownMenuContent>
-				</DropdownMenu>
+				<div className="hidden md:block">
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<button className="flex gap-x-2 items-center outline-none bg-green-200x">
+								<img
+									src={auth.imageUrl ?? DummyProfile}
+									alt="user"
+									className="w-8 h-8 rounded-full"
+								/>
+								<p className={` text-sm  ${cssOnScrollService ? 'text-white' : 'text-gray-700'}`}>
+									{`${auth.firstName} ${auth.lastName}`}
+								</p>
+							</button>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent align="end">
+							<DropdownMenuLabel>{`${auth.firstName} ${auth.lastName}`}</DropdownMenuLabel>
+							<DropdownMenuSeparator />
+							<DropdownMenuItem>Pengaturan</DropdownMenuItem>
+							<DropdownMenuSeparator />
+							<DropdownMenuItem onClick={handleLogout}>Keluar</DropdownMenuItem>
+						</DropdownMenuContent>
+					</DropdownMenu>
+				</div>
 			) : (
 				<Link to="/sign-in" className="hidden md:block">
-					<button className="bg-custom-green text-white px-5 py-1.5 rounded-full">Login</button>
+					<button className="bg-custom-green text-white px-5 py-1.5 rounded-full">Masuk</button>
 				</Link>
 			)}
 
@@ -161,7 +162,9 @@ const Navbar = () => {
 			>
 				<div className="flex justify-between flex-col h-full">
 					<div className="flex justify-between">
-						<ul className="flex md:hidden flex-col gap-y-4">{renderNavLinks(NAVLINK)}</ul>
+						<ul className="flex md:hidden flex-col gap-y-4 bg-red-300x justify-start">
+							{renderNavLinks(NAVLINK)}
+						</ul>
 						<div>
 							<button className="rounded-full p-1" onClick={() => setIsOpen(false)}>
 								<AiOutlineClose />
@@ -169,9 +172,33 @@ const Navbar = () => {
 						</div>
 					</div>
 					{/* LOGIN */}
-					<Link to="/sign-in" className="">
-						<button className="bg-custom-green text-white px-5 py-1.5 rounded-full">Login</button>
-					</Link>
+					{auth.isAuthenticated ? (
+						<DropdownMenu>
+							<DropdownMenuTrigger asChild>
+								<button className="flex gap-x-2 items-center outline-none bg-green-200x">
+									<img
+										src={auth.imageUrl ?? DummyProfile}
+										alt="user"
+										className="w-8 h-8 rounded-full"
+									/>
+									<p className={` text-sm  ${cssOnScrollService ? 'text-white' : 'text-gray-700'}`}>
+										{`${auth.firstName} ${auth.lastName}`}
+									</p>
+								</button>
+							</DropdownMenuTrigger>
+							<DropdownMenuContent align="end">
+								<DropdownMenuLabel>{`${auth.firstName} ${auth.lastName}`}</DropdownMenuLabel>
+								<DropdownMenuSeparator />
+								<DropdownMenuItem>Pengaturan</DropdownMenuItem>
+								<DropdownMenuSeparator />
+								<DropdownMenuItem onClick={handleLogout}>Keluar</DropdownMenuItem>
+							</DropdownMenuContent>
+						</DropdownMenu>
+					) : (
+						<Link to="/sign-in" className="">
+							<button className="bg-custom-green text-white px-5 py-1.5 rounded-full">Masuk</button>
+						</Link>
+					)}
 				</div>
 			</div>
 		</div>

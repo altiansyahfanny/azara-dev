@@ -27,12 +27,8 @@ const Testimoni = () => {
 			<div className="md:flex relative">
 				<div className="p-5 lg:pl-40 md:w-1/2">
 					<div>
-						<h1 className="text-3xl font-bold">
-							See how&nbsp;<span className="text-custom-green">we've help</span>&nbsp;our
-							clients&nbsp;
-							<span className="text-custom-green">succeed</span>
-						</h1>
-						<h1 className="mt-2 text-xl font-bold">More than 90+ students</h1>
+						<h1 className="text-3xl font-bold">Testimoni dari pelanggan kami</h1>
+						<h1 className="mt-2 text-lg">Lebih dari 90 siswa</h1>
 					</div>
 
 					<Carousel className="" plugins={[Autoplay({ delay: 5000 })]} setApi={setApi}>

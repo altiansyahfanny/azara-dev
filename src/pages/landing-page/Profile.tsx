@@ -11,7 +11,7 @@ const Profile = () => {
 			/> */}
 			<div className="">
 				<div className="px-5 lg:px-40 text-center z-10">
-					<h1 className="text-3xl font-bold">PROFILE</h1>
+					<h1 className="text-3xl font-bold">PROFIL</h1>
 					<p className="mt-6">
 						<span className="text-custom-green">Lorem ipsum</span> dolor sit amet, consectetur
 						adipiscing elit. Aenean vitae malesuada arcu, nec rutrum orci. Morbi arcu arcu, commodo

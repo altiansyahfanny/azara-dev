@@ -26,38 +26,38 @@ const PriceCard = ({
 			<hr className="my-4" />
 			<ul className="text-sm gap-1.5 flex flex-col">
 				<li className=" flex items-center gap-2">
-					<FaCheckCircle className={`${isPrivate ? 'text-custom-green' : 'text-custom-yellow'}`} />
+					<FaCheckCircle className={`${!isPrivate ? 'text-custom-green' : 'text-custom-yellow'}`} />
 					<p>Lorem Ipsum </p>
 				</li>
 				<li className=" flex items-center gap-2">
-					<FaCheckCircle className={`${isPrivate ? 'text-custom-green' : 'text-custom-yellow'}`} />
+					<FaCheckCircle className={`${!isPrivate ? 'text-custom-green' : 'text-custom-yellow'}`} />
 					<p>Lorem Ipsum dolor si amet</p>
 				</li>
 				<li className=" flex items-center gap-2">
-					<FaCheckCircle className={`${isPrivate ? 'text-custom-green' : 'text-custom-yellow'}`} />
+					<FaCheckCircle className={`${!isPrivate ? 'text-custom-green' : 'text-custom-yellow'}`} />
 					<p>Lorem Ipsum dolor si</p>
 				</li>
 				<li className=" flex items-center gap-2">
-					<FaCheckCircle className={`${isPrivate ? 'text-custom-green' : 'text-custom-yellow'}`} />
+					<FaCheckCircle className={`${!isPrivate ? 'text-custom-green' : 'text-custom-yellow'}`} />
 					<p>Lorem Ipsum </p>
 				</li>
 				<li className=" flex items-center gap-2">
-					<FaCheckCircle className={`${isPrivate ? 'text-custom-green' : 'text-custom-yellow'}`} />
+					<FaCheckCircle className={`${!isPrivate ? 'text-custom-green' : 'text-custom-yellow'}`} />
 					<p>Lorem Ipsum dolor si amet</p>
 				</li>
 				<li className=" flex items-center gap-2">
-					<FaCheckCircle className={`${isPrivate ? 'text-custom-green' : 'text-custom-yellow'}`} />
+					<FaCheckCircle className={`${!isPrivate ? 'text-custom-green' : 'text-custom-yellow'}`} />
 					<p>Lorem Ipsum dolor si amet</p>
 				</li>
 				<li className=" flex items-center gap-2">
-					<FaCheckCircle className={`${isPrivate ? 'text-custom-green' : 'text-custom-yellow'}`} />
+					<FaCheckCircle className={`${!isPrivate ? 'text-custom-green' : 'text-custom-yellow'}`} />
 					<p>Lorem Ipsum dolor si amet</p>
 				</li>
 			</ul>
 			<hr className="my-4" />
 			<button
 				className={`${
-					isPrivate ? 'bg-custom-green' : 'bg-custom-yellow'
+					!isPrivate ? 'bg-custom-green' : 'bg-custom-yellow'
 				} text-white px-5 py-1 rounded-full self-center text-sm`}
 			>
 				Select
