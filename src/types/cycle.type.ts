@@ -1,6 +1,7 @@
 import { PaginationType } from './api.type';
 
 export type CycleType = {
+	id: number;
 	startDate: string;
 	endDate: string;
 	description: string;

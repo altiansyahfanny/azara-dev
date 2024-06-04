@@ -18,7 +18,7 @@ const baseQuery = fetchBaseQuery({
 			headers.set('authorization', `Bearer ${token}`);
 		}
 		if (refreshToken) {
-			console.log('refreshToken : ', refreshToken);
+			// console.log('refreshToken : ', refreshToken);
 			headers.set('refresh-token', refreshToken);
 		}
 		return headers;
@@ -84,6 +84,6 @@ const baseQueryWithReauth = async (
 
 export const apiSlice = createApi({
 	baseQuery: baseQueryWithReauth,
-	tagTypes: ['Students', 'Courses', 'Cycles'],
+	tagTypes: ['Students', 'Courses', 'Cycles', 'Classrooms'],
 	endpoints: () => ({}),
 });

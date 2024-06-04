@@ -91,7 +91,7 @@ const Student = () => {
 		);
 	}
 
-	return <Container title="Murid">{content}</Container>;
+	return <Container title="Siswa">{content}</Container>;
 };
 
 export default Student;

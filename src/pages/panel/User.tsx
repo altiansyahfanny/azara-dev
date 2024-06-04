@@ -33,7 +33,7 @@ const User = () => {
 			<Tabs defaultValue="student">
 				<div className="flex items-center">
 					<TabsList>
-						<TabsTrigger value="student">Murid</TabsTrigger>
+						<TabsTrigger value="student">Siswa</TabsTrigger>
 						<TabsTrigger value="teacher">Guru</TabsTrigger>
 					</TabsList>
 					<div className="ml-auto flex items-center gap-2">

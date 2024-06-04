@@ -16,6 +16,7 @@ import {
 import { setModalState, setPaginationState } from '@/store/features/cycleSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { PlusCircle } from 'lucide-react';
+import { isError } from 'react-query';
 
 const Cycle = () => {
 	const dispatch = useAppDispatch();
@@ -26,6 +27,7 @@ const Cycle = () => {
 		data: cycles,
 		isLoading,
 		isSuccess,
+		isError,
 	} = useGetCyclesQuery({ page: paginationState.page, limit: paginationState.pageSize });
 
 	const onOpenChange = (value: boolean) => {
@@ -49,7 +51,7 @@ const Cycle = () => {
 	if (isSuccess) {
 		content = (
 			<>
-				<div className="flex">
+				<div className="flex mb-4">
 					<div className="ml-auto flex items-center gap-2">
 						<Button size="sm" className="h-7 gap-1" onClick={() => onOpenChange(true)}>
 							<PlusCircle className="h-3.5 w-3.5" />

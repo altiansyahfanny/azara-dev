@@ -8,6 +8,11 @@ import { apiSlice } from './api';
 
 export const cycleApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
+		fetchCycles: builder.query<ApiResponseType<CyclesResponseType>, void>({
+			query: () => `/cycle`,
+			// providesTags: ['Cycles'],
+		}),
+
 		getCycles: builder.query<ApiResponseType<CyclesResponseType>, ParamsType<CycleType>>({
 			query: (q) => `/cycle?${convertToQueryString(q)}`,
 			async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
@@ -21,6 +26,7 @@ export const cycleApiSlice = apiSlice.injectEndpoints({
 			},
 			providesTags: ['Cycles'],
 		}),
+
 		addCycle: builder.mutation<ApiResponseType, z.infer<typeof createCycleSchema>>({
 			query: (payload) => ({
 				url: '/cycle/new',
@@ -32,4 +38,4 @@ export const cycleApiSlice = apiSlice.injectEndpoints({
 	}),
 });
 
-export const { useAddCycleMutation, useGetCyclesQuery } = cycleApiSlice;
+export const { useAddCycleMutation, useGetCyclesQuery, useFetchCyclesQuery } = cycleApiSlice;

@@ -8,9 +8,9 @@ const DashboardLayout = () => {
 		<TooltipProvider>
 			<div className="flex min-h-screen w-full flex-col bg-white">
 				<Sidebar />
-				<div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
+				<div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14 bg-blue-400x min-h-screen">
 					<Header />
-					<main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 bg-green-200x max-w-full w-full relative overflow-hidden ">
+					<main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 bg-green-200x max-w-full w-full relative overflow-hidden bg-green-200x">
 						<Outlet />
 					</main>
 				</div>

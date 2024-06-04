@@ -9,9 +9,10 @@ const RequireAuth = ({ allowedRoles }: RequireAuthProps) => {
 	const location = useLocation();
 	const auth = useAuth();
 
-	console.log('RequireAuth -> auth : ', auth);
+	// console.log('RequireAuth -> auth : ', auth);
 
 	let content;
+
 	if (auth.role) {
 		if (allowedRoles.includes(auth.role)) {
 			content = <Outlet />;

@@ -6,6 +6,7 @@ import {
 	BreadcrumbItem,
 	BreadcrumbLink,
 	BreadcrumbList,
+	BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,7 +18,8 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 const Header = () => {
 	const navigate = useNavigate();
@@ -27,6 +29,11 @@ const Header = () => {
 		localStorage.removeItem('refreshToken');
 		navigate('/sign-in');
 	};
+
+	const [isOpen, setIsOpen] = useState(false);
+
+	const location = useLocation();
+	const pathnames = location.pathname.split('/').filter((x) => x);
 
 	return (
 		<header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-4 border-b px-4 pb-4 sm:static sm:h-auto sm:bg-transparent sm:px-6">
@@ -88,6 +95,24 @@ const Header = () => {
 							<BreadcrumbLink asChild>
 								<Link to="#">Dashboard</Link>
 							</BreadcrumbLink>
+
+							{pathnames.map((value, index) => {
+								const to = `/${pathnames.slice(0, index + 1).join('/')}`;
+								const isLast = index === pathnames.length - 1;
+
+								return isLast ? (
+									<>
+										<BreadcrumbSeparator />
+										<BreadcrumbLink asChild key={index}>
+											<p>{value.toUpperCase()}</p>
+										</BreadcrumbLink>
+									</>
+								) : (
+									<BreadcrumbLink asChild key={index}>
+										<Link to={to}>{value}</Link>
+									</BreadcrumbLink>
+								);
+							})}
 						</BreadcrumbItem>
 					</BreadcrumbList>
 				</Breadcrumb>
@@ -97,7 +122,12 @@ const Header = () => {
 
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
-					<Button variant="outline" size="icon" className="overflow-hidden rounded-full">
+					<Button
+						variant="outline"
+						size="icon"
+						className="overflow-hidden rounded-full"
+						onClick={() => setIsOpen(true)}
+					>
 						<img
 							src={ProfileImg}
 							width={36}
@@ -107,13 +137,16 @@ const Header = () => {
 						/>
 					</Button>
 				</DropdownMenuTrigger>
-				<DropdownMenuContent align="end">
-					<DropdownMenuLabel>My Account</DropdownMenuLabel>
+				<DropdownMenuContent align="end" onClick={() => setIsOpen(false)}>
+					<DropdownMenuLabel>Altiansyah Fanny</DropdownMenuLabel>
 					<DropdownMenuSeparator />
-					<DropdownMenuItem>Settings</DropdownMenuItem>
-					<DropdownMenuItem>Support</DropdownMenuItem>
+					<DropdownMenuItem>
+						<Link to={'/setting'}>Pengaturan</Link>
+					</DropdownMenuItem>
 					<DropdownMenuSeparator />
-					<DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
+					<DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
+						Logout
+					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>
 		</header>

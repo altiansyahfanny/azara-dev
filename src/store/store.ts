@@ -6,6 +6,8 @@ import { apiSlice } from '@/api/api';
 import StudentSlice from './features/studentSlice';
 import CourseSlice from './features/courseSlice';
 import CycleSlice from './features/cycleSlice';
+import ClassroomSlice from './features/classroomSlice';
+import ClassroomIdSlice from './features/classroomIdSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -15,6 +17,8 @@ export const store = configureStore({
 		student: StudentSlice.reducer,
 		course: CourseSlice.reducer,
 		cycle: CycleSlice.reducer,
+		classroom: ClassroomSlice.reducer,
+		[ClassroomIdSlice.name]: ClassroomIdSlice.reducer,
 	},
 	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
 });
