@@ -7,15 +7,13 @@ import Profile from './Profile';
 import { IcWhatsapp } from '@/assets/landing/svg';
 
 const LandingPage = () => {
-	const screenHeight = window.innerHeight;
-	console.log('screenHeight : ', screenHeight);
 	return (
 		<div id="landing" className="relative overflow-hidden">
 			<Navbar />
 			<div className="mt-[80px]">
 				<Home />
-				<Profile />
 				<Service />
+				<Profile />
 				<Testimoni />
 				<Footer />
 			</div>
