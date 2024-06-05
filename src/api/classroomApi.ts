@@ -1,14 +1,14 @@
 import { convertToQueryString } from '@/helpers/api-helper';
 import { createClassroomSchema } from '@/schema/classroom';
 import { setPaginationState } from '@/store/features/classroomSlice';
-import { ApiResponse, Query } from '@/types/api.type';
+import { ApiResponse, QueryParam } from '@/types/api.type';
 import { Classroom, ClassroomsResponse } from '@/types/classroom.type';
 import { z } from 'zod';
 import { apiSlice } from './api';
 
 export const classroomApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
-		getClassrooms: builder.query<ApiResponse<ClassroomsResponse>, Query<Classroom>>({
+		getClassrooms: builder.query<ApiResponse<ClassroomsResponse>, QueryParam<Classroom>>({
 			query: (q) => `/classroom?${convertToQueryString(q)}`,
 			async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
 				try {
