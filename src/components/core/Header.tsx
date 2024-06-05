@@ -1,11 +1,10 @@
-import { Home, LineChart, Package, Package2, PanelLeft, ShoppingCart, Users2 } from 'lucide-react';
-
 import { ProfileImg } from '@/assets/dashboard/img';
 import {
 	Breadcrumb,
 	BreadcrumbItem,
 	BreadcrumbLink,
 	BreadcrumbList,
+	BreadcrumbPage,
 	BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
@@ -17,8 +16,21 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import useBreadcrumbs from 'use-react-router-breadcrumbs';
+
+const routes = [
+	{ path: '/', breadcrumb: null },
+	{ path: '/dashboard', breadcrumb: 'Dahsboard' },
+	{ path: '/course', breadcrumb: 'Mata Pelajaran' },
+	{ path: '/cycle', breadcrumb: 'Tahun Ajaran' },
+	{ path: '/user', breadcrumb: 'User' },
+	{ path: '/classroom', breadcrumb: 'Kelas' },
+	{ path: 'classroom/:id', breadcrumb: 'Detil' },
+	{ path: 'meeting', breadcrumb: 'Meeting' },
+	{ path: 'attendance', breadcrumb: 'Kehadiran' },
+	{ path: 'setting', breadcrumb: 'Pengaturan' },
+];
 
 const Header = () => {
 	const navigate = useNavigate();
@@ -29,95 +41,42 @@ const Header = () => {
 		navigate('/sign-in');
 	};
 
-	// const [isOpen, setIsOpen] = useState(false);
-
-	const location = useLocation();
-	const pathnames = location.pathname.split('/').filter((x) => x);
+	const breadcrumbs = useBreadcrumbs(routes);
 
 	return (
 		<header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-4 border-b px-4 pb-4 sm:static sm:h-auto sm:bg-transparent sm:px-6">
-			<div>
-				<Sheet>
-					<SheetTrigger asChild>
-						<Button size="icon" variant="outline" className="sm:hidden">
-							<PanelLeft className="h-5 w-5" />
-							<span className="sr-only">Toggle Menu</span>
-						</Button>
-					</SheetTrigger>
-					<SheetContent side="left" className="sm:max-w-xs">
-						<nav className="grid gap-6 text-lg font-medium">
-							<Link
-								to="#"
-								className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
-							>
-								<Package2 className="h-5 w-5 transition-all group-hover:scale-110" />
-								<span className="sr-only">Acme Inc</span>
-							</Link>
-							<Link
-								to="#"
-								className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-							>
-								<Home className="h-5 w-5" />
-								Dashboard
-							</Link>
-							<Link
-								to="#"
-								className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-							>
-								<ShoppingCart className="h-5 w-5" />
-								Orders
-							</Link>
-							<Link to="#" className="flex items-center gap-4 px-2.5 text-foreground">
-								<Package className="h-5 w-5" />
-								Products
-							</Link>
-							<Link
-								to="#"
-								className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-							>
-								<Users2 className="h-5 w-5" />
-								Customers
-							</Link>
-							<Link
-								to="#"
-								className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-							>
-								<LineChart className="h-5 w-5" />
-								Settings
-							</Link>
-						</nav>
-					</SheetContent>
-				</Sheet>
-				<Breadcrumb className="hidden md:flex">
-					<BreadcrumbList>
-						<BreadcrumbItem>
-							<BreadcrumbLink asChild>
-								<Link to="#">Dashboard</Link>
-							</BreadcrumbLink>
+			<Breadcrumb className="flex">
+				<BreadcrumbList>
+					<BreadcrumbItem>
+						{breadcrumbs.map(({ breadcrumb, match }, index) => {
+							const isLast = breadcrumbs.length - 1 === index;
 
-							{pathnames.map((value, index) => {
-								const to = `/${pathnames.slice(0, index + 1).join('/')}`;
-								const isLast = index === pathnames.length - 1;
+							if (breadcrumb) {
+								if (!isLast) {
+									return (
+										<>
+											<BreadcrumbItem>
+												<BreadcrumbLink asChild key={match.pathname}>
+													<Link to={match.pathname}>{breadcrumb}</Link>
+												</BreadcrumbLink>
+											</BreadcrumbItem>
+											<BreadcrumbSeparator />
+										</>
+									);
+								}
 
-								return isLast ? (
-									<>
-										<BreadcrumbSeparator />
-										<BreadcrumbLink asChild key={index}>
-											<p>{value.toUpperCase()}</p>
-										</BreadcrumbLink>
-									</>
-								) : (
-									<BreadcrumbLink asChild key={index}>
-										<Link to={to}>{value}</Link>
+								return (
+									<BreadcrumbLink asChild key={match.pathname}>
+										<BreadcrumbPage>{breadcrumb}</BreadcrumbPage>
 									</BreadcrumbLink>
 								);
-							})}
-						</BreadcrumbItem>
-					</BreadcrumbList>
-				</Breadcrumb>
-			</div>
+							}
 
-			{/* <div className="bg-red-300 flex-1">oke</div> */}
+							return null;
+						})}
+					</BreadcrumbItem>
+				</BreadcrumbList>
+			</Breadcrumb>
 
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>

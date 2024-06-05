@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { StudentFilterType } from '../../types/user.type';
-import { PaginationType } from '@/types/table.type';
-import { CourseFilterType } from '@/types/course.type';
+import { Pagination } from '@/types/table.type';
+import { CourseFilter } from '@/types/course.type';
 
 type ModalStateType = {
 	modalCreate: boolean;
@@ -9,8 +9,8 @@ type ModalStateType = {
 
 type CourseStateType = {
 	modalState: ModalStateType;
-	paginationState: PaginationType;
-	filterState: CourseFilterType;
+	paginationState: Pagination;
+	filterState: CourseFilter;
 };
 
 const initialState: CourseStateType = {
@@ -26,7 +26,7 @@ export const CourseSlice = createSlice({
 	name: 'course',
 	initialState,
 	reducers: {
-		setPaginationState: (state, action: PayloadAction<{ value: Partial<PaginationType> }>) => {
+		setPaginationState: (state, action: PayloadAction<{ value: Partial<Pagination> }>) => {
 			state.paginationState = { ...state.paginationState, ...action.payload.value };
 		},
 

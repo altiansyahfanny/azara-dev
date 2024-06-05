@@ -13,11 +13,14 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
+import useTitle from '@/hooks/useTitle';
 import { setModalState, setPaginationState } from '@/store/features/courseSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { PlusCircle } from 'lucide-react';
 
 const Course = () => {
+	useTitle('Mata Pelajran');
+
 	const dispatch = useAppDispatch();
 
 	const { paginationState, modalState } = useAppSelector((state) => state.course);

@@ -8,8 +8,8 @@ import AuthLayout from '@/layouts/AuthLayout';
 import { SignInRequest } from '@/model/auth';
 import { signInSchema } from '@/schema/auth';
 import { useLoginMutation } from '@/api/authApi';
-import { ApiResponseType, ErrorResponseType } from '@/types/api.type';
-import { DecodedTokenType } from '@/types/auth.type';
+import { ApiResponse, ErrorResponse } from '@/types/api.type';
+import { DecodedToken } from '@/types/auth.type';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useGoogleLogin } from '@react-oauth/google';
 import axios, { AxiosResponse } from 'axios';
@@ -50,7 +50,7 @@ export default function SignIn() {
 			const {
 				data: { token, refreshToken },
 			} = await login(payload).unwrap();
-			const { role }: DecodedTokenType = jwtDecode(token);
+			const { role }: DecodedToken = jwtDecode(token);
 
 			console.log('SignIn -> onFinish -> success : ', token);
 
@@ -63,7 +63,7 @@ export default function SignIn() {
 				navigate('/', { replace: true });
 			}
 		} catch (err) {
-			const error = err as ApiResponseType<ErrorResponseType>;
+			const error = err as ApiResponse<ErrorResponse>;
 			console.log('SignIn -> onFinish -> error : ', error.data.message);
 			toast.error(error.data.message);
 		}
@@ -82,7 +82,7 @@ export default function SignIn() {
 				console.log('response google : ', response);
 
 				if (response) {
-					const loginThirdParty: AxiosResponse<ApiResponseType<LoginThirdParty>> = await axios.post(
+					const loginThirdParty: AxiosResponse<ApiResponse<LoginThirdParty>> = await axios.post(
 						`${BASE_URL}/auth/login/external`,
 						{
 							// email: 'ironman@gmail.com',

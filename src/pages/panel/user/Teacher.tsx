@@ -13,8 +13,10 @@ import {
 import { useGetStudentsQuery } from '@/api/studentApi';
 import { setPaginationState } from '@/store/features/studentSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
+import useTitle from '@/hooks/useTitle';
 
 const Teacher = () => {
+	useTitle('Pengguna - Guru');
 	const dispatch = useAppDispatch();
 
 	const { paginationState } = useAppSelector((state) => state.student);

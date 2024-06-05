@@ -1,4 +1,4 @@
-export type DecodedTokenType = {
+export type DecodedToken = {
 	address: string;
 	email: string;
 	exp: number;
@@ -21,7 +21,7 @@ export type LoginResponse = {
 	refreshToken: string;
 };
 
-export type RefreshTokenResponseType = {
+export type RefreshTokenResponse = {
 	token: string;
 	refreshToken: string;
 };

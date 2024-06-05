@@ -1,8 +1,8 @@
 import { BaseQueryApi, createApi, FetchArgs, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Mutex } from 'async-mutex';
 import { BASE_URL } from '../config';
-import { ApiResponseType } from '@/types/api.type';
-import { RefreshTokenResponseType } from '@/types/auth.type';
+import { ApiResponse } from '@/types/api.type';
+import { RefreshTokenResponse } from '@/types/auth.type';
 
 const mutex = new Mutex();
 
@@ -52,7 +52,7 @@ const baseQueryWithReauth = async (
 				if (refreshResult?.data) {
 					console.log('REAUTH -> SUCCESS...');
 
-					const newRefreshResult = refreshResult.data as ApiResponseType<RefreshTokenResponseType>;
+					const newRefreshResult = refreshResult.data as ApiResponse<RefreshTokenResponse>;
 
 					// store the new token
 					// api.dispatch(setAccessToken({ value: newRefreshResult.access_token }));

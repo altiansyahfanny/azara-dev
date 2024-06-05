@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { StudentFilterType } from '../../types/user.type';
-import { PaginationType } from '@/types/table.type';
-import { CycleFilterType } from '@/types/cycle.type';
+import { Pagination } from '@/types/table.type';
+import { CycleFilter } from '@/types/cycle.type';
 
 type ModalStateType = {
 	modalCreate: boolean;
@@ -9,8 +9,8 @@ type ModalStateType = {
 
 type CycleStateType = {
 	modalState: ModalStateType;
-	paginationState: PaginationType;
-	filterState: CycleFilterType;
+	paginationState: Pagination;
+	filterState: CycleFilter;
 };
 
 const initialState: CycleStateType = {
@@ -26,7 +26,7 @@ export const CycleSlice = createSlice({
 	name: 'cycle',
 	initialState,
 	reducers: {
-		setPaginationState: (state, action: PayloadAction<{ value: Partial<PaginationType> }>) => {
+		setPaginationState: (state, action: PayloadAction<{ value: Partial<Pagination> }>) => {
 			state.paginationState = { ...state.paginationState, ...action.payload.value };
 		},
 

@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { PaginationType } from '@/types/table.type';
-import { ClassroomFilterType } from '@/types/classroom.type';
+import { Pagination } from '@/types/table.type';
+import { ClassroomFilter } from '@/types/classroom.type';
 
 type ModalStateType = {
 	modalCreate: boolean;
@@ -8,8 +8,8 @@ type ModalStateType = {
 
 type ClassroomStateType = {
 	modalState: ModalStateType;
-	paginationState: PaginationType;
-	filterState: ClassroomFilterType;
+	paginationState: Pagination;
+	filterState: ClassroomFilter;
 };
 
 const initialState: ClassroomStateType = {
@@ -25,11 +25,11 @@ export const ClassroomSlice = createSlice({
 	name: 'classroom',
 	initialState,
 	reducers: {
-		setPaginationState: (state, action: PayloadAction<{ value: Partial<PaginationType> }>) => {
+		setPaginationState: (state, action: PayloadAction<{ value: Partial<Pagination> }>) => {
 			state.paginationState = { ...state.paginationState, ...action.payload.value };
 		},
 
-		setFilterState: (state, action: PayloadAction<{ value: Partial<ClassroomFilterType> }>) => {
+		setFilterState: (state, action: PayloadAction<{ value: Partial<ClassroomFilter> }>) => {
 			state.filterState = { ...state.filterState, ...action.payload.value };
 		},
 

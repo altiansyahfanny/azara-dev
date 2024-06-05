@@ -1,6 +1,6 @@
-import { PaginationType } from './api.type';
+import { Pagination } from './api.type';
 
-export type UserType = {
+export type User = {
 	firstName: string;
 	lastName: string;
 	email: string;
@@ -13,7 +13,7 @@ export type StudentFilterType = {
 	email: string;
 };
 
-export type StudentsResponseType = {
-	pagination: PaginationType;
-	students: UserType[];
+export type StudentsResponse = {
+	pagination: Pagination;
+	students: User[];
 };

@@ -1,20 +1,20 @@
-import { PaginationType } from './api.type';
-import { UserType } from './user.type';
+import { Pagination } from './api.type';
+import { User } from './user.type';
 
-export type ClassroomType = {
+export type Classroom = {
 	id: number;
 	classroomName: string;
 	price: number;
 	cycleDescription: string;
-	students: Pick<UserType, 'firstName' | 'lastName'>[];
+	students: Pick<User, 'firstName' | 'lastName'>[];
 };
 
-export type ClassroomFilterType = {
+export type ClassroomFilter = {
 	classroomName: string;
 	description: string;
 };
 
-export type ClassroomsResponseType = {
-	pagination: PaginationType;
-	classrooms: Omit<ClassroomType, 'students'>[];
+export type ClassroomsResponse = {
+	pagination: Pagination;
+	classrooms: Omit<Classroom, 'students'>[];
 };

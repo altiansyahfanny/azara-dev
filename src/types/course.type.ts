@@ -1,16 +1,16 @@
-import { PaginationType } from './api.type';
+import { Pagination } from './api.type';
 
-export type CourseType = {
+export type Course = {
 	courseName: string;
 	description: string;
 };
 
-export type CourseFilterType = {
+export type CourseFilter = {
 	courseName: string;
 	description: string;
 };
 
-export type CoursesResponseType = {
-	pagination: PaginationType;
-	courses: CourseType[];
+export type CoursesResponse = {
+	pagination: Pagination;
+	courses: Course[];
 };

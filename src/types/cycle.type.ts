@@ -1,19 +1,19 @@
-import { PaginationType } from './api.type';
+import { Pagination } from './api.type';
 
-export type CycleType = {
+export type Cycle = {
 	id: number;
 	startDate: string;
 	endDate: string;
 	description: string;
 };
 
-export type CycleFilterType = {
+export type CycleFilter = {
 	startDate: string;
 	endDate: string;
 	description: string;
 };
 
-export type CyclesResponseType = {
-	pagination: PaginationType;
-	cycles: CycleType[];
+export type CyclesResponse = {
+	pagination: Pagination;
+	cycles: Cycle[];
 };

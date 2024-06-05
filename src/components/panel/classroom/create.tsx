@@ -20,7 +20,7 @@ import {
 import { createClassroomSchema } from '@/schema/classroom';
 import { setModalState } from '@/store/features/classroomSlice';
 import { useAppDispatch } from '@/store/store';
-import { ApiResponseType, ErrorResponseType } from '@/types/api.type';
+import { ApiResponse, ErrorResponse } from '@/types/api.type';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoaderCircle } from 'lucide-react';
 import { useForm } from 'react-hook-form';
@@ -56,7 +56,7 @@ export default function CreateClassroom() {
 			dispatch(setModalState({ value: { modalCreate: false } }));
 			toast.success(result.message);
 		} catch (err) {
-			const error = err as ApiResponseType<ErrorResponseType>;
+			const error = err as ApiResponse<ErrorResponse>;
 			console.log('CreateClassroom -> onFinish -> error : ', error.data.message);
 			toast.error(error.data.message);
 		}

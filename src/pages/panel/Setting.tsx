@@ -10,9 +10,12 @@ import {
 } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
+import useTitle from '@/hooks/useTitle';
 import { Link } from 'react-router-dom';
 
 export function Setting() {
+	useTitle('Penagaturan');
+
 	return (
 		<Container title="Pengaturan">
 			<div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">

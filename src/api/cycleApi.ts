@@ -1,19 +1,19 @@
 import { convertToQueryString } from '@/helpers/api-helper';
 import { createCycleSchema } from '@/schema/cycle';
 import { setPaginationState } from '@/store/features/cycleSlice';
-import { ApiResponseType, ParamsType } from '@/types/api.type';
-import { CycleType, CyclesResponseType } from '@/types/cycle.type';
+import { ApiResponse, QueryParam } from '@/types/api.type';
+import { Cycle, CyclesResponse } from '@/types/cycle.type';
 import { z } from 'zod';
 import { apiSlice } from './api';
 
 export const cycleApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
-		fetchCycles: builder.query<ApiResponseType<CyclesResponseType>, void>({
+		fetchCycles: builder.query<ApiResponse<CyclesResponse>, void>({
 			query: () => `/cycle`,
 			// providesTags: ['Cycles'],
 		}),
 
-		getCycles: builder.query<ApiResponseType<CyclesResponseType>, ParamsType<CycleType>>({
+		getCycles: builder.query<ApiResponse<CyclesResponse>, QueryParam<Cycle>>({
 			query: (q) => `/cycle?${convertToQueryString(q)}`,
 			async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
 				try {
@@ -27,7 +27,7 @@ export const cycleApiSlice = apiSlice.injectEndpoints({
 			providesTags: ['Cycles'],
 		}),
 
-		addCycle: builder.mutation<ApiResponseType, z.infer<typeof createCycleSchema>>({
+		addCycle: builder.mutation<ApiResponse, z.infer<typeof createCycleSchema>>({
 			query: (payload) => ({
 				url: '/cycle/new',
 				method: 'POST',

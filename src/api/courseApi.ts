@@ -1,14 +1,14 @@
 import { convertToQueryString } from '@/helpers/api-helper';
 import { createCourseSchema } from '@/schema/course';
 import { setPaginationState } from '@/store/features/courseSlice';
-import { ApiResponseType, ParamsType } from '@/types/api.type';
-import { CourseType, CoursesResponseType } from '@/types/course.type';
+import { ApiResponse, QueryParam } from '@/types/api.type';
+import { Course, CoursesResponse } from '@/types/course.type';
 import { z } from 'zod';
 import { apiSlice } from './api';
 
 export const courseApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
-		getCourses: builder.query<ApiResponseType<CoursesResponseType>, ParamsType<CourseType>>({
+		getCourses: builder.query<ApiResponse<CoursesResponse>, QueryParam<Course>>({
 			query: (q) => `/course?${convertToQueryString(q)}`,
 			async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
 				try {
@@ -21,7 +21,7 @@ export const courseApiSlice = apiSlice.injectEndpoints({
 			},
 			providesTags: ['Courses'],
 		}),
-		addCourse: builder.mutation<ApiResponseType, z.infer<typeof createCourseSchema>>({
+		addCourse: builder.mutation<ApiResponse, z.infer<typeof createCourseSchema>>({
 			query: (payload) => ({
 				url: '/course/new',
 				method: 'POST',

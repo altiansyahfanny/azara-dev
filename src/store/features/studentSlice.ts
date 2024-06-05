@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { StudentFilterType } from '../../types/user.type';
-import { PaginationType } from '@/types/table.type';
+import { Pagination } from '@/types/table.type';
 
 type ModalType = {
 	modalAddIsOpen: boolean;
@@ -9,7 +9,7 @@ type ModalType = {
 
 type StudentStateType = {
 	modalState: ModalType;
-	paginationState: PaginationType;
+	paginationState: Pagination;
 	filterState: StudentFilterType;
 };
 
@@ -27,7 +27,7 @@ export const StudentSlice = createSlice({
 	name: 'student',
 	initialState,
 	reducers: {
-		setPaginationState: (state, action: PayloadAction<{ value: Partial<PaginationType> }>) => {
+		setPaginationState: (state, action: PayloadAction<{ value: Partial<Pagination> }>) => {
 			state.paginationState = { ...state.paginationState, ...action.payload.value };
 		},
 

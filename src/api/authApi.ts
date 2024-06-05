@@ -1,4 +1,4 @@
-import { ApiResponseType } from '@/types/api.type';
+import { ApiResponse } from '@/types/api.type';
 import { logOut, setAccessToken } from '../store/features/authSlice';
 import { LoginResponse, LoginRequest } from '../types/auth.type';
 import { apiSlice } from './api';
@@ -10,7 +10,7 @@ interface RefreshResponse {
 
 export const authApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
-		login: builder.mutation<ApiResponseType<LoginResponse>, LoginRequest>({
+		login: builder.mutation<ApiResponse<LoginResponse>, LoginRequest>({
 			query: (credentials) => ({
 				url: '/auth/login',
 				method: 'POST',

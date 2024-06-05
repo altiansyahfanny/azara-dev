@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/input';
 import { createCourseSchema } from '@/schema/course';
 import { setModalState } from '@/store/features/courseSlice';
 import { useAppDispatch } from '@/store/store';
-import { ApiResponseType, ErrorResponseType } from '@/types/api.type';
+import { ApiResponse, ErrorResponse } from '@/types/api.type';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -40,7 +40,7 @@ export default function CreateCourse() {
 			dispatch(setModalState({ value: { modalCreate: false } }));
 			toast.success(result.message);
 		} catch (err) {
-			const error = err as ApiResponseType<ErrorResponseType>;
+			const error = err as ApiResponse<ErrorResponse>;
 			console.log('CreateCourse -> onFinish -> error : ', error.data.message);
 			toast.error(error.data.message);
 		}
