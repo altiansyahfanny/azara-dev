@@ -88,7 +88,7 @@ export default function CreateCycle() {
 										mode="single"
 										selected={field.value}
 										onSelect={field.onChange}
-										disabled={(date) => date < new Date()}
+										disabled={(date: Date) => date < new Date()}
 										initialFocus
 									/>
 								</PopoverContent>
@@ -124,7 +124,7 @@ export default function CreateCycle() {
 										mode="single"
 										selected={field.value}
 										onSelect={field.onChange}
-										disabled={(date) => date < form.getValues('startDate')}
+										disabled={(date: Date) => date < form.getValues('startDate')}
 										initialFocus
 									/>
 								</PopoverContent>

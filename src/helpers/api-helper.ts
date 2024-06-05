@@ -1,6 +1,6 @@
-import { Query } from '@/types/api.type';
+import { QueryParam } from '@/types/api.type';
 
-export const convertToQueryString = <T>(params: Query<T>): string => {
+export const convertToQueryString = <T>(params: QueryParam<T>): string => {
 	const queryString = Object.entries(params)
 		.map(([key, value]) => {
 			if (typeof value === 'object') {
