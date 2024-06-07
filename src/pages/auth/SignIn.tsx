@@ -33,7 +33,7 @@ export default function SignIn() {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors, isValid },
+		formState: { errors },
 	} = useForm<SignInRequest>({
 		resolver: zodResolver(signInSchema),
 		mode: 'onBlur',
@@ -151,7 +151,7 @@ export default function SignIn() {
 							Masuk dengan Google
 						</Button>
 
-						<Button type="submit" className="w-full" disabled={loading || isLoading || !isValid}>
+						<Button type="submit" className="w-full" disabled={loading || isLoading}>
 							Masuk
 						</Button>
 					</div>

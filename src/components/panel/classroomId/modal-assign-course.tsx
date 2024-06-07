@@ -1,0 +1,30 @@
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import TableBrowse from '../course/table-browse';
+import { useAppDispatch, useAppSelector } from '@/store/store';
+import { resetAssignCourse, setModalState } from '@/store/features/classroomIdSlice';
+
+const ModalAssignCourse = () => {
+	const dispatch = useAppDispatch();
+	const { modalState } = useAppSelector((state) => state.classroomId);
+
+	const onOpenChangeModalAssignCourse = (value: boolean) => {
+		dispatch(resetAssignCourse());
+		dispatch(setModalState({ value: { modalAssignCourse: value } }));
+	};
+
+	return (
+		<Dialog open={modalState.modalAssignCourse} onOpenChange={onOpenChangeModalAssignCourse}>
+			<DialogContent>
+				<div className="max-h-96 bg-green-300x px-4 overflow-scroll no-scrollbar">
+					<DialogHeader>
+						<DialogTitle>Menambahkan Mata Pelajaran</DialogTitle>
+					</DialogHeader>
+					<hr className="my-4" />
+					<TableBrowse isBrowse={false} />
+				</div>
+			</DialogContent>
+		</Dialog>
+	);
+};
+
+export default ModalAssignCourse;

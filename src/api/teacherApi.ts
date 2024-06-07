@@ -1,28 +1,28 @@
 import { ApiResponse, QueryParam } from '@/types/api.type';
 import { apiSlice } from './api';
-import { StudentsResponse, User } from '@/types/user.type';
+import { TeachersResponse, User } from '@/types/user.type';
 import { convertToQueryString } from '@/helpers/api-helper';
-import { setPaginationState } from '@/store/features/studentSlice';
+import { setPaginationState } from '@/store/features/teacherSlice';
 
 export const UserApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
-		getStudents: builder.query<ApiResponse<StudentsResponse>, QueryParam<User>>({
-			query: (q) => `/student?${convertToQueryString(q)}`,
+		getTeachers: builder.query<ApiResponse<TeachersResponse>, QueryParam<User>>({
+			query: (q) => `/teacher?${convertToQueryString(q)}`,
 			async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
 				try {
 					const { data } = await queryFulfilled;
-					console.log('useGetStudentsQuery -> Success : ', data.data);
+					console.log('useGetTeachersQuery -> Success : ', data.data);
 					dispatch(setPaginationState({ value: { total: data.data.pagination.totalData } }));
 				} catch (err) {
-					console.log('useGetStudentsQuery -> Error : ', err);
+					console.log('useGetTeachersQuery -> Error : ', err);
 				}
 			},
-			providesTags: ['Students'],
+			providesTags: ['Teachers'],
 		}),
 	}),
 });
 
 export const {
-	useGetStudentsQuery,
+	useGetTeachersQuery,
 	// useAddUserMutation, useGetUserQuery, useGetUserProfileQuery
 } = UserApiSlice;

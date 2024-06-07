@@ -2,9 +2,9 @@ import { useGetClassroomsQuery } from '@/api/classroomApi';
 import Container from '@/components/core/container';
 import Pagination from '@/components/pagination';
 import CreateClassroom from '@/components/panel/classroom/create';
+import SkeletonLoading from '@/components/skeleton-loading';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Skeleton } from '@/components/ui/skeleton';
 import {
 	Table,
 	TableBody,
@@ -35,17 +35,7 @@ const Classroom = () => {
 
 	let content;
 
-	if (isLoading) {
-		content = (
-			<div className="flex items-center space-x-4">
-				<Skeleton className="h-12 w-12 rounded-full" />
-				<div className="space-y-2">
-					<Skeleton className="h-4 w-[250px]" />
-					<Skeleton className="h-4 w-[200px]" />
-				</div>
-			</div>
-		);
-	}
+	if (isLoading) content = <SkeletonLoading />;
 
 	if (isSuccess) {
 		content = (

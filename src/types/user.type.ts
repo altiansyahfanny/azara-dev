@@ -13,7 +13,22 @@ export type StudentFilterType = {
 	email: string;
 };
 
+export type Student = User & { studentId: number };
+
 export type StudentsResponse = {
 	pagination: Pagination;
-	students: User[];
+	students: Student[];
+};
+
+export type TeacherFilterType = {
+	firstName: string;
+	lastName: string;
+	email: string;
+};
+
+export type Teacher = User & { teacherId: number };
+
+export type TeachersResponse = {
+	pagination: Pagination;
+	teachers: Teacher[];
 };

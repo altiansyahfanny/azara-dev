@@ -130,6 +130,7 @@ export default function CreateClassroom() {
 							<FormLabel>Harga</FormLabel>
 							<FormControl>
 								<Input
+									min={1}
 									type="number"
 									{...field}
 									onChange={(e) => {

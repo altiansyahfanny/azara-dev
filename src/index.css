@@ -80,3 +80,17 @@
 #landing {
 	font-family: 'Roboto', sans-serif;
 }
+
+::-webkit-scrollbar {
+	width: 8px; /* Lebar scrollbar */
+	height: 8px; /* Tinggi scrollbar untuk horizontal scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #abb2c0; /* Warna thumb scrollbar */
+	border-radius: 10px; /* Bulatkan thumb scrollbar */
+}
+
+::-webkit-scrollbar-track {
+	background: #edeff2; /* Warna track scrollbar */
+}

@@ -8,6 +8,7 @@ import CourseSlice from './features/courseSlice';
 import CycleSlice from './features/cycleSlice';
 import ClassroomSlice from './features/classroomSlice';
 import ClassroomIdSlice from './features/classroomIdSlice';
+import TeacherSlice from './features/teacherSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
 		auth: AuthSlice.reducer,
 		user: UserSlice.reducer,
 		student: StudentSlice.reducer,
+		[TeacherSlice.name]: TeacherSlice.reducer,
 		course: CourseSlice.reducer,
 		cycle: CycleSlice.reducer,
 		classroom: ClassroomSlice.reducer,

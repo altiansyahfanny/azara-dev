@@ -1,6 +1,7 @@
 import { Pagination } from './api.type';
 
 export type Course = {
+	id: number;
 	courseName: string;
 	description: string;
 };

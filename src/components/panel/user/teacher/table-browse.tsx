@@ -1,7 +1,8 @@
+import { useGetTeachersQuery } from '@/api/teacherApi';
 import { DummyProfile } from '@/assets/dashboard/img';
-import Container from '@/components/core/container';
 import Pagination from '@/components/pagination';
-import { Skeleton } from '@/components/ui/skeleton';
+import SkeletonLoading from '@/components/skeleton-loading';
+import { Button } from '@/components/ui/button';
 import {
 	Table,
 	TableBody,
@@ -10,13 +11,19 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
-import { useGetTeachersQuery } from '@/api/teacherApi';
-import { setPaginationState } from '@/store/features/teacherSlice';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { setAssignCourse, setModalState } from '@/store/features/classroomIdSlice';
+import { setPaginationState } from '@/store/features/userSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
-import useTitle from '@/hooks/useTitle';
+import { Teacher } from '@/types/user.type';
+import { ArrowUpRight } from 'lucide-react';
+import React from 'react';
 
-const Teacher = () => {
-	useTitle('Pengguna - Guru');
+interface TableBrowseProps {
+	isBrowse?: boolean;
+}
+
+const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
 	const dispatch = useAppDispatch();
 
 	const { paginationState } = useAppSelector((state) => state.teacher);
@@ -27,19 +34,15 @@ const Teacher = () => {
 		isSuccess,
 	} = useGetTeachersQuery({ page: paginationState.page, limit: paginationState.pageSize });
 
+	const onEnroll = (teacher: Teacher) => {
+		dispatch(setAssignCourse({ value: { teacher } }));
+		dispatch(setModalState({ value: { modalFormAssignTeacherAndCourse: true } }));
+		dispatch(setModalState({ value: { modalAssignTeacher: false } }));
+	};
+
 	let content;
 
-	if (isLoading) {
-		content = (
-			<div className="flex items-center space-x-4">
-				<Skeleton className="h-12 w-12 rounded-full" />
-				<div className="space-y-2">
-					<Skeleton className="h-4 w-[250px]" />
-					<Skeleton className="h-4 w-[200px]" />
-				</div>
-			</div>
-		);
-	}
+	if (isLoading) content = <SkeletonLoading />;
 
 	if (isSuccess) {
 		content = (
@@ -47,6 +50,7 @@ const Teacher = () => {
 				<Table>
 					<TableHeader>
 						<TableRow>
+							{!isBrowse && <TableHead className="w-[80px]">Aksi</TableHead>}
 							<TableHead className="hidden w-[100px] sm:table-cell">
 								<span className="sr-only">Image</span>
 							</TableHead>
@@ -58,6 +62,22 @@ const Teacher = () => {
 						{teachers?.data.teachers.map((user, key) => {
 							return (
 								<TableRow key={key}>
+									{!isBrowse && (
+										<TableCell>
+											<Tooltip>
+												<TooltipTrigger asChild>
+													<Button
+														size="sm"
+														className="h-7 gap-1 p-1"
+														onClick={() => onEnroll(user)}
+													>
+														<ArrowUpRight className="h-5 w-5" />
+													</Button>
+												</TooltipTrigger>
+												<TooltipContent>Daftarkan</TooltipContent>
+											</Tooltip>
+										</TableCell>
+									)}
 									<TableCell className="hidden sm:table-cell">
 										<img
 											alt="Product image"
@@ -78,20 +98,20 @@ const Teacher = () => {
 				<Pagination
 					totalItems={paginationState.total}
 					itemsPerPage={paginationState.pageSize}
-					onPageSizeChange={(number) =>
-						dispatch(setPaginationState({ value: { pageSize: number } }))
-					}
 					currentPage={paginationState.page}
 					onPageChange={(number) => {
 						dispatch(setPaginationState({ value: { page: number } }));
 					}}
+					onPageSizeChange={(number) =>
+						dispatch(setPaginationState({ value: { pageSize: number } }))
+					}
 					className="mt-8"
 				/>
 			</>
 		);
 	}
 
-	return <Container title="Guru">{content}</Container>;
+	return content;
 };
 
-export default Teacher;
+export default TableBrowse;

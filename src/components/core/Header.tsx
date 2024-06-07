@@ -45,36 +45,34 @@ const Header = () => {
 
 	return (
 		<header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-4 border-b px-4 pb-4 sm:static sm:h-auto sm:bg-transparent sm:px-6">
-			<Breadcrumb className="flex">
+			<Breadcrumb>
 				<BreadcrumbList>
-					<BreadcrumbItem>
-						{breadcrumbs.map(({ breadcrumb, match }, index) => {
-							const isLast = breadcrumbs.length - 1 === index;
+					{breadcrumbs.map(({ breadcrumb, match }, index) => {
+						const isLast = breadcrumbs.length - 1 === index;
 
-							if (breadcrumb) {
-								if (!isLast) {
-									return (
-										<>
-											<BreadcrumbItem>
-												<BreadcrumbLink asChild key={match.pathname}>
-													<Link to={match.pathname}>{breadcrumb}</Link>
-												</BreadcrumbLink>
-											</BreadcrumbItem>
-											<BreadcrumbSeparator />
-										</>
-									);
-								}
-
+						if (breadcrumb) {
+							if (!isLast) {
 								return (
-									<BreadcrumbLink asChild key={match.pathname}>
-										<BreadcrumbPage>{breadcrumb}</BreadcrumbPage>
-									</BreadcrumbLink>
+									<div className="flex items-center gap-2" key={match.pathname}>
+										<BreadcrumbItem>
+											<BreadcrumbLink asChild>
+												<Link to={match.pathname}>{breadcrumb}</Link>
+											</BreadcrumbLink>
+										</BreadcrumbItem>
+										<BreadcrumbSeparator />
+									</div>
 								);
 							}
 
-							return null;
-						})}
-					</BreadcrumbItem>
+							return (
+								<BreadcrumbLink asChild key={match.pathname}>
+									<BreadcrumbPage>{breadcrumb}</BreadcrumbPage>
+								</BreadcrumbLink>
+							);
+						}
+
+						return null;
+					})}
 				</BreadcrumbList>
 			</Breadcrumb>
 

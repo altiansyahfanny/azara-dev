@@ -5,6 +5,7 @@ import { CourseFilter } from '@/types/course.type';
 
 type ModalStateType = {
 	modalCreate: boolean;
+	modalFilter: boolean;
 };
 
 type CourseStateType = {
@@ -19,6 +20,7 @@ const initialState: CourseStateType = {
 
 	modalState: {
 		modalCreate: false,
+		modalFilter: false,
 	},
 };
 

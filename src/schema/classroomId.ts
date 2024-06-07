@@ -1,0 +1,9 @@
+import { z } from 'zod';
+
+export const assignTeacherAndCourseSchema = z.object({
+	paymentPrice: z.number({ required_error: 'Harga tidak boleh kosong' }),
+});
+
+export const enrollStudentSchema = z.object({
+	joinDate: z.date({ required_error: 'Tanggal Gabung tidak boleh kosong' }),
+});
