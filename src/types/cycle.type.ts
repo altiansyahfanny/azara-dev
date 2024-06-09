@@ -8,9 +8,9 @@ export type Cycle = {
 };
 
 export type CycleFilter = {
-	startDate: string;
-	endDate: string;
-	description: string;
+	startDate?: Date;
+	endDate?: Date;
+	description?: string;
 };
 
 export type CyclesResponse = {

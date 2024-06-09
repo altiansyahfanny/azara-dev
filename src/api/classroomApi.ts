@@ -5,6 +5,9 @@ import { ApiResponse, QueryParam } from '@/types/api.type';
 import { Classroom, ClassroomsResponse } from '@/types/classroom.type';
 import { z } from 'zod';
 import { apiSlice } from './api';
+import { parseStringCurrencyToNumber } from '@/helpers/app-helper';
+import { enrollStudentSchema } from '@/schema/classroomId';
+import { AssignTeacherAndCourseSchemaRequest, EnrollStudentRequest } from '@/model/classroom';
 
 export const classroomApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
@@ -13,7 +16,7 @@ export const classroomApiSlice = apiSlice.injectEndpoints({
 			async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
 				try {
 					const { data } = await queryFulfilled;
-					console.log('useGetClassroomsQuery -> Success : ', data.data.pagination);
+					console.log('useGetClassroomsQuery -> Success : ', data.data);
 					dispatch(setPaginationState({ value: { total: data.data.pagination.totalData } }));
 				} catch (err) {
 					console.log('useGetClassroomsQuery -> Error : ', err);
@@ -23,18 +26,46 @@ export const classroomApiSlice = apiSlice.injectEndpoints({
 		}),
 		getClassroom: builder.query<ApiResponse<Classroom>, string>({
 			query: (id) => `/classroom/${id}`,
-			// providesTags: ['Classrooms'],
+			providesTags: ['Classroom'],
 		}),
 		addClassroom: builder.mutation<ApiResponse, z.infer<typeof createClassroomSchema>>({
 			query: (payload) => ({
 				url: '/classroom/new',
 				method: 'POST',
-				body: payload,
+				body: { ...payload, price: parseStringCurrencyToNumber(payload.price) },
 			}),
 			invalidatesTags: ['Classrooms'],
+		}),
+		enrollStudent: builder.mutation<ApiResponse, EnrollStudentRequest>({
+			query: (payload) => {
+				return {
+					url: '/classroom/enroll',
+					method: 'POST',
+					// body: {
+					// 	...payload,
+					// 	studentId: payload.studentId.toString(),
+					// 	classroomId: payload.classroomId.toString(),
+					// },
+					body: payload,
+				};
+			},
+			invalidatesTags: ['Classroom'],
+		}),
+		assignTeacherAndCourse: builder.mutation<ApiResponse, AssignTeacherAndCourseSchemaRequest>({
+			query: (payload) => ({
+				url: '/classroom/assign-course',
+				method: 'POST',
+				body: payload,
+			}),
+			invalidatesTags: ['Classroom'],
 		}),
 	}),
 });
 
-export const { useAddClassroomMutation, useGetClassroomsQuery, useGetClassroomQuery } =
-	classroomApiSlice;
+export const {
+	useAddClassroomMutation,
+	useGetClassroomsQuery,
+	useGetClassroomQuery,
+	useEnrollStudentMutation,
+	useAssignTeacherAndCourseMutation,
+} = classroomApiSlice;

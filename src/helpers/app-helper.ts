@@ -6,3 +6,7 @@ export const formatNumber = (numbers: number) => {
 	};
 	return new Intl.NumberFormat('id-ID', options).format(numbers);
 };
+
+export const parseStringCurrencyToNumber = (str: string) => {
+	return Number(str.replace(/\./g, ''));
+};

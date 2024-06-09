@@ -16,6 +16,7 @@ import ClassroomId from '@/pages/panel/classroom/ClassroomId';
 import Meeting from '@/pages/panel/meeting/Meeting';
 import Attendance from '@/pages/panel/Attendance';
 import { Setting } from '@/pages/panel/Setting';
+import Test from '@/pages/panel/Testing';
 
 const Router = () => {
 	return (
@@ -23,6 +24,7 @@ const Router = () => {
 			<Route element={<Public />}>
 				<Route path="/" element={<LandingPage />} />
 				<Route path="/sign-in" element={<SignIn />} />
+				<Route path="/sign-up" element={<SignUp />} />
 				<Route path="/sign-up" element={<SignUp />} />
 			</Route>
 			{/* <Route element={<PersistLogin />}>*/}
@@ -37,6 +39,7 @@ const Router = () => {
 					<Route path="/meeting" element={<Meeting />} />
 					<Route path="/attendance" element={<Attendance />} />
 					<Route path="/setting" element={<Setting />} />
+					<Route path="/test" element={<Test />} />
 				</Route>
 			</Route>
 			{/* 

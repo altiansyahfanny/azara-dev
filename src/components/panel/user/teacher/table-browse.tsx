@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/table';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { setAssignCourse, setModalState } from '@/store/features/classroomIdSlice';
-import { setPaginationState } from '@/store/features/userSlice';
+import { setPaginationState } from '@/store/features/teacherSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { Teacher } from '@/types/user.type';
 import { ArrowUpRight } from 'lucide-react';

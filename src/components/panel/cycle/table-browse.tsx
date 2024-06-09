@@ -1,45 +1,173 @@
 import { useGetCyclesQuery } from '@/api/cycleApi';
-import Pagination from '@/components/pagination';
 import SkeletonLoading from '@/components/skeleton-loading';
-import TableFilter from '@/components/table-filter';
-import { Button } from '@/components/ui/button';
+import Table from '@/components/table';
 import { Input } from '@/components/ui/input';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from '@/components/ui/table';
-import { setModalState, setPaginationState } from '@/store/features/cycleSlice';
+import InputDate from '@/components/ui/input-date';
+import { TableColumnType, TableProps as TablePropsAntd } from '@/lib/antd';
+import { setFilterState, setModalState, setPaginationState } from '@/store/features/cycleSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
-import { PlusCircle, Search } from 'lucide-react';
-import React from 'react';
+import { Cycle, CycleFilter } from '@/types/cycle.type';
+import { format } from 'date-fns';
+import { Download, PlusCircle } from 'lucide-react';
+import React, { useState } from 'react';
+import Highlighter from 'react-highlight-words';
 
-interface TableBrowseProps {
-	// data: Cycle[];
-}
-
-// const HEAD = {
-
-// }
-
-const TableBrowse: React.FC<TableBrowseProps> = ({}) => {
+const TableBrowse = () => {
 	const dispatch = useAppDispatch();
 
-	const { paginationState } = useAppSelector((state) => state.cycle);
+	const { paginationState, filterState } = useAppSelector((state) => state.cycle);
 
 	const {
 		data: cycles,
 		isLoading,
 		isSuccess,
-	} = useGetCyclesQuery({ page: paginationState.page, limit: paginationState.pageSize });
+	} = useGetCyclesQuery({
+		page: paginationState.page,
+		limit: paginationState.pageSize,
+		...filterState,
+	});
 
 	const onOpenChange = (value: boolean) => {
 		dispatch(setModalState({ value: { modalCreate: value } }));
 	};
+
+	//
+
+	const [filter, setFilter] = useState<CycleFilter>({ description: '' });
+	const [searchedColumn, setSearchedColumn] = useState<string>();
+
+	const handleSearch = (dataIndex: keyof CycleFilter) => {
+		setSearchedColumn(dataIndex);
+		dispatch(setFilterState({ value: filter }));
+	};
+
+	const handleReset = (dataIndex: keyof CycleFilter) => {
+		const newFilter = { ...filter, [dataIndex]: '' };
+		// delete newFilter[dataIndex];
+		setFilter(newFilter);
+		dispatch(setFilterState({ value: newFilter }));
+	};
+
+	const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setFilter((prev) => ({ ...prev!, [e.target.name]: e.target.value }));
+	};
+
+	const getColumnSearchProps = (dataIndex: keyof CycleFilter): TableColumnType<Cycle> => ({
+		filterDropdown: ({ confirm }) => {
+			const onSearch = () => {
+				handleSearch(dataIndex);
+				confirm();
+			};
+
+			const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+				if (e.key === 'Enter') onSearch();
+			};
+
+			let content;
+			if (['endDate', 'startDate'].includes(dataIndex)) {
+				const value = filter && filter[dataIndex];
+
+				content = (
+					<div className="w-52">
+						<InputDate
+							value={value ? new Date(value as string) : undefined}
+							onSelect={(e) => {
+								setFilter((prev) => ({
+									...prev!,
+									[dataIndex]: format(e as Date, 'yyyy-LL-dd'),
+								}));
+							}}
+						/>
+					</div>
+				);
+			} else {
+				content = (
+					<Input
+						name={dataIndex}
+						onChange={onChange}
+						value={filter && (filter[dataIndex] as string | undefined)}
+						onKeyDown={onKeyDown}
+						autoComplete="off"
+					/>
+				);
+			}
+
+			return (
+				<div className="flex flex-col gap-2">
+					<div onKeyDown={(e) => e.stopPropagation()}>{content}</div>
+					<div className="flex items-center gap-2">
+						<Table.ButtonFilter
+							type="search"
+							onClick={() => {
+								onSearch();
+							}}
+						/>
+						<Table.ButtonFilter
+							type="reset"
+							onClick={() => {
+								handleReset(dataIndex);
+								confirm();
+							}}
+						/>
+					</div>
+				</div>
+			);
+		},
+		render: (text: any) => {
+			const searchWords = filter[dataIndex];
+			let content;
+			if (['endDate', 'startate'].includes(dataIndex)) {
+				content = text;
+			} else {
+				content = text;
+			}
+
+			if (searchedColumn === dataIndex) {
+				return (
+					<Highlighter
+						highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+						searchWords={[searchWords as string]}
+						autoEscape
+						textToHighlight={content ? content.toString() : ''}
+					/>
+				);
+			} else {
+				return content;
+			}
+		},
+	});
+
+	const columns: TablePropsAntd<Cycle>['columns'] = [
+		{
+			title: 'Aksi',
+			type: 'action',
+			key: 'action',
+			textAlign: 'center',
+			width: 80,
+			render: (cycle: Cycle) => {
+				return <Table.ButtonAction onClick={() => console.log('id: ', cycle.id)} Icon={Download} />;
+			},
+		},
+		{
+			title: 'Tanggal Mulai',
+			dataIndex: 'startDate',
+			key: 'startDate',
+			...getColumnSearchProps('startDate'),
+		},
+		{
+			title: 'Tanggal Selesai',
+			dataIndex: 'endDate',
+			key: 'endDate',
+			...getColumnSearchProps('endDate'),
+		},
+		{
+			title: 'Keterangan',
+			dataIndex: 'description',
+			key: 'description',
+			...getColumnSearchProps('description'),
+		},
+	];
+	//
 
 	let content;
 
@@ -47,75 +175,21 @@ const TableBrowse: React.FC<TableBrowseProps> = ({}) => {
 
 	if (isSuccess) {
 		content = (
-			<>
-				<div className="flex mb-4">
-					<div className="ml-auto flex items-center gap-2">
-						<TableFilter />
-						<Button size="sm" className="h-7 gap-1" onClick={() => onOpenChange(true)}>
-							<PlusCircle className="h-3.5 w-3.5" />
-							<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Tahun Ajaran</span>
-						</Button>
-					</div>
-				</div>
-
-				<Table>
-					<TableHeader>
-						<TableRow>
-							<TableHead>
-								<div className="flex justify-between items-center">
-									<span>Tanggal Mulai</span>
-									<Popover>
-										<PopoverTrigger asChild>
-											<button>
-												<Search className="h-4 w-4" />
-											</button>
-										</PopoverTrigger>
-										<PopoverContent className="w-52" align="end">
-											<div className="flex flex-col gap-2">
-												<Input id="startDate" className="col-span-2 h-8" />
-												<div className="flex items-center gap-2">
-													<Button size={'sm'} className="h-7 gap-1 flex-1">
-														Cari
-													</Button>
-													<Button size={'sm'} variant={'outline'} className="h-7 gap-1 flex-1">
-														Reset
-													</Button>
-												</div>
-											</div>
-										</PopoverContent>
-									</Popover>
-								</div>
-							</TableHead>
-							<TableHead>Tanggal Selesai</TableHead>
-							<TableHead>Keterangan</TableHead>
-						</TableRow>
-					</TableHeader>
-					<TableBody>
-						{cycles.data.cycles.map((cycle, key) => {
-							return (
-								<TableRow key={key}>
-									<TableCell className="font-medium">{cycle.startDate}</TableCell>
-									<TableCell className="font-medium">{cycle.endDate}</TableCell>
-									<TableCell className="font-medium">{cycle.description}</TableCell>
-								</TableRow>
-							);
-						})}
-					</TableBody>
-				</Table>
-
-				<Pagination
-					totalItems={paginationState.total}
-					itemsPerPage={paginationState.pageSize}
-					currentPage={paginationState.page}
-					onPageChange={(number) => {
+			<Table
+				dataSource={cycles.data.cycles}
+				columns={columns}
+				actions={[{ Icon: PlusCircle, text: 'Tahun Ajaran', onClick: () => onOpenChange(true) }]}
+				pagination={{
+					totalItems: paginationState.total,
+					itemsPerPage: paginationState.pageSize,
+					currentPage: paginationState.page,
+					onPageChange: (number) => {
 						dispatch(setPaginationState({ value: { page: number } }));
-					}}
-					onPageSizeChange={(number) =>
-						dispatch(setPaginationState({ value: { pageSize: number } }))
-					}
-					className="mt-8"
-				/>
-			</>
+					},
+					onPageSizeChange: (number) =>
+						dispatch(setPaginationState({ value: { pageSize: number } })),
+				}}
+			/>
 		);
 	}
 

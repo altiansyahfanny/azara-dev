@@ -10,6 +10,7 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { InputNumber } from '@/components/ui/input-number';
 import {
 	Select,
 	SelectContent,
@@ -42,11 +43,17 @@ export default function CreateClassroom() {
 	const form = useForm<z.infer<typeof createClassroomSchema>>({
 		resolver: zodResolver(createClassroomSchema),
 		mode: 'onChange',
+		defaultValues: {
+			classroomName: '',
+			cycleId: '',
+			price: '',
+		},
 	});
 
 	const onSubmit = async (payload: z.infer<typeof createClassroomSchema>) => {
 		try {
 			console.log('CreateClassroom -> payload : ', payload);
+
 			// return;
 
 			const result = await create(payload).unwrap();
@@ -122,7 +129,7 @@ export default function CreateClassroom() {
 						</FormItem>
 					)}
 				/>
-				<FormField
+				{/* <FormField
 					control={form.control}
 					name="price"
 					render={({ field }) => (
@@ -141,6 +148,22 @@ export default function CreateClassroom() {
 							<FormMessage />
 						</FormItem>
 					)}
+				/> */}
+				<FormField
+					control={form.control}
+					name="price"
+					render={({ field }) => {
+						const { onChange, ...props } = field;
+						return (
+							<FormItem>
+								<FormLabel>Harga</FormLabel>
+								<FormControl>
+									<InputNumber onInput={(e) => onChange(e)} {...props} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						);
+					}}
 				/>
 
 				<div className="flex gap-2 items-center justify-end">

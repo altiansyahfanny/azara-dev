@@ -7,8 +7,6 @@ const ModalEnrollStudent = () => {
 	const dispatch = useAppDispatch();
 	const { modalState } = useAppSelector((state) => state.classroomId);
 
-	console.log('ModalEnrollStudent : ', modalState.modalEnrollStudent);
-
 	const onOpenChangeModalAssignStudent = (value: boolean) => {
 		dispatch(resetEnrollStudent());
 		dispatch(setModalState({ value: { modalEnrollStudent: value } }));

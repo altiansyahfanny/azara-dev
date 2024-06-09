@@ -5,6 +5,7 @@ import { ApiResponse, QueryParam } from '@/types/api.type';
 import { Cycle, CyclesResponse } from '@/types/cycle.type';
 import { z } from 'zod';
 import { apiSlice } from './api';
+import { format } from 'date-fns';
 
 export const cycleApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
@@ -28,11 +29,17 @@ export const cycleApiSlice = apiSlice.injectEndpoints({
 		}),
 
 		addCycle: builder.mutation<ApiResponse, z.infer<typeof createCycleSchema>>({
-			query: (payload) => ({
-				url: '/cycle/new',
-				method: 'POST',
-				body: payload,
-			}),
+			query: (payload) => {
+				return {
+					url: '/cycle/new',
+					method: 'POST',
+					body: {
+						...payload,
+						startDate: format(payload.startDate, 'yyyy-LL-dd'),
+						endDate: format(payload.endDate, 'yyyy-LL-dd'),
+					},
+				};
+			},
 			invalidatesTags: ['Cycles'],
 		}),
 	}),

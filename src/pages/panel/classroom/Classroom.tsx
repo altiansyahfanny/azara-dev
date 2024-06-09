@@ -13,6 +13,7 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
+import { formatNumber } from '@/helpers/app-helper';
 import { setModalState, setPaginationState } from '@/store/features/classroomSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { PlusCircle } from 'lucide-react';
@@ -54,6 +55,7 @@ const Classroom = () => {
 						<TableRow>
 							<TableHead>Kelas</TableHead>
 							<TableHead>Keterangan Tahun Ajaran</TableHead>
+							<TableHead>Harga</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
@@ -64,6 +66,7 @@ const Classroom = () => {
 										<Link to={`./${classroom.id}`}>{classroom.classroomName}</Link>
 									</TableCell>
 									<TableCell className="font-medium">{classroom.cycleDescription}</TableCell>
+									<TableCell className="font-medium">{formatNumber(classroom.price)}</TableCell>
 								</TableRow>
 							);
 						})}

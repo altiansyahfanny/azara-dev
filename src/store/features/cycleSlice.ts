@@ -14,7 +14,7 @@ type CycleStateType = {
 };
 
 const initialState: CycleStateType = {
-	filterState: { startDate: '', endDate: '', description: '' },
+	filterState: {},
 	paginationState: { page: 1, total: 10, pageSize: 10 },
 
 	modalState: {
@@ -30,8 +30,8 @@ export const CycleSlice = createSlice({
 			state.paginationState = { ...state.paginationState, ...action.payload.value };
 		},
 
-		setFilterState: (state, action: PayloadAction<{ value: Partial<StudentFilterType> }>) => {
-			state.filterState = { ...state.filterState, ...action.payload.value };
+		setFilterState: (state, action: PayloadAction<{ value: CycleFilter }>) => {
+			state.filterState = action.payload.value;
 		},
 
 		setModalState: (state, action: PayloadAction<{ value: Partial<ModalStateType> }>) => {

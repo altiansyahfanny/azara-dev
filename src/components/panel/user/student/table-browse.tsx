@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/table';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { setEnrollStudent, setModalState } from '@/store/features/classroomIdSlice';
-import { setPaginationState } from '@/store/features/userSlice';
+import { setPaginationState } from '@/store/features/studentSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { Student } from '@/types/user.type';
 import { ArrowUpRight } from 'lucide-react';
@@ -100,6 +100,7 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
 					itemsPerPage={paginationState.pageSize}
 					currentPage={paginationState.page}
 					onPageChange={(number) => {
+						console.log('number : ', number);
 						dispatch(setPaginationState({ value: { page: number } }));
 					}}
 					onPageSizeChange={(number) =>
