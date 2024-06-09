@@ -43,7 +43,7 @@ export default function CreateCycle() {
 				endDate: format(payload.endDate, 'yyyy-LL-dd'),
 			};
 
-			// console.log('CreateCycle -> newPayload : ', newPayload);
+			console.log('CreateCycle -> newPayload : ', newPayload);
 			// return;
 
 			const result = await create(payload).unwrap();

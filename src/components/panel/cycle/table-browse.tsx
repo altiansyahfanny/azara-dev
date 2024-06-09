@@ -8,7 +8,7 @@ import { setFilterState, setModalState, setPaginationState } from '@/store/featu
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { Cycle, CycleFilter } from '@/types/cycle.type';
 import { format } from 'date-fns';
-import { Download, PlusCircle } from 'lucide-react';
+import { PlusCircle } from 'lucide-react';
 import React, { useState } from 'react';
 import Highlighter from 'react-highlight-words';
 
@@ -138,16 +138,16 @@ const TableBrowse = () => {
 	});
 
 	const columns: TablePropsAntd<Cycle>['columns'] = [
-		{
-			title: 'Aksi',
-			type: 'action',
-			key: 'action',
-			textAlign: 'center',
-			width: 80,
-			render: (cycle: Cycle) => {
-				return <Table.ButtonAction onClick={() => console.log('id: ', cycle.id)} Icon={Download} />;
-			},
-		},
+		// {
+		// 	title: 'Aksi',
+		// 	type: 'action',
+		// 	key: 'action',
+		// 	textAlign: 'center',
+		// 	width: 80,
+		// 	render: (cycle: Cycle) => {
+		// 		return <Table.ButtonAction onClick={() => console.log('id: ', cycle.id)} Icon={Download} />;
+		// 	},
+		// },
 		{
 			title: 'Tanggal Mulai',
 			dataIndex: 'startDate',

@@ -6,7 +6,7 @@ import { Classroom, ClassroomsResponse } from '@/types/classroom.type';
 import { z } from 'zod';
 import { apiSlice } from './api';
 import { parseStringCurrencyToNumber } from '@/helpers/app-helper';
-import { enrollStudentSchema } from '@/schema/classroomId';
+// import { enrollStudentSchema } from '@/schema/classroomId';
 import { AssignTeacherAndCourseSchemaRequest, EnrollStudentRequest } from '@/model/classroom';
 
 export const classroomApiSlice = apiSlice.injectEndpoints({

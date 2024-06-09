@@ -1,5 +1,4 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { StudentFilterType } from '../../types/user.type';
 import { Pagination } from '@/types/table.type';
 import { CycleFilter } from '@/types/cycle.type';
 
