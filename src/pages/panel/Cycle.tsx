@@ -4,7 +4,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import useTitle from '@/hooks/useTitle';
 import { setModalState } from '@/store/features/cycleSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
-
 import TableBrowse from '@/components/panel/cycle/table-browse';
 
 const Cycle = () => {
@@ -23,7 +22,7 @@ const Cycle = () => {
 			<TableBrowse />
 			<Dialog open={modalState.modalCreate} onOpenChange={onOpenChange}>
 				<DialogContent>
-					<div className="max-h-96 bg-green-300x px-4 overflow-scroll no-scrollbar">
+					<div className="max-h-96 bg-green-300x px-4 overflow-scroll no-scrollbar bggray">
 						<DialogHeader>
 							<DialogTitle>Tambah Tahun Ajaran</DialogTitle>
 						</DialogHeader>

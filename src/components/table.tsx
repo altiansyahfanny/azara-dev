@@ -10,9 +10,10 @@ import {
 } from '@/components/ui/table';
 import { TableProps as TablePropsAntd } from '@/lib/antd';
 import { cn } from '@/lib/utils';
-import { FolderOpen, Search } from 'lucide-react';
+import { FolderOpen, Search, XCircle } from 'lucide-react';
 import React, { useState } from 'react';
 import Pagination, { PaginationProps } from './pagination';
+import { Bars } from 'react-loader-spinner';
 
 type Action = {
 	onClick?: () => void;
@@ -23,11 +24,14 @@ type Action = {
 export type TableProps<T> = {
 	dataSource: readonly T[] | undefined;
 	columns: TablePropsAntd<T>['columns'];
+	loading?: TablePropsAntd<T>['loading'];
+	error?: boolean;
+	success?: boolean;
 	actions?: Action[];
 	pagination?: PaginationProps;
 };
 
-const Table = <T,>({ dataSource, columns, actions, pagination }: TableProps<T>) => {
+const Table = <T,>({ dataSource, columns, loading, error, actions, pagination }: TableProps<T>) => {
 	const [popover, setPopover] = useState<{ [key: string]: boolean }>({});
 
 	const onConfirm = (columnKey: string) => {
@@ -41,7 +45,10 @@ const Table = <T,>({ dataSource, columns, actions, pagination }: TableProps<T>) 
 	const tHead = columns?.map((column, key) => (
 		<TableHead key={key} className={`border`} style={{ width: column.width }}>
 			<div className="flex justify-between items-center">
-				<span className="flex-1" style={{ textAlign: column.textAlign ?? 'left' }}>
+				<span
+					className="flex-1 whitespace-nowrap"
+					style={{ textAlign: column.textAlign ?? 'left' }}
+				>
 					{column.title}
 				</span>
 				{column.filterDropdown && (
@@ -65,52 +72,89 @@ const Table = <T,>({ dataSource, columns, actions, pagination }: TableProps<T>) 
 		</TableHead>
 	));
 
-	const tBody = (
-		<TableBody>
-			{dataSource?.length ? (
-				dataSource?.map((data: any, key: any) => {
-					return (
-						<TableRow key={key} className="">
-							{columns?.map((column) => {
-								if (column.type === 'action') {
-									return (
-										<TableCell
-											className="border"
-											key={column.key}
-											style={{ textAlign: column.textAlign ?? 'left' }}
-										>
-											<div className="flex items-start gap-1 justify-center">
-												{column.render(data)}
-											</div>
-										</TableCell>
-									);
-								} else {
-									return (
-										<TableCell className="border" key={column.key}>
-											{column.render(data[column.dataIndex])}
-										</TableCell>
-									);
-								}
-							})}
-						</TableRow>
-					);
-				})
-			) : (
+	const tBody = () => {
+		let content;
+
+		if (loading) {
+			content = (
 				<TableRow>
 					<TableCell colSpan={4} className="border">
 						<div className="flex items-center justify-center flex-col p-8 text-muted-foreground">
-							<FolderOpen className="w-16 h-16" />
-							<p className="mt-3">Data Kosong</p>
+							<Bars
+								visible={true}
+								height={40}
+								width={40}
+								ariaLabel="hourglass-loading"
+								wrapperStyle={{}}
+								wrapperClass=""
+								color={'rgb(156, 163, 175)'}
+								// colors={['rgb(107, 114, 128)', 'rgb(156, 163, 175)']}
+							/>
 						</div>
 					</TableCell>
 				</TableRow>
-			)}
-		</TableBody>
-	);
+			);
+		} else if (error) {
+			content = (
+				<TableRow>
+					<TableCell colSpan={4} className="border">
+						<div className="flex items-center justify-center flex-col p-8 text-muted-foreground">
+							<XCircle className="w-16 h-16" />
+							<p className="mt-3">Terjadi Kesalahan</p>
+						</div>
+					</TableCell>
+				</TableRow>
+			);
+		} else {
+			if (dataSource?.length) {
+				content = dataSource?.map((data: any, key: any) => (
+					<TableRow key={key} className="">
+						{columns?.map((column) => {
+							if (column.type === 'action') {
+								return (
+									<TableCell
+										className="border"
+										key={column.key}
+										style={{ textAlign: column.textAlign ?? 'left' }}
+									>
+										<div
+											className="flex items-start gap-1 justify-center"
+											style={{ justifyContent: column.textAlign === 'center' ? 'center' : 'start' }}
+										>
+											{column.render(data)}
+										</div>
+									</TableCell>
+								);
+							} else {
+								return (
+									<TableCell className="border" key={column.key}>
+										{column.render ? column.render(data[column.dataIndex]) : data[column.dataIndex]}
+									</TableCell>
+								);
+							}
+						})}
+					</TableRow>
+				));
+			} else {
+				content = (
+					<TableRow>
+						<TableCell colSpan={4} className="border">
+							<div className="flex items-center justify-center flex-col p-8 text-muted-foreground">
+								<FolderOpen className="w-16 h-16" />
+								<p className="mt-3">Data Kosong</p>
+							</div>
+						</TableCell>
+					</TableRow>
+				);
+			}
+		}
+
+		return <TableBody>{content}</TableBody>;
+	};
 
 	return (
 		<div className="grid gap-4">
-			{actions && (
+			{actions && actions.length > 0 ? (
 				<div className="flex mb-4">
 					<div className="ml-auto flex items-center gap-2">
 						{actions.map((props, key) => (
@@ -118,12 +162,12 @@ const Table = <T,>({ dataSource, columns, actions, pagination }: TableProps<T>) 
 						))}
 					</div>
 				</div>
-			)}
+			) : null}
 			<TableShadcn>
 				<TableHeader>
 					<TableRow>{tHead}</TableRow>
 				</TableHeader>
-				{tBody}
+				{tBody()}
 			</TableShadcn>
 
 			{pagination && (
@@ -155,7 +199,7 @@ const ButtonFilter = ({ type, onClick }: { onClick: () => void; type: 'search' |
 const ButtonAction = ({ Icon, onClick }: { onClick?: () => void; Icon: React.ElementType }) => {
 	return (
 		<Button type="button" className="h-fit w-fit p-1" onClick={onClick}>
-			<Icon className="h-5 w-5" />
+			<Icon className="" strokeWidth={2} size={20} />
 		</Button>
 	);
 };

@@ -1,16 +1,30 @@
 import { HeroImage } from '@/assets/landing/img';
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from '@/components/ui/carousel';
-import { TESTIMONI } from '@/data/data';
 import Autoplay from 'embla-carousel-autoplay';
 import React from 'react';
+import { GoDot, GoDotFill } from 'react-icons/go';
 
 const Home = () => {
-	const [_api, setApi] = React.useState<CarouselApi>();
+	const [api, setApi] = React.useState<CarouselApi>();
+	const [current, setCurrent] = React.useState(0);
+
+	React.useEffect(() => {
+		if (!api) {
+			return;
+		}
+
+		setCurrent(api.selectedScrollSnap() + 1);
+
+		api.on('select', () => {
+			setCurrent(api.selectedScrollSnap() + 1);
+		});
+	}, [api]);
+
 	return (
 		<div id="home" className="">
-			<Carousel className="" plugins={[Autoplay({ delay: 5000 })]} setApi={setApi}>
+			<Carousel className="" plugins={[Autoplay({ delay: 10000 })]} setApi={setApi}>
 				<CarouselContent className="">
-					{TESTIMONI.map((_item, index) => (
+					{Array.from({ length: 3 }).map((_item, index) => (
 						<CarouselItem key={index}>
 							<div className="py-12 px-5 md:px-10 xl:px-40 bg-rex-200 relative bg-yellow-200x">
 								<div className="bg-rex-300 flex items-center relative z-10 gap-4 xl:gap-0 bg-green-300x ">
@@ -20,16 +34,19 @@ const Home = () => {
 												Lorem Ipsum Dolor Sit Amet
 											</h1>
 										</div>
-										<h1 className="text-5xl leading-snug font-semibold">
-											Lorem ipsum dolor <br className="hidden xl:block" /> sit amet, consectetur
+										<h1 className="text-4xl leading-snug font-semibold">
+											Bimbingan Belajar yang <br className="hidden xl:block" /> Memberikan
 											<br className="hidden xl:block" />
-											<span className="text-custom-light-green"> adipiscing elit.</span>
+											<span className="text-custom-light-green">#PerhatianPenuh</span> bagi{' '}
+											<br className="hidden xl:block" />
+											Siswa dan Orang Tua
 										</h1>
 										<p className="text-black text-sm">
-											Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean{' '}
-											<br className="hidden lg:block" /> vitae malesuada arcu, nec rutrum orci.
-											Morbi arcu arcu, <br className="hidden lg:block" /> commodo sed quam ut,
-											venenatis dictum augue.
+											Menyesuaikan dengan kurikulum terbaru di sekolah,{' '}
+											<br className="hidden xl:block" />
+											pemberian konseling untuk pengembangan karakter,{' '}
+											<br className="hidden xl:block" />
+											dan laporan rutin untuk orang tua.
 										</p>
 										<div className="h-1 w-40 bg-gray-900" />
 									</div>
@@ -46,6 +63,21 @@ const Home = () => {
 					))}
 				</CarouselContent>
 			</Carousel>
+			<div className="flex gap-4 items-center justify-center">
+				{Array.from({ length: 3 }).map((_, index) => {
+					return index === current - 1 ? (
+						<GoDotFill key={index} className="text-2xl text-gray-400" />
+					) : (
+						<GoDot
+							key={index}
+							className="text-2xl text-gray-300 cursor-pointer"
+							onClick={() => {
+								api?.scrollTo(index);
+							}}
+						/>
+					);
+				})}
+			</div>
 		</div>
 	);
 };

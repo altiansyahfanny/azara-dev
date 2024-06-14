@@ -9,8 +9,10 @@ import PatternReview from './pattern-review.svg';
 import PatternRight from './pattern-right.svg';
 import PatternLeft from './pattern-left.svg';
 import IcWhatsapp from './whatsapp.svg';
+import BgIll from './bg-illustration.svg';
 
 export {
+	BgIll,
 	BadgeBestSeller,
 	IcBook,
 	IllPaperline,

@@ -2,13 +2,13 @@ import { convertToQueryString } from '@/helpers/api-helper';
 import { createCourseSchema } from '@/schema/course';
 import { setPaginationState } from '@/store/features/courseSlice';
 import { ApiResponse, QueryParam } from '@/types/api.type';
-import { Course, CoursesResponse } from '@/types/course.type';
+import { CourseFilter, CoursesResponse } from '@/types/course.type';
 import { z } from 'zod';
 import { apiSlice } from './api';
 
 export const courseApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
-		getCourses: builder.query<ApiResponse<CoursesResponse>, QueryParam<Course>>({
+		getCourses: builder.query<ApiResponse<CoursesResponse>, QueryParam<CourseFilter>>({
 			query: (q) => `/course?${convertToQueryString(q)}`,
 			async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
 				try {

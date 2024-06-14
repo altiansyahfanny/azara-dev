@@ -2,7 +2,7 @@ import { convertToQueryString } from '@/helpers/api-helper';
 import { createClassroomSchema } from '@/schema/classroom';
 import { setPaginationState } from '@/store/features/classroomSlice';
 import { ApiResponse, QueryParam } from '@/types/api.type';
-import { Classroom, ClassroomsResponse } from '@/types/classroom.type';
+import { Classroom, ClassroomId, ClassroomsResponse } from '@/types/classroom.type';
 import { z } from 'zod';
 import { apiSlice } from './api';
 import { parseStringCurrencyToNumber } from '@/helpers/app-helper';
@@ -24,7 +24,7 @@ export const classroomApiSlice = apiSlice.injectEndpoints({
 			},
 			providesTags: ['Classrooms'],
 		}),
-		getClassroom: builder.query<ApiResponse<Classroom>, string>({
+		getClassroom: builder.query<ApiResponse<ClassroomId>, string>({
 			query: (id) => `/classroom/${id}`,
 			providesTags: ['Classroom'],
 		}),

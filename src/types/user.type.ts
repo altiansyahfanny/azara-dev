@@ -7,10 +7,9 @@ export type User = {
 	imageUrl: string;
 };
 
-export type StudentFilterType = {
-	firstName: string;
-	lastName: string;
-	email: string;
+export type StudentFilter = {
+	firstName?: string;
+	lastName?: string;
 };
 
 export type Student = User & { studentId: number };
@@ -20,10 +19,9 @@ export type StudentsResponse = {
 	students: Student[];
 };
 
-export type TeacherFilterType = {
-	firstName: string;
-	lastName: string;
-	email: string;
+export type TeacherFilter = {
+	firstName?: string;
+	lastName?: string;
 };
 
 export type Teacher = User & { teacherId: number };

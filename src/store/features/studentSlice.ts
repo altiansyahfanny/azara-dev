@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { StudentFilterType } from '../../types/user.type';
+import { StudentFilter } from '../../types/user.type';
 import { Pagination } from '@/types/table.type';
 
 type ModalType = {
@@ -10,11 +10,11 @@ type ModalType = {
 type StudentStateType = {
 	modalState: ModalType;
 	paginationState: Pagination;
-	filterState: StudentFilterType;
+	filterState: StudentFilter;
 };
 
 const initialState: StudentStateType = {
-	filterState: { firstName: '', email: '', lastName: '' },
+	filterState: {},
 	paginationState: { page: 1, total: 10, pageSize: 10 },
 
 	modalState: {
@@ -31,7 +31,7 @@ export const StudentSlice = createSlice({
 			state.paginationState = { ...state.paginationState, ...action.payload.value };
 		},
 
-		setFilterState: (state, action: PayloadAction<{ value: Partial<StudentFilterType> }>) => {
+		setFilterState: (state, action: PayloadAction<{ value: Partial<StudentFilter> }>) => {
 			state.filterState = { ...state.filterState, ...action.payload.value };
 		},
 	},

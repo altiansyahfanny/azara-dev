@@ -14,7 +14,7 @@ const ModalAssignTeacher = () => {
 
 	return (
 		<Dialog open={modalState.modalAssignTeacher} onOpenChange={onOpenChangeModalAssignTeacher}>
-			<DialogContent>
+			<DialogContent className="max-w-2xl">
 				<div className="max-h-96 bg-green-300x px-4 overflow-scroll no-scrollbar">
 					<DialogHeader>
 						<DialogTitle>Menambahkan Guru</DialogTitle>

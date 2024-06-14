@@ -23,12 +23,12 @@ const Testimoni = () => {
 	}, [api]);
 
 	return (
-		<div id="testimoni" className="relative py-12 overflow-hidden">
+		<div className="relative py-12 overflow-hidden">
 			<div className="md:flex relative">
 				<div className="p-5 lg:pl-40 md:w-1/2">
 					<div>
 						<h1 className="text-3xl font-bold">Testimoni dari pelanggan kami</h1>
-						<h1 className="mt-2 text-lg">Lebih dari 90 siswa</h1>
+						<h1 className="mt-2">Lebih dari 90 siswa dan orang tua puas dengan bimbingan kami</h1>
 					</div>
 
 					<Carousel className="" plugins={[Autoplay({ delay: 5000 })]} setApi={setApi}>
@@ -41,7 +41,7 @@ const Testimoni = () => {
 						</CarouselContent>
 					</Carousel>
 					<div className="flex gap-4 items-center justify-center">
-						{Array.from({ length: 5 }).map((_, index) => {
+						{TESTIMONI.map((_, index) => {
 							return index === current - 1 ? (
 								<GoDotFill key={index} className="text-custom-yellow" />
 							) : (

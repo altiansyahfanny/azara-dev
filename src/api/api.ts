@@ -87,3 +87,5 @@ export const apiSlice = createApi({
 	tagTypes: ['Students', 'Teachers', 'Courses', 'Cycles', 'Classrooms', 'Classroom'],
 	endpoints: () => ({}),
 });
+
+// description (course), cycleDescription(class), price(class)

@@ -1,5 +1,4 @@
 import { useGetCyclesQuery } from '@/api/cycleApi';
-import SkeletonLoading from '@/components/skeleton-loading';
 import Table from '@/components/table';
 import { Input } from '@/components/ui/input';
 import InputDate from '@/components/ui/input-date';
@@ -9,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '@/store/store';
 import { Cycle, CycleFilter } from '@/types/cycle.type';
 import { format } from 'date-fns';
 import { PlusCircle } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 
 const TableBrowse = () => {
@@ -21,6 +20,8 @@ const TableBrowse = () => {
 		data: cycles,
 		isLoading,
 		isSuccess,
+		isError,
+		refetch,
 	} = useGetCyclesQuery({
 		page: paginationState.page,
 		limit: paginationState.pageSize,
@@ -35,6 +36,11 @@ const TableBrowse = () => {
 
 	const [filter, setFilter] = useState<CycleFilter>({ description: '' });
 	const [searchedColumn, setSearchedColumn] = useState<string>();
+
+	useEffect(() => {
+		dispatch(setFilterState({ value: filter }));
+		refetch();
+	}, []);
 
 	const handleSearch = (dataIndex: keyof CycleFilter) => {
 		setSearchedColumn(dataIndex);
@@ -115,12 +121,6 @@ const TableBrowse = () => {
 		},
 		render: (text: any) => {
 			const searchWords = filter[dataIndex];
-			let content;
-			if (['endDate', 'startate'].includes(dataIndex)) {
-				content = text;
-			} else {
-				content = text;
-			}
 
 			if (searchedColumn === dataIndex) {
 				return (
@@ -128,26 +128,16 @@ const TableBrowse = () => {
 						highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
 						searchWords={[searchWords as string]}
 						autoEscape
-						textToHighlight={content ? content.toString() : ''}
+						textToHighlight={text ? text.toString() : ''}
 					/>
 				);
 			} else {
-				return content;
+				return text;
 			}
 		},
 	});
 
 	const columns: TablePropsAntd<Cycle>['columns'] = [
-		// {
-		// 	title: 'Aksi',
-		// 	type: 'action',
-		// 	key: 'action',
-		// 	textAlign: 'center',
-		// 	width: 80,
-		// 	render: (cycle: Cycle) => {
-		// 		return <Table.ButtonAction onClick={() => console.log('id: ', cycle.id)} Icon={Download} />;
-		// 	},
-		// },
 		{
 			title: 'Tanggal Mulai',
 			dataIndex: 'startDate',
@@ -169,31 +159,25 @@ const TableBrowse = () => {
 	];
 	//
 
-	let content;
-
-	if (isLoading) content = <SkeletonLoading />;
-
-	if (isSuccess) {
-		content = (
-			<Table
-				dataSource={cycles.data.cycles}
-				columns={columns}
-				actions={[{ Icon: PlusCircle, text: 'Tahun Ajaran', onClick: () => onOpenChange(true) }]}
-				pagination={{
-					totalItems: paginationState.total,
-					itemsPerPage: paginationState.pageSize,
-					currentPage: paginationState.page,
-					onPageChange: (number) => {
-						dispatch(setPaginationState({ value: { page: number } }));
-					},
-					onPageSizeChange: (number) =>
-						dispatch(setPaginationState({ value: { pageSize: number } })),
-				}}
-			/>
-		);
-	}
-
-	return content;
+	return (
+		<Table
+			dataSource={cycles?.data.cycles}
+			columns={columns}
+			loading={isLoading}
+			error={isError}
+			success={isSuccess}
+			actions={[{ Icon: PlusCircle, text: 'Tahun Ajaran', onClick: () => onOpenChange(true) }]}
+			pagination={{
+				totalItems: paginationState.total,
+				itemsPerPage: paginationState.pageSize,
+				currentPage: paginationState.page,
+				onPageChange: (number) => {
+					dispatch(setPaginationState({ value: { page: number } }));
+				},
+				onPageSizeChange: (number) => dispatch(setPaginationState({ value: { pageSize: number } })),
+			}}
+		/>
+	);
 };
 
 export default TableBrowse;

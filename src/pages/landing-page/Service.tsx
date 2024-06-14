@@ -1,4 +1,3 @@
-import { PatternOurSpecialist } from '@/assets/landing/svg';
 import { Dialog, DialogContent } from '@/components/landing-page/dialog';
 import Course from '@/components/landing-page/service/course';
 import Private from '@/components/landing-page/service/private';
@@ -15,34 +14,30 @@ const Service = () => {
 		<div id="service">
 			<Dialog>
 				<div className="relative py-12 bg-custom-black px-5">
-					<div className="absolute overflow-hidden inset-0">
+					{/* <div className="absolute overflow-hidden inset-0">
 						<div className="absolute left-0 top-0 right-0 bottom-0 hidden xl:block 2xl:hidden">
 							<img src={PatternOurSpecialist} className="w-full" />
 						</div>
-					</div>
+					</div> */}
 					<div className="flex items-center justify-center flex-col gap-4">
 						<h1 className="text-center font-semibold text-4xl text-white">
 							Paket
 							<span className={`${!isPrivate ? 'text-custom-green' : 'text-custom-yellow'}`}>
-								&nbsp; {!isPrivate ? 'Les Kursus' : 'Privat'}
+								&nbsp; {!isPrivate ? 'Kelas' : 'Privat'}
 							</span>
 						</h1>
 						{!isPrivate ? (
 							<p className="text-white text-center">
-								Kami menawarkan layanan <span className="text-custom-green">les privat</span> yang
-								disesuaikan
-								<br className="hidden md:block" />
-								dengan&nbsp;
-								<span className="text-custom-green">kebutuhan</span> dan tujuan&nbsp;
-								<span className="text-custom-green">belajar</span> setiap siswa.
+								Kami menawarkan sesi <span className="text-custom-green">belajar bersama</span> yang
+								disesuaikan <br /> dengan jadwal dan{' '}
+								<span className="text-custom-green">ruang belajar</span> yang{' '}
+								<span className="text-custom-green">kondusif</span>.
 							</p>
 						) : (
 							<p className="text-white text-center">
-								Kami menawarkan layanan <span className="text-custom-yellow">belajar bersama</span>
-								&nbsp;yang disesuaikan
-								<br />
-								dengan jadwal dan&nbsp;
-								<span className="text-custom-yellow">ruang belajar</span>&nbsp;yang&nbsp;
+								Kami menawarkan sesi <span className="text-custom-yellow">belajar bersama</span>{' '}
+								yang disesuaikan <br /> dengan jadwal dan{' '}
+								<span className="text-custom-yellow">ruang belajar</span> yang{' '}
 								<span className="text-custom-yellow">kondusif</span>.
 							</p>
 						)}
@@ -69,9 +64,6 @@ const Service = () => {
 					<div className="mt-16 gap-8 flex flex-wrap justify-center">
 						{isPrivate ? <Private isPrivate={isPrivate} /> : <Course isPrivate={isPrivate} />}
 					</div>
-					{/* <div className="absolute -bottom-5 left-0 right-0 mx-auto w-12 h-12 bg-custom-gray grid place-content-center rounded-full cursor-pointer">
-						<MdKeyboardDoubleArrowDown className="text-white text-2xl" />
-					</div> */}
 				</div>
 
 				<DialogContent className="min-w-max max-h-[500px] overflow-scroll no-scrollbar">

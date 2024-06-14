@@ -81,6 +81,10 @@
 	font-family: 'Roboto', sans-serif;
 }
 
+.with-bg-img {
+	background-image: url('./assets/landing/img/bg-img.png');
+}
+
 ::-webkit-scrollbar {
 	width: 8px; /* Lebar scrollbar */
 	height: 8px; /* Tinggi scrollbar untuk horizontal scrollbar */

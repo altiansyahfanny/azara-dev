@@ -13,7 +13,7 @@ type ClassroomStateType = {
 };
 
 const initialState: ClassroomStateType = {
-	filterState: { classroomName: '', description: '' },
+	filterState: {},
 	paginationState: { page: 1, total: 10, pageSize: 10 },
 
 	modalState: {

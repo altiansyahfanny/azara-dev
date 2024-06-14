@@ -1,22 +1,27 @@
-import DashboardLayout from '@/layouts/DashboardLayout';
+import Public from '@/layouts/Public';
 import RequireAuth from '@/layouts/RequireAuth';
+
+import SignIn from '@/pages/auth/SignIn';
 import SignUp from '@/pages/auth/SignUp';
+import Forbidden from '@/pages/common/Forbidden';
+import NotFound from '@/pages/common/NotFound';
 import LandingPage from '@/pages/landing-page';
-import Classroom from '@/pages/panel/classroom/Classroom';
-import Course from '@/pages/panel/Course';
-import Cycle from '@/pages/panel/Cycle';
-import Dashboard from '@/pages/panel/Dashboard';
-import User from '@/pages/panel/User';
-import { Route, Routes } from 'react-router-dom';
-import Public from '../layouts/Public';
-import SignIn from '../pages/auth/SignIn';
-import Forbidden from '../pages/common/Forbidden';
-import NotFound from '../pages/common/NotFound';
-import ClassroomId from '@/pages/panel/classroom/ClassroomId';
-import Meeting from '@/pages/panel/meeting/Meeting';
-import Attendance from '@/pages/panel/Attendance';
-import { Setting } from '@/pages/panel/Setting';
 import Test from '@/pages/panel/Testing';
+
+import { Route, Routes } from 'react-router-dom';
+import { lazy } from 'react';
+
+const Dashboard = lazy(() => import('@/pages/panel/Dashboard'));
+const Attendance = lazy(() => import('@/pages/panel/Attendance'));
+const Course = lazy(() => import('@/pages/panel/Course'));
+const Cycle = lazy(() => import('@/pages/panel/Cycle'));
+const Setting = lazy(() => import('@/pages/panel/Setting'));
+const User = lazy(() => import('@/pages/panel/User'));
+const Classroom = lazy(() => import('@/pages/panel/classroom/Classroom'));
+const ClassroomId = lazy(() => import('@/pages/panel/classroom/ClassroomId'));
+const Meeting = lazy(() => import('@/pages/panel/meeting/Meeting'));
+
+const DashboardLayout = lazy(() => import('@/layouts/DashboardLayout'));
 
 const Router = () => {
 	return (

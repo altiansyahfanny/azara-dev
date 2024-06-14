@@ -33,12 +33,24 @@ const Navbar = () => {
 			const newCss = scrollTop > 0 ? 'shadow' : '';
 			setCssOnScroll(newCss);
 
+			// NAVLINK.forEach((link) => {
+			// 	const element = document.getElementById(link.id);
+			// 	console.log('element : ', element);
+			// 	if (element) {
+			// 		const elementTop = element.offsetTop - NAV_HEIGHT;
+			// 		const elementBottom = elementTop + element.offsetHeight - NAV_HEIGHT;
+			// 		if (scrollTop >= elementTop && scrollTop <= elementBottom) {
+			// 			setActiveMenu(link.id);
+			// 		}
+			// 	}
+			// });
 			NAVLINK.forEach((link) => {
 				const element = document.getElementById(link.id);
 				if (element) {
 					const elementTop = element.offsetTop - NAV_HEIGHT;
 					const elementBottom = elementTop + element.offsetHeight - NAV_HEIGHT;
 					if (scrollTop >= elementTop && scrollTop <= elementBottom) {
+						console.log('Current element ID:', link.id);
 						setActiveMenu(link.id);
 					}
 				}

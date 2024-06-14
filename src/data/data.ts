@@ -4,12 +4,12 @@ export const NAVLINK = [
 		name: 'Beranda',
 	},
 	{
-		id: 'service',
-		name: 'Layanan',
-	},
-	{
 		id: 'profile',
 		name: 'Profil',
+	},
+	{
+		id: 'service',
+		name: 'Layanan',
 	},
 	{
 		id: 'testimoni',

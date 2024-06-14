@@ -1,12 +1,12 @@
 import { ApiResponse, QueryParam } from '@/types/api.type';
 import { apiSlice } from './api';
-import { TeachersResponse, User } from '@/types/user.type';
+import { TeacherFilter, TeachersResponse } from '@/types/user.type';
 import { convertToQueryString } from '@/helpers/api-helper';
 import { setPaginationState } from '@/store/features/teacherSlice';
 
 export const UserApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
-		getTeachers: builder.query<ApiResponse<TeachersResponse>, QueryParam<User>>({
+		getTeachers: builder.query<ApiResponse<TeachersResponse>, QueryParam<TeacherFilter>>({
 			query: (q) => `/teacher?${convertToQueryString(q)}`,
 			async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
 				try {

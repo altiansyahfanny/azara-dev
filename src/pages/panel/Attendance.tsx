@@ -14,7 +14,7 @@ const Attendance = () => {
 			<Popover modal={true}>
 				<PopoverTrigger asChild>
 					<Button size="sm" className="h-7 gap-1">
-						<Search className="h-3.5 w-3.5" />
+						<Search className="h-3.5 w-3.5" strokeWidth={2} />
 						<span className="sr-only sm:not-sr-only sm:whitespace-nowrap">Pencarian</span>
 					</Button>
 				</PopoverTrigger>

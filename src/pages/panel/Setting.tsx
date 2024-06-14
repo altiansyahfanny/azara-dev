@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input';
 import useTitle from '@/hooks/useTitle';
 import { Link } from 'react-router-dom';
 
-export function Setting() {
+export default function Setting() {
 	useTitle('Penagaturan');
 
 	return (

@@ -1,47 +1,48 @@
-import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { LogoWhite } from '@/assets/landing/img';
 import { IllPaperline } from '@/assets/landing/svg';
 import { NAVLINK } from '@/data/data';
-import { LogoWhite } from '@/assets/landing/img';
+import { MapPin } from 'lucide-react';
+import { FaInstagram } from 'react-icons/fa';
 
 const Footer = () => {
 	return (
 		<div id="footer" className="bg-custom-black">
 			<div className="relative md:flex">
-				<div className="md:flex-1 lg:w-5/12 p-4 md:p-16">
+				<div className="md:flex-1 lg:w-5/12 md:p-16">
 					<img src={LogoWhite} alt="logo" className="h-[100px] text-white" />
-					<p className="text-gray-300 font-thin text-sm mt-4">
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vitae malesuada arcu,
-						nec rutrum orci. Morbi arcu arcu, commodo sed quam ut, venenatis dictum augue. Quisque
-						at diam sed ante iaculis dapibus non id ipsum. Quisque tincidunt arcu posuere pharetra
-						commodo. Nunc faucibus ipsum aliquam ipsum facilisis, quis pulvinar tortor suscipit.
-						Proin aliquet elementum tellus ac ornare. Vestibulum laoreet id metus et venenatis.
-					</p>
+					<div className="text-white mt-8">
+						<h2 className="text-lg font-bold">Jangan Lupa Kunjungi Kami</h2>
+						<a
+							href="https://www.google.com/maps/place/Azara+Course/@-6.3163412,106.8180023,17.75z/data=!4m6!3m5!1s0x2e69ee0a9f35b1df:0xf301f16896ffd3bb!8m2!3d-6.3173186!4d106.8186412!16s%2Fg%2F11dyqz17gx?entry"
+							target="_blank"
+							className="flex gap-4 text-white mt-4"
+						>
+							<MapPin className="text-2xl" />
+							<p>Jl. Sagu No. 45, RT 007/ RW 005 Jagakarsa, Jakarta Selatan 12620</p>
+						</a>
+					</div>
 				</div>
 				<div className="md:flex-1 lg:w-3/12 p-4 md:p-16 text-white bg-red-200x">
 					<div>
-						<h2 className="text-lg font-bold">Quick Links</h2>
+						<h2 className="text-lg font-bold">Tautan</h2>
 						{NAVLINK.map((link) => (
-							<Link key={link.id} to={link.id}>
-								<h3 className="text-gray-300">{link.name}</h3>
-							</Link>
+							<a key={link.id} href={`#${link.id}`}>
+								<h3 className="text-gray-300 text-sm">{link.name}</h3>
+							</a>
 						))}
 					</div>
-					<div className="mt-4">
-						<h2 className="text-lg font-bold">Follow On</h2>
+					<div className="mt-8">
+						<h2 className="text-lg font-bold">Follow Kami</h2>
 						<div className="flex-1 flex space-x-4 mt-2">
-							<Link to="https://instagram.com" target="_blank" rel="noopener noreferrer">
+							<a
+								href="https://instagram.com"
+								target="_blank"
+								rel="noopener noreferrer"
+								className="flex items-center gap-4"
+							>
 								<FaInstagram className="text-2xl" />
-							</Link>
-							<Link to="https://linkedin.com" target="_blank" rel="noopener noreferrer">
-								<FaYoutube className="text-2xl" />
-							</Link>
-							<Link to="https://facebook.com" target="_blank" rel="noopener noreferrer">
-								<FaFacebook className="text-2xl" />
-							</Link>
-							<Link to="https://twitter.com" target="_blank" rel="noopener noreferrer">
-								<FaTwitter className="text-2xl" />
-							</Link>
+								<p>@azaracourse</p>
+							</a>
 						</div>
 					</div>
 				</div>

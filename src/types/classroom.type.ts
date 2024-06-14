@@ -1,5 +1,4 @@
 import { Pagination } from './api.type';
-import { User } from './user.type';
 
 export type ClassroomCourse = {
 	id: number;
@@ -13,18 +12,31 @@ export type ClassroomCourse = {
 	paymentPrice: number;
 };
 
+export type ClassroomStudent = {
+	firstName: string;
+	lastName: string;
+};
+
 export type Classroom = {
+	id: number;
+	classroomName: string;
+	cycleDescription: string;
+	price: number;
+};
+
+export type ClassroomId = {
 	id: number;
 	classroomName: string;
 	price: number;
 	cycleDescription: string;
-	students: Pick<User, 'firstName' | 'lastName'>[];
+	students: ClassroomStudent[];
 	courses: ClassroomCourse[];
 };
 
 export type ClassroomFilter = {
-	classroomName: string;
-	description: string;
+	classroomName?: string;
+	cycleDescription?: string;
+	price?: string;
 };
 
 export type ClassroomsResponse = {

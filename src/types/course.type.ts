@@ -7,8 +7,8 @@ export type Course = {
 };
 
 export type CourseFilter = {
-	courseName: string;
-	description: string;
+	courseName?: string;
+	description?: string;
 };
 
 export type CoursesResponse = {

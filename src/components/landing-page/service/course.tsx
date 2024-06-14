@@ -4,9 +4,44 @@ import ServiceCard from './service-card';
 const Course = ({ isPrivate }: { isPrivate: boolean }) => {
 	return (
 		<>
-			<ServiceCard text="5-6 SD" isPrivate={isPrivate} />
-			<ServiceCard text="7-9 SMP" isPrivate={isPrivate} />
-			<ServiceCard text="10-12 SMA" isPrivate={isPrivate} />
+			<ServiceCard
+				text="KELAS SD"
+				isPrivate={isPrivate}
+				description={
+					<p>
+						Mempelajari <span className="text-custom-green">semua mata</span> pelajaran{' '}
+						<span className="text-custom-green">kecuali Bahasa Inggris</span>. 3x pertemuan dalam
+						seminggu, durasi 2 jam. Kurikulum menyesuaikan dengan pemerintah (Kurikulum Merdeka)
+					</p>
+				}
+			/>
+			<ServiceCard
+				text="KELAS SMP"
+				isPrivate={isPrivate}
+				description={
+					<p>
+						Fokus terhadap 4 mata pelajaran :{' '}
+						<span className="text-custom-green">
+							Matematika, IPA, Bahasa Indonesia dan Bahasa Inggris
+						</span>
+						. 3x pertemuan dalam seminggu, durasi 2 jam. Kurikulum menyesuaikan dengan pemerintah
+						(Kurikulum Merdeka)
+					</p>
+				}
+			/>
+			<ServiceCard
+				text="KELAS SMA"
+				isPrivate={isPrivate}
+				description={
+					<p>
+						Fokus terhadap pelajaran{' '}
+						<span className="text-custom-green">Matematika, IPA (Fisika, Kimia, Biologi)</span> dan{' '}
+						<span className="text-custom-green">IPS (Geografi, Ekonomi, Sosiologi)</span>. 3x
+						pertemuan dalam seminggu, durasi 2 jam. Kurikulum menyesuaikan dengan pemerintah
+						(Kurikulum Merdeka)
+					</p>
+				}
+			/>
 		</>
 	);
 };

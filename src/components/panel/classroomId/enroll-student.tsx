@@ -49,7 +49,7 @@ const EnrollStudent = () => {
 			};
 
 			console.log('enrollStudent -> payload : ', enrollStudentRequest);
-			return;
+			// return;
 
 			const result = await enroll(enrollStudentRequest).unwrap();
 

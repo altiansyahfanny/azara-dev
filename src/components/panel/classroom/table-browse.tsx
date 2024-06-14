@@ -1,38 +1,28 @@
-import { useGetCoursesQuery } from '@/api/courseApi';
+import { useGetClassroomsQuery } from '@/api/classroomApi';
 import Table from '@/components/table';
 import { Input } from '@/components/ui/input';
+import { formatNumber } from '@/helpers/app-helper';
 import { TableColumnType, TableProps as TablePropsAntd } from '@/lib/antd';
-import { setAssignCourse } from '@/store/features/classroomIdSlice';
-import { setFilterState, setModalState, setPaginationState } from '@/store/features/courseSlice';
-import { setModalState as setModalStateTeacherSlice } from '@/store/features/classroomIdSlice';
+import { setFilterState, setModalState, setPaginationState } from '@/store/features/classroomSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
-import { Course, CourseFilter } from '@/types/course.type';
-import { Plus, PlusCircle } from 'lucide-react';
+import { Classroom, ClassroomFilter } from '@/types/classroom.type';
+import { Eye, PlusCircle } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
+import { useNavigate } from 'react-router-dom';
 
-interface TableBrowseProps {
-	isBrowse?: boolean;
-}
-
-const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
+const TableBrowse = () => {
 	const dispatch = useAppDispatch();
 
-	const { paginationState, filterState } = useAppSelector((state) => state.course);
-
-	const onAssign = (course: Course) => {
-		dispatch(setAssignCourse({ value: { course } }));
-		dispatch(setModalStateTeacherSlice({ value: { modalAssignTeacher: true } }));
-		dispatch(setModalStateTeacherSlice({ value: { modalAssignCourse: false } }));
-	};
+	const { paginationState, filterState } = useAppSelector((state) => state.classroom);
 
 	const {
-		data: courses,
+		data: classrooms,
 		isLoading,
 		isSuccess,
 		isError,
 		refetch,
-	} = useGetCoursesQuery({
+	} = useGetClassroomsQuery({
 		page: paginationState.page,
 		limit: paginationState.pageSize,
 		...filterState,
@@ -44,7 +34,11 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
 
 	//
 
-	const [filter, setFilter] = useState<CourseFilter>({ description: '', courseName: '' });
+	const [filter, setFilter] = useState<ClassroomFilter>({
+		cycleDescription: '',
+		classroomName: '',
+		price: '',
+	});
 	const [searchedColumn, setSearchedColumn] = useState<string>();
 
 	useEffect(() => {
@@ -52,12 +46,12 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
 		refetch();
 	}, []);
 
-	const handleSearch = (dataIndex: keyof CourseFilter) => {
+	const handleSearch = (dataIndex: keyof ClassroomFilter) => {
 		setSearchedColumn(dataIndex);
 		dispatch(setFilterState({ value: filter }));
 	};
 
-	const handleReset = (dataIndex: keyof CourseFilter) => {
+	const handleReset = (dataIndex: keyof ClassroomFilter) => {
 		const newFilter = { ...filter, [dataIndex]: '' };
 		// delete newFilter[dataIndex];
 		setFilter(newFilter);
@@ -68,7 +62,7 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
 		setFilter((prev) => ({ ...prev!, [e.target.name]: e.target.value }));
 	};
 
-	const getColumnSearchProps = (dataIndex: keyof CourseFilter): TableColumnType<Course> => ({
+	const getColumnSearchProps = (dataIndex: keyof ClassroomFilter): TableColumnType<Classroom> => ({
 		filterDropdown: ({ confirm }) => {
 			const onSearch = () => {
 				handleSearch(dataIndex);
@@ -113,64 +107,74 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
 		render: (text: any) => {
 			const searchWords = filter[dataIndex];
 
-			if (searchedColumn === dataIndex) {
+			if (dataIndex === 'price') {
 				return (
 					<Highlighter
 						highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
 						searchWords={[searchWords as string]}
 						autoEscape
-						textToHighlight={text ? text.toString() : ''}
+						textToHighlight={text ? formatNumber(text as number).toString() : ''}
 					/>
 				);
 			} else {
-				return text;
+				if (searchedColumn === dataIndex) {
+					return (
+						<Highlighter
+							highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+							searchWords={[searchWords as string]}
+							autoEscape
+							textToHighlight={text ? text.toString() : ''}
+						/>
+					);
+				} else {
+					return text;
+				}
 			}
 		},
 	});
 
-	const columns: TablePropsAntd<Course>['columns'] = [
-		{
-			title: 'Nama Mata Pelajaran',
-			dataIndex: 'courseName',
-			key: 'courseName',
-			...getColumnSearchProps('courseName'),
-		},
+	const navigate = useNavigate();
 
-		{
-			title: 'Keterangan',
-			dataIndex: 'description',
-			key: 'description',
-			...getColumnSearchProps('description'),
-		},
-	];
-
-	const columnsWithAction = [
+	const columns: TablePropsAntd<Classroom>['columns'] = [
 		{
 			title: 'Aksi',
 			type: 'action',
 			key: 'action',
 			textAlign: 'center',
 			width: 80,
-			render: (course: Course) => {
-				return <Table.ButtonAction onClick={() => onAssign(course)} Icon={Plus} />;
+			render: (classroom: Classroom) => {
+				return <Table.ButtonAction onClick={() => navigate(`${classroom.id}`)} Icon={Eye} />;
 			},
 		},
-		...columns,
+		{
+			title: 'Nama Mata Pelajaran',
+			dataIndex: 'classroomName',
+			key: 'classroomName',
+			...getColumnSearchProps('classroomName'),
+		},
+		{
+			title: 'Keterangan',
+			dataIndex: 'cycleDescription',
+			key: 'cycleDescription',
+			...getColumnSearchProps('cycleDescription'),
+		},
+		{
+			title: 'Harga',
+			dataIndex: 'price',
+			key: 'price',
+			...getColumnSearchProps('price'),
+		},
 	];
 	//
 
 	return (
 		<Table
-			dataSource={courses?.data.courses}
-			columns={isBrowse ? columns : columnsWithAction}
+			dataSource={classrooms?.data.classrooms}
+			columns={columns}
 			loading={isLoading}
 			error={isError}
 			success={isSuccess}
-			actions={
-				isBrowse
-					? [{ Icon: PlusCircle, text: 'Mata Pelajaran', onClick: () => onOpenChange(true) }]
-					: []
-			}
+			actions={[{ Icon: PlusCircle, text: 'Tambah Kelas', onClick: () => onOpenChange(true) }]}
 			pagination={{
 				totalItems: paginationState.total,
 				itemsPerPage: paginationState.pageSize,
