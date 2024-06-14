@@ -1,3 +1,5 @@
+import { Bars } from 'react-loader-spinner';
+
 import Public from '@/layouts/Public';
 import RequireAuth from '@/layouts/RequireAuth';
 
@@ -9,7 +11,7 @@ import LandingPage from '@/pages/landing-page';
 import Test from '@/pages/panel/Testing';
 
 import { Route, Routes } from 'react-router-dom';
-import { lazy } from 'react';
+import { Suspense, lazy } from 'react';
 
 const Dashboard = lazy(() => import('@/pages/panel/Dashboard'));
 const Attendance = lazy(() => import('@/pages/panel/Attendance'));
@@ -23,6 +25,20 @@ const Meeting = lazy(() => import('@/pages/panel/meeting/Meeting'));
 
 const DashboardLayout = lazy(() => import('@/layouts/DashboardLayout'));
 
+const SuspenseFallbackComponent = () => (
+	<div className="grid place-content-center h-screen">
+		<Bars
+			visible={true}
+			height={40}
+			width={40}
+			ariaLabel="hourglass-loading"
+			wrapperStyle={{}}
+			wrapperClass=""
+			color={'rgb(156, 163, 175)'}
+		/>
+	</div>
+);
+
 const Router = () => {
 	return (
 		<Routes>
@@ -34,7 +50,13 @@ const Router = () => {
 			</Route>
 			{/* <Route element={<PersistLogin />}>*/}
 			<Route element={<RequireAuth allowedRoles={['admin']} />}>
-				<Route element={<DashboardLayout />}>
+				<Route
+					element={
+						<Suspense fallback={<SuspenseFallbackComponent />}>
+							<DashboardLayout />
+						</Suspense>
+					}
+				>
 					<Route path="/dashboard" element={<Dashboard />} />
 					<Route path="/user" element={<User />} />
 					<Route path="/course" element={<Course />} />
