@@ -8,7 +8,7 @@ const Footer = () => {
 	return (
 		<div id="footer" className="bg-custom-black">
 			<div className="relative md:flex">
-				<div className="md:flex-1 lg:w-5/12 md:p-16">
+				<div className="md:flex-1 lg:w-5/12 md:p-16 p-4 bg-green-200x">
 					<img src={LogoWhite} alt="logo" className="h-[100px] text-white" />
 					<div className="text-white mt-8">
 						<h2 className="text-lg font-bold">Jangan Lupa Kunjungi Kami</h2>
@@ -26,8 +26,12 @@ const Footer = () => {
 					<div>
 						<h2 className="text-lg font-bold">Tautan</h2>
 						{NAVLINK.map((link) => (
-							<a key={link.id} href={`#${link.id}`}>
-								<h3 className="text-gray-300 text-sm">{link.name}</h3>
+							<a
+								key={link.id}
+								href={`#${link.id}`}
+								className="text-gray-300 text-sm hover:text-custom-green"
+							>
+								<h3>{link.name}</h3>
 							</a>
 						))}
 					</div>
@@ -35,7 +39,7 @@ const Footer = () => {
 						<h2 className="text-lg font-bold">Follow Kami</h2>
 						<div className="flex-1 flex space-x-4 mt-2">
 							<a
-								href="https://instagram.com"
+								href="https://instagram.com/azaracourse"
 								target="_blank"
 								rel="noopener noreferrer"
 								className="flex items-center gap-4"

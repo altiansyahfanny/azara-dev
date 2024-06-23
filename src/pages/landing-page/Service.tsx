@@ -29,7 +29,7 @@ const Service = () => {
 						{!isPrivate ? (
 							<p className="text-white text-center">
 								Kami menawarkan sesi <span className="text-custom-green">belajar bersama</span> yang
-								disesuaikan <br /> dengan jadwal dan{' '}
+								disesuaikan <br className="hidden xl:block" /> dengan jadwal dan{' '}
 								<span className="text-custom-green">ruang belajar</span> yang{' '}
 								<span className="text-custom-green">kondusif</span>.
 							</p>

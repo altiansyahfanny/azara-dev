@@ -57,7 +57,7 @@ export default function SignIn() {
 			localStorage.setItem('token', token);
 			localStorage.setItem('refreshToken', refreshToken);
 
-			if (role === 'admin') {
+			if (role === 'admin' || role === 'teacher') {
 				navigate('/dashboard', { replace: true });
 			} else {
 				navigate('/', { replace: true });

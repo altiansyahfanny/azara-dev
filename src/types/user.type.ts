@@ -7,6 +7,16 @@ export type User = {
 	imageUrl: string;
 };
 
+export type UserDetail = {
+	id: number;
+	firstName: string;
+	lastName: string;
+	email: string;
+	imageUrl: string;
+	role: string;
+	address: string;
+};
+
 export type StudentFilter = {
 	firstName?: string;
 	lastName?: string;

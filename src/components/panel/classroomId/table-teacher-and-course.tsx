@@ -9,6 +9,7 @@ import { setAssignCourse, setModalState } from '@/store/features/classroomIdSlic
 import { PlusCircle } from 'lucide-react';
 import SkeletonLoading from '@/components/skeleton-loading';
 import { ApiResponse } from '@/types/api.type';
+import useAuth from '@/hooks/useAuth';
 
 interface TableTeacherAndCourseProps {
 	classroom: ApiResponse<ClassroomId> | undefined;
@@ -21,6 +22,7 @@ const TableTeacherAndCourse: React.FC<TableTeacherAndCourseProps> = ({
 	isLoading,
 	isSuccess,
 }) => {
+	const auth = useAuth();
 	const dispatch = useDispatch();
 	const columns: TablePropsAntd<ClassroomCourse>['columns'] = [
 		{
@@ -40,14 +42,6 @@ const TableTeacherAndCourse: React.FC<TableTeacherAndCourseProps> = ({
 			dataIndex: 'teacher.firstName',
 			key: 'teacher',
 			render: (course: ClassroomCourse) => `${course.teacher.firstName} ${course.teacher.lastName}`,
-		},
-		{
-			title: 'Harga',
-			type: 'action',
-			textAlign: 'left',
-			dataIndex: 'paymentPrice',
-			key: 'paymentPrice',
-			render: (course: ClassroomCourse) => formatNumber(course.paymentPrice),
 		},
 	];
 
@@ -77,10 +71,26 @@ const TableTeacherAndCourse: React.FC<TableTeacherAndCourseProps> = ({
 			</div>
 		);
 	}
+
+	const columnsWithPrice: TablePropsAntd<ClassroomCourse>['columns'] = [
+		...columns,
+		{
+			title: 'Harga',
+			type: 'action',
+			textAlign: 'left',
+			dataIndex: 'paymentPrice',
+			key: 'paymentPrice',
+			render: (course: ClassroomCourse) => formatNumber(course.paymentPrice),
+		},
+	];
 	return (
 		<div className="border rounded-lg p-4 grid gap-4">
 			{content}
-			<Table dataSource={classroom?.data.courses} columns={columns} loading={isLoading} />
+			<Table
+				dataSource={classroom?.data.courses}
+				columns={auth.role === 'admin' ? columnsWithPrice : columns}
+				loading={isLoading}
+			/>
 		</div>
 	);
 };

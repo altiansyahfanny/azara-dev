@@ -17,6 +17,8 @@ const ClassroomId = () => {
 
 	const { data: classroom, isLoading, isError, isSuccess } = useGetClassroomQuery(id as string);
 
+	console.log('classroom: ', classroom);
+
 	let content;
 
 	if (isError) return <PageError />;

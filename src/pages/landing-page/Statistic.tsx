@@ -18,7 +18,7 @@ const Statistic = () => {
 				</div>
 				<div className="lg:flex-1 mt-12 lg:mt-0">
 					<h1 className="text-3xl font-bold">
-						Paket Intensif <br /> Kelas 12.
+						Paket Intensif <br /> Kelas 12
 					</h1>
 					<div className="h-1 w-40 bg-gray-900 mt-4" />
 					<div className="mt-12">

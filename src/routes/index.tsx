@@ -12,6 +12,7 @@ import Test from '@/pages/panel/Testing';
 
 import { Route, Routes } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
+import UserProfile from '@/pages/landing-page/UserProfile';
 
 const Dashboard = lazy(() => import('@/pages/panel/Dashboard'));
 const Attendance = lazy(() => import('@/pages/panel/Attendance'));
@@ -22,6 +23,7 @@ const User = lazy(() => import('@/pages/panel/User'));
 const Classroom = lazy(() => import('@/pages/panel/classroom/Classroom'));
 const ClassroomId = lazy(() => import('@/pages/panel/classroom/ClassroomId'));
 const Meeting = lazy(() => import('@/pages/panel/meeting/Meeting'));
+const Profile = lazy(() => import('@/pages/panel/user/Profile'));
 
 const DashboardLayout = lazy(() => import('@/layouts/DashboardLayout'));
 
@@ -47,9 +49,10 @@ const Router = () => {
 				<Route path="/sign-in" element={<SignIn />} />
 				<Route path="/sign-up" element={<SignUp />} />
 				<Route path="/sign-up" element={<SignUp />} />
+				<Route path="/profile" element={<UserProfile />} />
 			</Route>
 			{/* <Route element={<PersistLogin />}>*/}
-			<Route element={<RequireAuth allowedRoles={['admin']} />}>
+			<Route element={<RequireAuth allowedRoles={['admin', 'teacher']} />}>
 				<Route
 					element={
 						<Suspense fallback={<SuspenseFallbackComponent />}>
@@ -59,6 +62,7 @@ const Router = () => {
 				>
 					<Route path="/dashboard" element={<Dashboard />} />
 					<Route path="/user" element={<User />} />
+					<Route path="/user/profile" element={<Profile />} />
 					<Route path="/course" element={<Course />} />
 					<Route path="/cycle" element={<Cycle />} />
 					<Route path="/classroom" element={<Classroom />} />

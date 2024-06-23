@@ -24,20 +24,20 @@ const Home = () => {
 		<div id="home" className="">
 			<Carousel className="" plugins={[Autoplay({ delay: 10000 })]} setApi={setApi}>
 				<CarouselContent className="">
-					{Array.from({ length: 3 }).map((_item, index) => (
+					{Array.from({ length: 1 }).map((_item, index) => (
 						<CarouselItem key={index}>
 							<div className="py-12 px-5 md:px-10 xl:px-40 bg-rex-200 relative bg-yellow-200x">
-								<div className="bg-rex-300 flex items-center relative z-10 gap-4 xl:gap-0 bg-green-300x ">
-									<div className="flex flex-1 flex-col gap-4 bg-greenx-50">
-										<div>
+								<div className="flex items-center relative z-10 gap-4 xl:gap-0 bg-green-300x ">
+									<div className="flex flex-1 flex-col gap-4 bg-green-50x">
+										{/* <div>
 											<h1 className="text-white bg-custom-yellow inline py-0.5 px-2 rounded-lg">
 												Lorem Ipsum Dolor Sit Amet
 											</h1>
-										</div>
-										<h1 className="text-4xl leading-snug font-semibold">
+										</div> */}
+										<h1 className="text-4xl leading-snug bg-yellow-200x font-semibold">
 											Bimbingan Belajar yang <br className="hidden xl:block" /> Memberikan
 											<br className="hidden xl:block" />
-											<span className="text-custom-light-green">#PerhatianPenuh</span> bagi{' '}
+											<p className="text-custom-light-green lg:inline">#PerhatianPenuh</p> bagi{' '}
 											<br className="hidden xl:block" />
 											Siswa dan Orang Tua
 										</h1>
@@ -64,7 +64,7 @@ const Home = () => {
 				</CarouselContent>
 			</Carousel>
 			<div className="flex gap-4 items-center justify-center">
-				{Array.from({ length: 3 }).map((_, index) => {
+				{Array.from({ length: 1 }).map((_, index) => {
 					return index === current - 1 ? (
 						<GoDotFill key={index} className="text-2xl text-gray-400" />
 					) : (

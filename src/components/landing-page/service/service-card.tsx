@@ -13,7 +13,7 @@ const ServiceCard = ({
 	description: ReactNode;
 }) => {
 	return (
-		<div className="bg-custom-gray text-white w-[250px] pb-4 px-4 pt-10 rounded-xl relative h-full">
+		<div className="bg-custom-gray text-white w-[250px] pb-4 px-6 pt-10 rounded-xl relative h-full">
 			<div className="absolute -top-4 bg-white w-10 aspect-square grid place-content-center rounded-full">
 				{!isPrivate ? (
 					<FaBook className="text-custom-green" />
@@ -22,7 +22,7 @@ const ServiceCard = ({
 				)}
 			</div>
 			<h1 className="text-2xl">{text}</h1>
-			<div className="mt-4 text-sm h-[150px]">{description}</div>
+			<div className="mt-4 text-sm h-[200px]">{description}</div>
 			<hr className="my-4" />
 			<div className="flex items-center justify-center">
 				<DialogTrigger asChild>

@@ -23,6 +23,7 @@ import { setModalState } from '@/store/features/classroomSlice';
 import { useAppDispatch } from '@/store/store';
 import { ApiResponse, ErrorResponse } from '@/types/api.type';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { format, parseISO } from 'date-fns';
 import { LoaderCircle } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -90,7 +91,7 @@ export default function CreateClassroom() {
 	if (isSuccessCycles) {
 		cyclesContent = cycles?.data.cycles.map((cycle, key) => (
 			<SelectItem key={key} value={cycle.id.toString()}>
-				{cycle.description}
+				{`${format(parseISO(cycle.startDate), 'yyyy')}/${format(parseISO(cycle.endDate), 'yyyy')}`}
 			</SelectItem>
 		));
 	}

@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { apiSlice } from './api';
 import { createUserSchema } from '@/schema/user';
 import { ApiResponse } from '@/types/api.type';
+import { UserDetail } from '@/types/user.type';
 
 export const userApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
@@ -13,7 +14,11 @@ export const userApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: ['Students'],
 		}),
+		getUserDetail: builder.query<ApiResponse<UserDetail>, void>({
+			query: () => `/user`,
+			// providesTags: ['Students'],
+		}),
 	}),
 });
 
-export const { useAddUserMutation } = userApiSlice;
+export const { useAddUserMutation, useGetUserDetailQuery } = userApiSlice;

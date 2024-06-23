@@ -20,7 +20,7 @@ interface NavLink {
 
 const NAV_HEIGHT = 80;
 
-const Navbar = () => {
+const Navbar = ({ hideMenu }: { hideMenu?: boolean }) => {
 	const navigate = useNavigate();
 	const [isOpen, setIsOpen] = useState(false);
 	const [cssOnScroll, setCssOnScroll] = useState('');
@@ -39,7 +39,6 @@ const Navbar = () => {
 					const elementTop = element.offsetTop - NAV_HEIGHT;
 					const elementBottom = elementTop + element.offsetHeight - NAV_HEIGHT;
 					if (scrollTop >= elementTop && scrollTop <= elementBottom) {
-						console.log('Current element ID:', link.id);
 						setActiveMenu(link.id);
 					}
 				}
@@ -115,93 +114,113 @@ const Navbar = () => {
 			{/* LOGO */}
 			<img src={cssOnScrollService ? LogoWhite : Logo} alt="logo" className="h-[50px] w-[100px]" />
 
-			{/* MENU > lg */}
-			<ul className="gap-x-4 items-center hidden md:flex">{renderNavLinks(NAVLINK)}</ul>
+			{!hideMenu && (
+				<>
+					{/* MENU > lg */}
+					<ul className="gap-x-4 items-center hidden md:flex">{renderNavLinks(NAVLINK)}</ul>
 
-			{auth.isAuthenticated ? (
-				<div className="hidden md:block">
-					<DropdownMenu>
-						<DropdownMenuTrigger asChild>
-							<button className="flex gap-x-2 items-center outline-none bg-green-200x">
-								<img
-									src={auth.imageUrl ?? DummyProfile}
-									alt="user"
-									className="w-8 h-8 rounded-full"
-								/>
-								<p className={` text-sm  ${cssOnScrollService ? 'text-white' : 'text-gray-700'}`}>
-									{`${auth.firstName} ${auth.lastName}`}
-								</p>
-							</button>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent align="end">
-							<DropdownMenuLabel>{`${auth.firstName} ${auth.lastName}`}</DropdownMenuLabel>
-							<DropdownMenuSeparator />
-							<DropdownMenuItem>Pengaturan</DropdownMenuItem>
-							<DropdownMenuSeparator />
-							<DropdownMenuItem onClick={handleLogout}>Keluar</DropdownMenuItem>
-						</DropdownMenuContent>
-					</DropdownMenu>
-				</div>
-			) : (
-				<Link to="/sign-in" className="hidden md:block">
-					<button className="bg-custom-green text-white px-5 py-1.5 rounded-full">Masuk</button>
-				</Link>
-			)}
-
-			{/* HUMBURGER MENU */}
-			<div className="block md:hidden">
-				<button className="text-lg" onClick={() => setIsOpen(true)}>
-					<AiOutlineMenu />
-				</button>
-			</div>
-
-			{/* MENU < lg */}
-			<div
-				className={`absolute top-0 ${
-					isOpen ? 'right-0' : '-right-[100%]'
-				} bg-white w-full h-screen block md:hidden p-5 transition-all text-black`}
-			>
-				<div className="flex justify-between flex-col h-full">
-					<div className="flex justify-between">
-						<ul className="flex md:hidden flex-col gap-y-4 bg-red-300x justify-start">
-							{renderNavLinks(NAVLINK)}
-						</ul>
-						<div>
-							<button className="rounded-full p-1" onClick={() => setIsOpen(false)}>
-								<AiOutlineClose />
-							</button>
-						</div>
-					</div>
-					{/* LOGIN */}
 					{auth.isAuthenticated ? (
-						<DropdownMenu>
-							<DropdownMenuTrigger asChild>
-								<button className="flex gap-x-2 items-center outline-none bg-green-200x">
-									<img
-										src={auth.imageUrl ?? DummyProfile}
-										alt="user"
-										className="w-8 h-8 rounded-full"
-									/>
-									<p className={` text-sm  ${cssOnScrollService ? 'text-white' : 'text-gray-700'}`}>
-										{`${auth.firstName} ${auth.lastName}`}
-									</p>
-								</button>
-							</DropdownMenuTrigger>
-							<DropdownMenuContent align="end">
-								<DropdownMenuLabel>{`${auth.firstName} ${auth.lastName}`}</DropdownMenuLabel>
-								<DropdownMenuSeparator />
-								<DropdownMenuItem>Pengaturan</DropdownMenuItem>
-								<DropdownMenuSeparator />
-								<DropdownMenuItem onClick={handleLogout}>Keluar</DropdownMenuItem>
-							</DropdownMenuContent>
-						</DropdownMenu>
+						<div className="hidden md:block">
+							<DropdownMenu>
+								<DropdownMenuTrigger asChild>
+									<button className="flex gap-x-2 items-center outline-none bg-green-200x">
+										<img
+											src={auth.imageUrl ?? DummyProfile}
+											alt="user"
+											className="w-8 h-8 rounded-full"
+										/>
+										<p
+											className={` text-sm  ${cssOnScrollService ? 'text-white' : 'text-gray-700'}`}
+										>
+											{`${auth.firstName} ${auth.lastName}`}
+										</p>
+									</button>
+								</DropdownMenuTrigger>
+								<DropdownMenuContent align="end">
+									<DropdownMenuLabel>{`${auth.firstName} ${auth.lastName}`}</DropdownMenuLabel>
+									<DropdownMenuSeparator />
+									<DropdownMenuItem>
+										<Link to={'/profile'} className="w-full">
+											Profil
+										</Link>
+									</DropdownMenuItem>
+									<DropdownMenuSeparator />
+									<DropdownMenuItem onClick={handleLogout}>Keluar</DropdownMenuItem>
+								</DropdownMenuContent>
+							</DropdownMenu>
+						</div>
 					) : (
-						<Link to="/sign-in" className="">
+						<Link to="/sign-in" className="hidden md:block">
 							<button className="bg-custom-green text-white px-5 py-1.5 rounded-full">Masuk</button>
 						</Link>
 					)}
-				</div>
-			</div>
+
+					{/* HUMBURGER MENU */}
+					<div className="block md:hidden">
+						<button className="text-lg" onClick={() => setIsOpen(true)}>
+							<AiOutlineMenu />
+						</button>
+					</div>
+
+					{/* MENU < lg */}
+					<div
+						className={`absolute top-0 ${
+							isOpen ? 'right-0' : '-right-[100%]'
+						} bg-white w-full h-screen block md:hidden p-5 transition-all text-black`}
+					>
+						<div className="flex justify-between flex-col h-full">
+							<div className="flex justify-between">
+								<ul className="flex md:hidden flex-col gap-y-4 bg-red-300x justify-start">
+									{renderNavLinks(NAVLINK)}
+								</ul>
+								<div>
+									<button className="rounded-full p-1" onClick={() => setIsOpen(false)}>
+										<AiOutlineClose />
+									</button>
+								</div>
+							</div>
+							{/* LOGIN */}
+							{auth.isAuthenticated ? (
+								<DropdownMenu>
+									<DropdownMenuTrigger asChild>
+										<button className="flex gap-x-2 items-center outline-none bg-green-200x">
+											<img
+												src={auth.imageUrl ?? DummyProfile}
+												alt="user"
+												className="w-8 h-8 rounded-full"
+											/>
+											<p
+												className={` text-sm  ${
+													cssOnScrollService ? 'text-white' : 'text-gray-700'
+												}`}
+											>
+												{`${auth.firstName} ${auth.lastName}`}
+											</p>
+										</button>
+									</DropdownMenuTrigger>
+									<DropdownMenuContent align="end">
+										<DropdownMenuLabel>{`${auth.firstName} ${auth.lastName}`}</DropdownMenuLabel>
+										<DropdownMenuSeparator />
+										<DropdownMenuItem>
+											<Link to={'/profile'} className="w-full">
+												Profil
+											</Link>
+										</DropdownMenuItem>
+										<DropdownMenuSeparator />
+										<DropdownMenuItem onClick={handleLogout}>Keluar</DropdownMenuItem>
+									</DropdownMenuContent>
+								</DropdownMenu>
+							) : (
+								<Link to="/sign-in" className="">
+									<button className="bg-custom-green text-white px-5 py-1.5 rounded-full">
+										Masuk
+									</button>
+								</Link>
+							)}
+						</div>
+					</div>
+				</>
+			)}
 		</div>
 	);
 };

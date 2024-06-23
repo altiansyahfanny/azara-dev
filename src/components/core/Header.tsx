@@ -25,6 +25,7 @@ const routes = [
 	{ path: '/course', breadcrumb: 'Mata Pelajaran' },
 	{ path: '/cycle', breadcrumb: 'Tahun Ajaran' },
 	{ path: '/user', breadcrumb: 'User' },
+	{ path: '/user/profile', breadcrumb: 'Profile' },
 	{ path: '/classroom', breadcrumb: 'Kelas' },
 	{ path: 'classroom/:id', breadcrumb: 'Detil' },
 	{ path: 'meeting', breadcrumb: 'Meeting' },
@@ -100,11 +101,16 @@ const Header = () => {
 					<DropdownMenuLabel>Altiansyah Fanny</DropdownMenuLabel>
 					<DropdownMenuSeparator />
 					<DropdownMenuItem>
-						<Link to={'/setting'}>Pengaturan</Link>
+						<Link to={'/user/profile'} className=" w-full">
+							Profil
+						</Link>
 					</DropdownMenuItem>
+					{/* <DropdownMenuItem>
+						<Link to={'/setting'}>Pengaturan</Link>
+					</DropdownMenuItem> */}
 					<DropdownMenuSeparator />
 					<DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
-						Logout
+						Keluar
 					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>
