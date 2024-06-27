@@ -81,6 +81,12 @@
 	font-family: 'Roboto', sans-serif;
 }
 
+@media (min-width: 1024px) {
+	.carousel-item {
+		height: calc(100vh - 80px);
+	}
+}
+
 .with-bg-img {
 	background-image: url('./assets/landing/img/bg-img.png');
 }

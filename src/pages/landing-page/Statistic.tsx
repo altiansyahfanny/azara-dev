@@ -23,8 +23,15 @@ const Statistic = () => {
 					<div className="h-1 w-40 bg-gray-900 mt-4" />
 					<div className="mt-12">
 						<p>
-							Embrace a new era of digital success with Mizzle. Our team combines cutting-edge
-							design with robust development to deliver websites that captivate and convert.
+							Program Intensif UTBK untuk Siswa Kelas 12 SMA adalah program bimbingan belajar yang
+							berfokus mempelajari mata pelajaran&nbsp;
+							<span className="text-custom-light-green">
+								Matematika, IPA (Fisika, Kimia, Biologi),
+							</span>
+							&nbsp; dan &nbsp;
+							<span className="text-custom-light-green">
+								Tujuh subtest materi Ujian Tulis Berbasis Komputer (UTBK).
+							</span>
 						</p>
 						<ul className="mt-6">
 							<li className="flex items-center gap-2">

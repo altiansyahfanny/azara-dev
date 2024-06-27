@@ -10,6 +10,7 @@ import PatternRight from './pattern-right.svg';
 import PatternLeft from './pattern-left.svg';
 import IcWhatsapp from './whatsapp.svg';
 import BgIll from './bg-illustration.svg';
+import PatternHero from './pattern-hero.svg';
 
 export {
 	BgIll,
@@ -24,4 +25,5 @@ export {
 	PatternRight,
 	PatternLeft,
 	IcWhatsapp,
+	PatternHero,
 };

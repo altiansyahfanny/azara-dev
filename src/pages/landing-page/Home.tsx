@@ -1,4 +1,5 @@
-import { HeroImage } from '@/assets/landing/img';
+import { HeroImage, HeroImage2 } from '@/assets/landing/img';
+import { PatternHero } from '@/assets/landing/svg';
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
 import React from 'react';
@@ -22,7 +23,7 @@ const Home = () => {
 
 	return (
 		<div id="home" className="">
-			<Carousel className="" plugins={[Autoplay({ delay: 10000 })]} setApi={setApi}>
+			<Carousel className="" plugins={[Autoplay({ delay: 5000 })]} setApi={setApi}>
 				<CarouselContent className="">
 					{Array.from({ length: 1 }).map((_item, index) => (
 						<CarouselItem key={index}>
@@ -51,20 +52,46 @@ const Home = () => {
 										<div className="h-1 w-40 bg-gray-900" />
 									</div>
 									<div className="bg-rex-400 hidden lg:block">
-										<img
-											src={HeroImage}
-											className="w-[334px] h-[387px]"
-											style={{ borderRadius: '2rem' }}
-										/>
+										<img src={HeroImage} className="w-[400px] " style={{ borderRadius: '2rem' }} />
 									</div>
 								</div>
 							</div>
 						</CarouselItem>
 					))}
+					<CarouselItem>
+						<div className="bg-red-200x relative carousel-item">
+							<div className="flex bg-green-200x h-full relative">
+								<img
+									src={HeroImage2}
+									className="hidden lg:block absolute w-[553px] bottom-0 left-40"
+								/>
+								<div className="hidden lg:block bg-[#F3D743B2] h-full w-1/2 rounded-tr-full rounded-br-full" />
+
+								<div className="flex flex-1 flex-col gap-4 pt-12 lg:justify-center lg:items-end px-5 lg:px-20 text-left lg:text-right">
+									<img src={PatternHero} className="mb-4 hidden lg:block" />
+									<h1 className="text-4xl leading-snug bg-yellow-200x font-semibold">
+										Kesempatan <br className="hidden xl:block" /> Daftar Khusus
+										<br className="hidden xl:block" />
+										<p className="text-custom-blue lg:inline">#GRATIS</p>
+									</h1>
+									<p className="text-black text-sm">
+										Jangan lewatkan kesempatan daftar
+										<br className="hidden xl:block" />
+										program bimbingan belajar tanpa
+										<br className="hidden xl:block" />
+										dipungut biaya sebelum
+										<br className="hidden xl:block" />
+										<span className="font-medium text-black">15 Juli 2024</span>
+									</p>
+									<div className="h-1 w-40 bg-gray-900" />
+								</div>
+							</div>
+						</div>
+					</CarouselItem>
 				</CarouselContent>
 			</Carousel>
 			<div className="flex gap-4 items-center justify-center">
-				{Array.from({ length: 1 }).map((_, index) => {
+				{Array.from({ length: 2 }).map((_, index) => {
 					return index === current - 1 ? (
 						<GoDotFill key={index} className="text-2xl text-gray-400" />
 					) : (

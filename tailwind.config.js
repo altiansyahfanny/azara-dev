@@ -23,6 +23,7 @@ module.exports = {
 				'custom-yellow': '#F3D743',
 				'custom-green': '#09B850',
 				'custom-light-green': '#97C74E',
+				'custom-blue': '#5E90FF',
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
