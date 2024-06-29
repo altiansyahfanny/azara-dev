@@ -89,7 +89,7 @@ const Home = () => {
 						</div>
 					</CarouselItem>
 					<CarouselItem>
-						<div className="py-12 px-5 md:px-10 xl:px-40 bg-rex-200 relative bg-yellow-200x">
+						<div className="py-12 px-5 md:px-10 xl:px-20 bg-rex-200 relative bg-yellow-200x">
 							<div className="flex items-center relative z-10 gap-4 xl:gap-0 bg-green-300z">
 								<div className="flex flex-1 flex-col gap-4 bg-green-50x">
 									<h1 className="text-4xl leading-snug bg-yellow-200x font-semibold">
@@ -110,7 +110,7 @@ const Home = () => {
 									</p>
 								</div>
 								<div className="bg-red-400z hidden lg:block self-end">
-									<img src={HeroImage3} className="w-[680px] " style={{ borderRadius: '2rem' }} />
+									<img src={HeroImage3} className="w-[850px] " style={{ borderRadius: '2rem' }} />
 								</div>
 							</div>
 						</div>
