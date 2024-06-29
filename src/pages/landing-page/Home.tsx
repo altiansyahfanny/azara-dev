@@ -1,4 +1,4 @@
-import { HeroImage, HeroImage2 } from '@/assets/landing/img';
+import { HeroImage, HeroImage2, HeroImage3 } from '@/assets/landing/img';
 import { PatternHero } from '@/assets/landing/svg';
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
@@ -23,7 +23,7 @@ const Home = () => {
 
 	return (
 		<div id="home" className="">
-			<Carousel className="" plugins={[Autoplay({ delay: 5000 })]} setApi={setApi}>
+			<Carousel className="" plugins={[Autoplay({ delay: 10000 })]} setApi={setApi}>
 				<CarouselContent className="">
 					{Array.from({ length: 1 }).map((_item, index) => (
 						<CarouselItem key={index}>
@@ -38,7 +38,7 @@ const Home = () => {
 										<h1 className="text-4xl leading-snug bg-yellow-200x font-semibold">
 											Bimbingan Belajar yang <br className="hidden xl:block" /> Memberikan
 											<br className="hidden xl:block" />
-											<p className="text-custom-light-green lg:inline">#PerhatianPenuh</p> bagi{' '}
+											<p className="text-custom-green lg:inline">#PerhatianPenuh</p> bagi{' '}
 											<br className="hidden xl:block" />
 											Siswa dan Orang Tua
 										</h1>
@@ -72,7 +72,7 @@ const Home = () => {
 									<h1 className="text-4xl leading-snug bg-yellow-200x font-semibold">
 										Kesempatan <br className="hidden xl:block" /> Daftar Khusus
 										<br className="hidden xl:block" />
-										<p className="text-custom-blue lg:inline">#GRATIS</p>
+										<p className="text-custom-green lg:inline">#GRATIS</p>
 									</h1>
 									<p className="text-black text-sm">
 										Jangan lewatkan kesempatan daftar
@@ -88,10 +88,37 @@ const Home = () => {
 							</div>
 						</div>
 					</CarouselItem>
+					<CarouselItem>
+						<div className="py-12 px-5 md:px-10 xl:px-40 bg-rex-200 relative bg-yellow-200x">
+							<div className="flex items-center relative z-10 gap-4 xl:gap-0 bg-green-300z">
+								<div className="flex flex-1 flex-col gap-4 bg-green-50x">
+									<h1 className="text-4xl leading-snug bg-yellow-200x font-semibold">
+										Ajak Teman dan <br className="hidden xl:block" />
+										Dapatkan
+										<br className="hidden xl:block" />
+										<p className="text-custom-green lg:inline">Rp. 50.000</p>
+									</h1>
+									<div className="h-1 w-40 bg-gray-900" />
+									<p className="text-black text-sm">
+										Bagikan pengalaman&nbsp;
+										<br className="hidden xl:block" />
+										positifmu dan ajak&nbsp;
+										<br className="hidden xl:block" />
+										teman-temanmu untuk&nbsp;
+										<br className="hidden xl:block" />
+										bergabung!
+									</p>
+								</div>
+								<div className="bg-red-400z hidden lg:block self-end">
+									<img src={HeroImage3} className="w-[680px] " style={{ borderRadius: '2rem' }} />
+								</div>
+							</div>
+						</div>
+					</CarouselItem>
 				</CarouselContent>
 			</Carousel>
 			<div className="flex gap-4 items-center justify-center">
-				{Array.from({ length: 2 }).map((_, index) => {
+				{Array.from({ length: 3 }).map((_, index) => {
 					return index === current - 1 ? (
 						<GoDotFill key={index} className="text-2xl text-gray-400" />
 					) : (

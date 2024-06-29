@@ -1,5 +1,6 @@
 import HeroImage from './hero-image.png';
 import HeroImage2 from './hero-image-2.png';
+import HeroImage3 from './hero-image-3.jpg';
 import ProfilePic from './profile-pic.jpg';
 import DummyImg1 from './dummy-img-1.jpg';
 import DummyImg2 from './dummy-img-2.jpg';
@@ -18,4 +19,5 @@ export {
 	DummyProfile,
 	BgImg,
 	HeroImage2,
+	HeroImage3,
 };
