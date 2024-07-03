@@ -86,7 +86,7 @@ const Home = () => {
 										<p className="text-black text-sm 2xl:text-base">
 											<span>Jangan lewatkan kesempatan daftar </span>
 											<br className="hidden xl:block" />
-											program bimbingan belajar tanpa
+											program bimbingan belajar tanpa&nbsp;
 											<br className="hidden xl:block" />
 											dipungut biaya sebelum
 											<br className="hidden xl:block" />
