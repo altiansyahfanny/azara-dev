@@ -10,18 +10,18 @@ const Statistic = () => {
 					</div>
 					<div className="w-4/12 flex-col gap-4 flex">
 						<div className="bg-custom-green py-4 rounded-lg text-center text-white">
-							<h1 className="font-bold text-7xl ">4+</h1>
-							<p>Tahun Pengalaman</p>
+							<h1 className="font-bold text-7xl 2xl:text-[5.5rem]">4+</h1>
+							<p className="2xl:text-xl">Tahun Pengalaman</p>
 						</div>
 						<img src={DummyImg1} alt="" />
 					</div>
 				</div>
 				<div className="lg:flex-1 mt-12 lg:mt-0">
-					<h1 className="text-3xl font-bold">
-						Paket Intensif <br /> Kelas 12
+					<h1 className="text-3xl 2xl:text-5xl font-bold">
+						Paket Intensif <br className="" /> Kelas 12
 					</h1>
 					<div className="h-1 w-40 bg-gray-900 mt-4" />
-					<div className="mt-12">
+					<div className="mt-12 2xl:text-2xl">
 						<p>
 							Program Intensif UTBK untuk Siswa Kelas 12 SMA adalah program bimbingan belajar yang
 							berfokus mempelajari mata pelajaran&nbsp;

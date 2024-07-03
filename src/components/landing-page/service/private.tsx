@@ -96,14 +96,4 @@ const Private = ({ isPrivate }: { isPrivate: boolean }) => {
 	));
 };
 
-const Price = ({}: { isPrivate: boolean }) => {
-	return (
-		<div className="flex items-center justify-center gap-4 ">
-			{/* <PriceCard isBestSeller={true} isPrivate={isPrivate} /> */}
-		</div>
-	);
-};
-
-Private.Price = Price;
-
 export default Private;

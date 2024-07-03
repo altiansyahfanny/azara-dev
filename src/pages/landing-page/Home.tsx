@@ -84,13 +84,13 @@ const Home = () => {
 											<p className="text-custom-green lg:inline">#GRATIS</p>
 										</h1>
 										<p className="text-black text-sm 2xl:text-base">
-											<span>Jangan lewatkan kesempatan daftar</span>
+											<span>Jangan lewatkan kesempatan daftar </span>
 											<br className="hidden xl:block" />
 											program bimbingan belajar tanpa
 											<br className="hidden xl:block" />
 											dipungut biaya sebelum
 											<br className="hidden xl:block" />
-											<span className="font-medium text-black">15 Juli 2024</span>
+											<span className="font-medium text-black"> 15 Juli 2024</span>
 										</p>
 										<div className="flex lg:justify-center xl:justify-end">
 											<div className="h-1 w-40 bg-gray-900 mt-4" />

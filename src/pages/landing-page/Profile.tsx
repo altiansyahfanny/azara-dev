@@ -10,9 +10,9 @@ const Profile = () => {
 			/> */}
 			<div className="">
 				<div className="px-5 lg:px-40 text-center z-10">
-					<h1 className="text-3xl font-bold">PROFIL</h1>
-					<p className="mt-6">
-						<span className="text-custom-green">Azara Course</span> adalah sebuah bimbingan belajar
+					<h1 className="text-3xl 2xl:text-5xl font-bold">PROFIL</h1>
+					<p className="mt-6 2xl:text-xl">
+						<span className="text-custom-green ">Azara Course</span> adalah sebuah bimbingan belajar
 						yang telah berdiri selama lebih dari 10 tahun di Jakarta Selatan. Visi kami adalah
 						memberikan pendidikan berkualitas dan menyeluruh yang tidak hanya berfokus pada
 						keterampilan akademik, namun juga pengembangan karakter. Kami memastikan siswa dapat

@@ -27,8 +27,10 @@ const Testimoni = () => {
 			<div className="md:flex relative">
 				<div className="p-5 lg:pl-40 md:w-1/2">
 					<div>
-						<h1 className="text-3xl font-bold">Testimoni dari pelanggan kami</h1>
-						<h1 className="mt-2">Lebih dari 90 siswa dan orang tua puas dengan bimbingan kami</h1>
+						<h1 className="text-3xl 2xl:text-5xl font-bold">Testimoni dari pelanggan kami</h1>
+						<h1 className="mt-2 2xl:text-xl">
+							Lebih dari 90 siswa dan orang tua puas dengan bimbingan kami
+						</h1>
 					</div>
 
 					<Carousel className="" plugins={[Autoplay({ delay: 5000 })]} setApi={setApi}>
@@ -43,11 +45,11 @@ const Testimoni = () => {
 					<div className="flex gap-4 items-center justify-center">
 						{TESTIMONI.map((_, index) => {
 							return index === current - 1 ? (
-								<GoDotFill key={index} className="text-custom-yellow" />
+								<GoDotFill key={index} className="2xl:text-xl text-custom-yellow" />
 							) : (
 								<GoDot
 									key={index}
-									className="text-custom-gray cursor-pointer"
+									className="2xl:text-xl text-custom-gray cursor-pointer"
 									onClick={() => {
 										api?.scrollTo(index);
 									}}
@@ -58,8 +60,8 @@ const Testimoni = () => {
 
 					{/* CART */}
 				</div>
-				<div className="hidden md:flex md:w-1/2 justify-end items-end">
-					<img src={Illustration} alt="" className="" />
+				<div className="hidden md:flex md:w-1/2 justify-end items-end bg-red-300x">
+					<img src={Illustration} alt="" className="2xl:w-[800px]" />
 				</div>
 			</div>
 		</div>
