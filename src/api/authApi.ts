@@ -50,7 +50,20 @@ export const authApiSlice = apiSlice.injectEndpoints({
 				}
 			},
 		}),
+
+		loginExternal: builder.mutation<ApiResponse<LoginResponse>, { email: string }>({
+			query: (credentials) => ({
+				url: '/auth/login/external',
+				method: 'POST',
+				body: credentials,
+			}),
+		}),
 	}),
 });
 
-export const { useLoginMutation, useSendLogoutMutation, useRefreshMutation } = authApiSlice;
+export const {
+	useLoginMutation,
+	useSendLogoutMutation,
+	useRefreshMutation,
+	useLoginExternalMutation,
+} = authApiSlice;

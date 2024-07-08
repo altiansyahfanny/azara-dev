@@ -1,13 +1,12 @@
+import { useLoginExternalMutation, useLoginMutation } from '@/api/authApi';
 import { Logo } from '@/assets/landing/img';
 import { InputPassword } from '@/components/landing-page/input-password';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { BASE_URL } from '@/config';
 import AuthLayout from '@/layouts/AuthLayout';
 import { SignInRequest } from '@/model/auth';
 import { signInSchema } from '@/schema/auth';
-import { useLoginMutation } from '@/api/authApi';
 import { ApiResponse, ErrorResponse } from '@/types/api.type';
 import { DecodedToken } from '@/types/auth.type';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -19,11 +18,6 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { FaGoogle } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
-
-type LoginThirdParty = {
-	token: string;
-	refreshToken: string;
-};
 
 export default function SignIn() {
 	const navigate = useNavigate();
@@ -37,13 +31,14 @@ export default function SignIn() {
 	} = useForm<SignInRequest>({
 		resolver: zodResolver(signInSchema),
 		mode: 'onBlur',
-		defaultValues: {
-			email: 'johndoe@gmail.com',
-			password: 'test123',
-		},
+		// defaultValues: {
+		// 	email: 'johndoe@gmail.com',
+		// 	password: 'test123',
+		// },
 	});
 
 	const [login, { isLoading }] = useLoginMutation();
+	const [loginExternal] = useLoginExternalMutation();
 
 	const onSubmit = async (payload: SignInRequest) => {
 		try {
@@ -52,7 +47,7 @@ export default function SignIn() {
 			} = await login(payload).unwrap();
 			const { role }: DecodedToken = jwtDecode(token);
 
-			console.log('SignIn -> onFinish -> success : ', token);
+			// console.log('SignIn -> onFinish -> success : ', token);
 
 			localStorage.setItem('token', token);
 			localStorage.setItem('refreshToken', refreshToken);
@@ -64,7 +59,7 @@ export default function SignIn() {
 			}
 		} catch (err) {
 			const error = err as ApiResponse<ErrorResponse>;
-			console.log('SignIn -> onFinish -> error : ', error.data.message);
+			// console.log('SignIn -> onFinish -> error : ', error);
 			toast.error(error.data.message);
 		}
 	};
@@ -79,31 +74,36 @@ export default function SignIn() {
 					}
 				);
 
-				console.log('response google : ', response);
+				// console.log('response google : ', response);
 
 				if (response) {
-					const loginThirdParty: AxiosResponse<ApiResponse<LoginThirdParty>> = await axios.post(
-						`${BASE_URL}/auth/login/external`,
-						{
-							// email: 'ironman@gmail.com',
+					try {
+						const payload = {
 							email: response.data.email,
-						}
-					);
-					const { token, refreshToken } = loginThirdParty.data.data;
+						};
 
-					localStorage.setItem('token', token);
-					localStorage.setItem('refreshToken', refreshToken);
-					navigate('/');
+						const {
+							data: { token, refreshToken },
+						} = await loginExternal(payload).unwrap();
+
+						localStorage.setItem('token', token);
+						localStorage.setItem('refreshToken', refreshToken);
+						navigate('/');
+					} catch (err) {
+						const error = err as ApiResponse<ErrorResponse>;
+						toast.error(error.data.message);
+						// console.log('error third party : ', error.data.message);
+					}
 				}
 			} catch (error) {
 				toast.error('Login failed!');
-				console.log('error : ', error);
+				// console.log('error : ', error);
 			} finally {
 				setLoading(false);
 			}
 		},
 		onError: () => {
-			toast.error('Login failed!');
+			toast.error('Login gagal!');
 		},
 	});
 
@@ -123,7 +123,7 @@ export default function SignIn() {
 						<Input
 							id="email"
 							type="text"
-							placeholder="m@example.com"
+							// placeholder="m@example.com"
 							autoComplete="off"
 							{...register('email')}
 						/>
