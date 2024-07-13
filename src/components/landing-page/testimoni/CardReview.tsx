@@ -1,13 +1,13 @@
-import { ProfilePic } from '@/assets/landing/img';
 import { BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs';
 
 interface CardReviewProps {
+	imgSrc: string;
 	name: string;
 	rating: number;
 	message: string;
 }
 
-const CardReview = ({ rating, name, message }: CardReviewProps) => {
+const CardReview = ({ imgSrc, rating, name, message }: CardReviewProps) => {
 	const fullStars = Math.floor(rating / 2);
 	const halfStar = rating % 2;
 	const emptyStars = 5 - fullStars - halfStar;
@@ -15,7 +15,7 @@ const CardReview = ({ rating, name, message }: CardReviewProps) => {
 		<div className="p-4 shadow-lg rounded-lg bg-white border overflow-hidden my-4">
 			<div className="flex gap-4 items-center">
 				<img
-					src={ProfilePic}
+					src={imgSrc}
 					alt="Profile Picture"
 					className="w-20 2xl:w-28 aspect-square rounded-full"
 				/>

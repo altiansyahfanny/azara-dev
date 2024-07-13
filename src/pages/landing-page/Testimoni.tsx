@@ -1,7 +1,7 @@
 import { Illustration } from '@/assets/landing/svg';
 import CardReview from '@/components/landing-page/testimoni/CardReview';
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from '@/components/ui/carousel';
-import { TESTIMONI } from '@/data/data';
+import { TESTIMONI, TESTIMONIES } from '@/data/data';
 import Autoplay from 'embla-carousel-autoplay';
 import React from 'react';
 import { GoDot, GoDotFill } from 'react-icons/go';
@@ -35,9 +35,14 @@ const Testimoni = () => {
 
 					<Carousel className="" plugins={[Autoplay({ delay: 5000 })]} setApi={setApi}>
 						<CarouselContent className="">
-							{TESTIMONI.map((item, index) => (
+							{TESTIMONIES.slice(0, 5).map((item, index) => (
 								<CarouselItem key={index}>
-									<CardReview rating={item.rating} name={item.name} message={item.message} />
+									<CardReview
+										imgSrc={item.photo}
+										rating={10}
+										name={item.narasumber}
+										message={item.testimoni}
+									/>
 								</CarouselItem>
 							))}
 						</CarouselContent>

@@ -31,113 +31,145 @@ const Home = () => {
 
 	return (
 		<div id="home" className="">
-			<Carousel className="" plugins={[Autoplay({ delay: 100000 })]} setApi={setApi}>
-				<CarouselContent className="pb-4">
+			{/* > XL */}
+			<Carousel className="hidden xl:block" plugins={[Autoplay({ delay: 5000 })]} setApi={setApi}>
+				<CarouselContent>
 					<CarouselItem>
-						<div className="bg-yellow-500x carousel-item px-5 md:px-10 xl:px-40">
-							<div className="h-full">
-								<div className="flex items-center bg-red-500x h-full">
-									<div className="flex-1 bg-green-500x w-full lg:max-w-xl lg:text-center lg:mx-auto xl:max-w-3xl xl:w-full xl:text-left">
-										<h1 className="text-4xl 2xl:text-5xl leading-snug font-semibold bg-yellow-200x 3xl:text-6xl">
-											Bimbingan Belajar yang <br className="hidden xl:block" /> Memberikan&nbsp;
-											<br className="hidden xl:block" />
-											<p className="text-custom-green lg:inline">#PerhatianPenuh</p> bagi&nbsp;
-											<br className="hidden xl:block" />
-											Siswa dan Orang Tua
-										</h1>
-										<p className="text-black text-sm 2xl:text-base mt-4 3xl:text-xl">
-											Menyesuaikan dengan kurikulum terbaru di sekolah,{' '}
-											<br className="hidden xl:block" />
-											pemberian konseling untuk pengembangan karakter,{' '}
-											<br className="hidden xl:block" />
-											dan laporan rutin untuk orang tua.
-										</p>
-										<div className="flex lg:justify-center xl:justify-start">
-											<div className="h-1 w-40 bg-gray-900 mt-4" />
-										</div>
-									</div>
-
-									<div className="hidden xl:block">
-										<img
-											src={HeroImage}
-											className="xl:w-[400px] 2xl:w-[500px] 3xl:w-[600px]"
-											style={{ borderRadius: '2rem' }}
-										/>
+						<div className="grid grid-cols-2 px-20 pt-20">
+							<div className="flex flex-col justify-center">
+								<p className="font-semibold text-5xl leading-tight">
+									{`Bimbingan Belajar yang Memberikan `}
+									<span className="text-custom-green">#PerhatianPenuh</span>
+									{` bagi Siswa dan Orang Tua`}
+								</p>
+								<p className="mt-4 text-black text-opacity-60">
+									Menyesuaikan dengan kurikulum terbaru di sekolah, pemberian konseling untuk
+									pengembangan karakter, dan laporan rutin untuk orang tua.
+								</p>
+								<div className="mt-8">
+									<div className="h-1 w-40 bg-black bg-opacity-60" />
+								</div>
+							</div>
+							<div className="flex justify-end">
+								<img src={HeroImage} className="w-3/4" style={{ borderRadius: '2rem' }} />
+							</div>
+						</div>
+					</CarouselItem>
+					<CarouselItem>
+						<div className="grid grid-cols-5 bg-red-100x">
+							<div className="col-span-3 bg-[#F3D743B2] rounded-tr-full rounded-br-full px-20 pt-20">
+								<img src={HeroImage2} className="" />
+							</div>
+							<div className="col-span-2 flex items-center">
+								<div className="flex flex-col justify-end text-right pr-20 3xl:pxx-64">
+									<img src={PatternHero} className="" />
+									<p className="font-semibold text-5xl leading-tight mt-4">
+										{`Kesempatan Daftar Khusus `}
+										<span className="text-custom-green">#GRATIS</span>
+									</p>
+									<p className="text-black text-opacity-60 mt-4">
+										{`Jangan lewatkan kesempatan daftar program bimbingan belajar tanp dipungut biaya
+										sebelum `}
+										<span className="text-black font-medium">15 Juli 2024</span>
+									</p>
+									<div className="mt-8 flex justify-end">
+										<div className="h-1 w-40 bg-black bg-opacity-60" />
 									</div>
 								</div>
 							</div>
 						</div>
 					</CarouselItem>
 					<CarouselItem>
-						<div className="bg-red-200x relative carousel-item">
-							<div className="h-full relative flex items-center bg-blue-500x">
-								<img
-									src={HeroImage2}
-									className="hidden xl:block absolute xl:w-[500px] 2xl:w-[650px] 3xl:w-[800px]  bottom-0 left-40"
-								/>
-								<div className="hidden xl:block bg-[#F3D743B2] h-full w-1/2 rounded-tr-full rounded-br-full" />
-								<div className="flex-1 px-5 md:px-10 xl:px-20 bg-red-200x">
-									<div className="bg-green-500x lg:max-w-xl lg:text-center lg:mx-auto xl:w-full xl:text-right">
-										<img src={PatternHero} className="mb-4 hidden xl:block ml-auto" />
-										<h1 className="text-4xl leading-snug font-semibold 2xl:text-5xl 3xl:text-6xl">
-											Kesempatan <br className="hidden xl:block" /> <span>Daftar Khusus </span>
-											<br className="hidden xl:block" />
-											<p className="text-custom-green lg:inline">#GRATIS</p>
-										</h1>
-										<p className="text-black text-sm 2xl:text-base 3xl:text-xl">
-											<span>Jangan lewatkan kesempatan daftar </span>
-											<br className="hidden xl:block" />
-											program bimbingan belajar tanpa&nbsp;
-											<br className="hidden xl:block" />
-											dipungut biaya sebelum
-											<br className="hidden xl:block" />
-											<span className="font-medium text-black"> 15 Juli 2024</span>
-										</p>
-										<div className="flex lg:justify-center xl:justify-end">
-											<div className="h-1 w-40 bg-gray-900 mt-4" />
-										</div>
-									</div>
+						<div className="grid grid-cols-3 px-20">
+							<div className="col-span-1 flex flex-col justify-center">
+								<div className="font-semibold text-5xl leading-tight">
+									<p>Ajak Teman dan Dapatkan</p>
+									<p className="text-custom-green">Rp 50.000</p>
+								</div>
+								<p className="mt-4 text-black text-opacity-60">
+									Bagikan pengalaman positifmu dan ajak teman-temanmu untuk bergabung!
+								</p>
+								<div className="mt-8">
+									<div className="h-1 w-40 bg-black bg-opacity-60" />
 								</div>
 							</div>
-						</div>
-					</CarouselItem>
-					<CarouselItem>
-						<div className="bg-yellow-500x carousel-item px-5 md:px-10 xl:px-40 bg-blue-500x">
-							<div className="h-full bg-purple-500x">
-								<div className="flex items-center bg-red-500x h-full bg-yellow-500x">
-									<div className="flex-1 bg-green-500x lg:max-w-xl lg:mx-auto lg:text-center xl:text-left">
-										<h1 className="text-4xl 2xl:text-5xl 3xl:text-6xl leading-snug bg-yellow-500x font-semibold">
-											Ajak Teman dan <br className="hidden xl:block" />
-											Dapatkan
-											<br className="hidden xl:block" />
-											<p className="text-custom-green lg:inline">Rp. 50.000</p>
-										</h1>
-										<div className="flex justify-start lg:justify-center xl:justify-start">
-											<div className="h-1 w-40 bg-gray-900 mt-4" />
-										</div>
-										<p className="text-black text-sm mt-4 2xl:text-base 3xl:text-xl">
-											Bagikan&nbsp;pengalaman&nbsp;
-											<br className="hidden xl:block" />
-											positifmu&nbsp;dan&nbsp;ajak&nbsp;
-											<br className="hidden xl:block" />
-											teman-temanmu&nbsp;untuk&nbsp;
-											<br className="hidden xl:block" />
-											bergabung!
-										</p>
-									</div>
-									<div className="bg-red-400z hidden xl:block">
-										<img
-											src={HeroImage3}
-											className="w-[600px] 2xl:w-[800px] 3xl:w-[900px] "
-											style={{ borderRadius: '2rem' }}
-										/>
-									</div>
-								</div>
+							<div className="flex justify-end col-span-2">
+								<img src={HeroImage3} className="w-full" style={{ borderRadius: '2rem' }} />
 							</div>
 						</div>
 					</CarouselItem>
 				</CarouselContent>
 			</Carousel>
+
+			{/* < XL */}
+			{/* <Carousel className="xl:hidden" plugins={[Autoplay({ delay: 5000 })]} setApi={setApi}>
+				<CarouselContent>
+					<CarouselItem>
+						<div className="p-5">
+							<div className="">
+								<p className="font-semibold text-3xl leading-tight text-centerx">
+									{`Bimbingan Belajar yang Memberikan `}
+									<span className="text-custom-green">#PerhatianPenuh</span>
+									{` bagi Siswa dan Orang Tua`}
+								</p>
+								<div className="flex justify-center mt-4">
+									<img src={HeroImage} className="w-3/4" style={{ borderRadius: '2rem' }} />
+								</div>
+								<p className="mt-4 text-sm text-black text-opacity-60 text-centerx">
+									Menyesuaikan dengan kurikulum terbaru di sekolah, pemberian konseling untuk
+									pengembangan karakter, dan laporan rutin untuk orang tua.
+								</p>
+								<div className="mt-8">
+									<div className="h-1 w-40 bg-black bg-opacity-60" />
+								</div>
+							</div>
+						</div>
+					</CarouselItem>
+					<CarouselItem>
+						<div className="p-5">
+							<div className="">
+								<p className="font-semibold text-3xl leading-tight text-right">
+									{`Kesempatan Daftar Kursus `}
+									<span className="text-custom-green">#GRATIS</span>
+								</p>
+								<div className="flex justify-center mt-4 bg-transparent relative">
+									<div className="top-4 bottom-4 aspect-square bg-yellow-300 rounded-full absolute -z-10" />
+									<img src={HeroImage2} className="w-3/4" style={{ borderRadius: '2rem' }} />
+								</div>
+								<p className="mt-4 text-sm text-black text-opacity-60 text-centerx">
+									{`Jangan lewatkan kesempatan daftar program bimbingan belajar tanpa dipungut biaya
+									sebelum `}
+									<span className="font-medium text-black">15 Juli 2024</span>
+								</p>
+								<div className="mt-8">
+									<div className="h-1 w-40 bg-black bg-opacity-60" />
+								</div>
+							</div>
+						</div>
+					</CarouselItem>
+					<CarouselItem>
+						<div className="">
+							<div className="px-5 pt-5">
+								<p className="font-semibold text-3xl leading-tight text-center">
+									{`Ajak Teman dan Dapatkan `}
+									<span className="text-custom-green">Rp 50.000</span>
+								</p>
+							</div>
+							<div className="flex justify-center mt-4 bg-red-50">
+								<img src={HeroImage3} className="w-full" style={{ borderRadius: '2rem' }} />
+							</div>
+							<p className="mt-4 text-sm text-black text-opacity-60 text-centerx px-6">
+								Menyesuaikan dengan kurikulum terbaru di sekolah, pemberian konseling untuk
+								pengembangan karakter, dan laporan rutin untuk orang tua.
+							</p>
+							<div className="mt-8 px-6 pb-6">
+								<div className="h-1 w-40 bg-black bg-opacity-60" />
+							</div>
+						</div>
+					</CarouselItem>
+				</CarouselContent>
+			</Carousel> */}
+
 			<div className="flex gap-4 items-center justify-center">
 				{Array.from({ length: 3 }).map((_, index) => {
 					return index === current - 1 ? (
