@@ -31,8 +31,8 @@ const Home = () => {
 
 	return (
 		<div id="home" className="">
-			{/* > XL */}
-			<Carousel className="hidden xl:block" plugins={[Autoplay({ delay: 5000 })]} setApi={setApi}>
+			{/* > LG */}
+			<Carousel className="hidden lg:block" plugins={[Autoplay({ delay: 5000 })]} setApi={setApi}>
 				<CarouselContent>
 					<CarouselItem>
 						<div className="grid grid-cols-2 px-20 pt-20">
@@ -101,8 +101,8 @@ const Home = () => {
 				</CarouselContent>
 			</Carousel>
 
-			{/* < XL */}
-			{/* <Carousel className="xl:hidden" plugins={[Autoplay({ delay: 5000 })]} setApi={setApi}>
+			{/* < LG */}
+			<Carousel className="xl:hidden" plugins={[Autoplay({ delay: 5000 })]} setApi={setApi}>
 				<CarouselContent>
 					<CarouselItem>
 						<div className="p-5">
@@ -168,7 +168,7 @@ const Home = () => {
 						</div>
 					</CarouselItem>
 				</CarouselContent>
-			</Carousel> */}
+			</Carousel>
 
 			<div className="flex gap-4 items-center justify-center">
 				{Array.from({ length: 3 }).map((_, index) => {
