@@ -21,7 +21,7 @@ const CardReview = ({ imgSrc, rating, name, message, desc }: CardReviewProps) =>
 				<img
 					src={imgSrc}
 					alt="Profile Picture"
-					className="w-20 2xl:w-28 aspect-square rounded-full"
+					className="w-20 2xl:w-28 aspect-square rounded-full object-cover"
 				/>
 				<div className="flex flex-col">
 					<div className="flex gap-0.5">

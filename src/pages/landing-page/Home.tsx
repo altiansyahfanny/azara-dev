@@ -60,16 +60,17 @@ const Home = () => {
 							<div className="col-span-3 bg-[#F3D743B2] rounded-tr-full rounded-br-full px-20 pt-20">
 								<img src={HeroImage2} className="" />
 							</div>
-							<div className="col-span-2 flex items-center bg-blue-200x">
+							<div className="col-span-2 flex items-center justify-end">
 								<div className="flex flex-col justify-end text-right pr-20 3xl:pxx-64">
-									<div className="flex justify-end bg-red-200x">
+									<div className="flex justify-end">
 										<img src={PatternHero} className="" />
 									</div>
 									<p className="font-semibold text-5xl leading-tight mt-4">
 										{`Kesempatan Daftar Khusus `}
 										<span className="text-custom-green">#GRATIS</span>
 									</p>
-									<p className="text-black text-opacity-60 mt-4">
+
+									<p className="text-black text-opacity-60 mt-4 max-w-xs self-end">
 										{`Jangan lewatkan kesempatan daftar program bimbingan belajar tanp dipungut biaya
 										sebelum `}
 										<span className="text-black font-medium">15 Juli 2024</span>
