@@ -42,6 +42,7 @@ const Testimoni = () => {
 										rating={10}
 										name={item.narasumber}
 										message={item.testimoni}
+										desc={item.instansi}
 									/>
 								</CarouselItem>
 							))}

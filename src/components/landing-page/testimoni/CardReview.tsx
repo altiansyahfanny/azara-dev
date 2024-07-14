@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs';
 
 interface CardReviewProps {
@@ -5,12 +6,15 @@ interface CardReviewProps {
 	name: string;
 	rating: number;
 	message: string;
+	desc: string;
 }
 
-const CardReview = ({ imgSrc, rating, name, message }: CardReviewProps) => {
+const CardReview = ({ imgSrc, rating, name, message, desc }: CardReviewProps) => {
 	const fullStars = Math.floor(rating / 2);
 	const halfStar = rating % 2;
 	const emptyStars = 5 - fullStars - halfStar;
+
+	const [isExpand, setIsExpand] = useState(false);
 	return (
 		<div className="p-4 shadow-lg rounded-lg bg-white border overflow-hidden my-4">
 			<div className="flex gap-4 items-center">
@@ -30,10 +34,13 @@ const CardReview = ({ imgSrc, rating, name, message }: CardReviewProps) => {
 						))}
 					</div>
 					<h1 className="text-lg 2xl:text-2xl font-bold mt-2">{name}</h1>
-					<p className="text-sm 2xl:text-lg">Parent</p>
+					<p className="text-sm 2xl:text-lg">{desc}</p>
 				</div>
 			</div>
-			<p className="text-sm mt-4 line-clamp-3 2xl:text-lg">“{message}”</p>
+			<p className={`text-sm mt-4 2xl:text-lg ${!isExpand && 'line-clamp-3'}`}>“{message}”</p>
+			<button className="mt-4 text-sm text-custom-green" onClick={() => setIsExpand(!isExpand)}>
+				{isExpand ? 'Read Less' : 'Read More'}
+			</button>
 		</div>
 	);
 };

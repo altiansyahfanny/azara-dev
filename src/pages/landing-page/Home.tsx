@@ -56,13 +56,15 @@ const Home = () => {
 						</div>
 					</CarouselItem>
 					<CarouselItem>
-						<div className="grid grid-cols-5 bg-red-100x">
+						<div className="grid grid-cols-5 gap-10 bg-red-100x">
 							<div className="col-span-3 bg-[#F3D743B2] rounded-tr-full rounded-br-full px-20 pt-20">
 								<img src={HeroImage2} className="" />
 							</div>
-							<div className="col-span-2 flex items-center">
+							<div className="col-span-2 flex items-center bg-blue-200x">
 								<div className="flex flex-col justify-end text-right pr-20 3xl:pxx-64">
-									<img src={PatternHero} className="" />
+									<div className="flex justify-end bg-red-200x">
+										<img src={PatternHero} className="" />
+									</div>
 									<p className="font-semibold text-5xl leading-tight mt-4">
 										{`Kesempatan Daftar Khusus `}
 										<span className="text-custom-green">#GRATIS</span>
