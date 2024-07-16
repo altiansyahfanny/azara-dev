@@ -1,5 +1,5 @@
 import { useGetUserDetailQuery } from '@/api/userApi';
-import { ProfileImg } from '@/assets/dashboard/img';
+import { DummyProfile } from '@/assets/dashboard/img';
 import {
 	Breadcrumb,
 	BreadcrumbItem,
@@ -94,7 +94,7 @@ const Header = () => {
 						// onClick={() => setIsOpen(true)}
 					>
 						<img
-							src={user?.data.imageUrl ?? ProfileImg}
+							src={user?.data.imageUrl ?? DummyProfile}
 							alt="Avatar"
 							className="overflow-hidden rounded-full object-cover w-9 aspect-square object-center"
 						/>
