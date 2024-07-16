@@ -95,10 +95,8 @@ const Header = () => {
 					>
 						<img
 							src={user?.data.imageUrl ?? ProfileImg}
-							width={36}
-							height={36}
 							alt="Avatar"
-							className="overflow-hidden rounded-full"
+							className="overflow-hidden rounded-full object-cover w-9 aspect-square object-center"
 						/>
 					</Button>
 				</DropdownMenuTrigger>

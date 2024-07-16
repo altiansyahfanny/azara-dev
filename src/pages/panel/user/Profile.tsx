@@ -31,7 +31,7 @@ const Profile = () => {
 					<div className="rounded-lg border p-4 flex items-center justify-center flex-col gap-4">
 						<img
 							src={user.data.imageUrl ?? DummyProfile}
-							className="w-32 rounded-full aspect-square"
+							className="w-32 rounded-full aspect-square object-center object-cover"
 						/>
 						<div className="text-center">
 							<p className="text-xl font-semibold">{`${user.data.firstName} ${user.data.lastName}`}</p>

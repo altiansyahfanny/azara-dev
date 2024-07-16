@@ -27,7 +27,7 @@ const UserProfile = () => {
 				<div className="lg:col-span-1">
 					<div className="rounded-lg border p-4 flex items-center justify-center flex-col gap-4">
 						<img
-							src={user.data.imageUrl ? 'c' : DummyProfile}
+							src={user.data.imageUrl ?? DummyProfile}
 							className="w-32 rounded-full aspect-square"
 						/>
 						<div className="text-center">
