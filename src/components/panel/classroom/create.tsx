@@ -104,7 +104,7 @@ export default function CreateClassroom() {
 					name="classroomName"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Nama Mata Pelajaran</FormLabel>
+							<FormLabel>Nama Kelas</FormLabel>
 							<FormControl>
 								<Input {...field} />
 							</FormControl>

@@ -46,7 +46,7 @@ const AssignTeacherCourse = () => {
 
 			console.log('assign -> payload : ', assignTeacherAndCourseSchemaRequest);
 
-			return;
+			// return;
 
 			const result = await assign(assignTeacherAndCourseSchemaRequest).unwrap();
 

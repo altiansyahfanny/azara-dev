@@ -71,7 +71,7 @@ const Home = () => {
 									</p>
 
 									<p className="text-black text-opacity-60 mt-4 max-w-xs self-end">
-										{`Jangan lewatkan kesempatan daftar program bimbingan belajar tanp dipungut biaya
+										{`Jangan lewatkan kesempatan daftar program bimbingan belajar tanpa dipungut biaya
 										sebelum `}
 										<span className="text-black font-medium">15 Juli 2024</span>
 									</p>

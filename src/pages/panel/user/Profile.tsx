@@ -5,8 +5,11 @@ import PageError from '@/components/page-error';
 import SkeletonLoading from '@/components/skeleton-loading';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import useTitle from '@/hooks/useTitle';
 
 const Profile = () => {
+	useTitle('Profile');
+
 	const { data: user, isLoading, isError, isSuccess } = useGetUserDetailQuery();
 
 	let content;
@@ -19,13 +22,15 @@ const Profile = () => {
 		content = <SkeletonLoading />;
 	}
 
+	console.log('user : ', user);
+
 	if (isSuccess) {
 		content = (
 			<div className="grid grid-cols-3 gap-4">
 				<div className="col-span-1">
 					<div className="rounded-lg border p-4 flex items-center justify-center flex-col gap-4">
 						<img
-							src={user.data.imageUrl ? 'c' : DummyProfile}
+							src={user.data.imageUrl ?? DummyProfile}
 							className="w-32 rounded-full aspect-square"
 						/>
 						<div className="text-center">

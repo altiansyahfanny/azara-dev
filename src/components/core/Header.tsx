@@ -1,3 +1,4 @@
+import { useGetUserDetailQuery } from '@/api/userApi';
 import { ProfileImg } from '@/assets/dashboard/img';
 import {
 	Breadcrumb,
@@ -44,6 +45,13 @@ const Header = () => {
 
 	const breadcrumbs = useBreadcrumbs(routes);
 
+	const { data: user, isLoading, isError, isSuccess } = useGetUserDetailQuery();
+
+	let userContent;
+	if (isLoading) userContent = 'Loading...';
+	if (isError) userContent = 'Error';
+	if (isSuccess) userContent = `${user.data.firstName} ${user.data.lastName}`;
+
 	return (
 		<header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-4 border-b px-4 pb-4 sm:static sm:h-auto sm:bg-transparent sm:px-6">
 			<Breadcrumb>
@@ -86,7 +94,7 @@ const Header = () => {
 						// onClick={() => setIsOpen(true)}
 					>
 						<img
-							src={ProfileImg}
+							src={user?.data.imageUrl ?? ProfileImg}
 							width={36}
 							height={36}
 							alt="Avatar"
@@ -98,7 +106,7 @@ const Header = () => {
 					align="end"
 					//  onClick={() => setIsOpen(false)}
 				>
-					<DropdownMenuLabel>Altiansyah Fanny</DropdownMenuLabel>
+					<DropdownMenuLabel>{userContent}</DropdownMenuLabel>
 					<DropdownMenuSeparator />
 					<DropdownMenuItem>
 						<Link to={'/user/profile'} className=" w-full">
