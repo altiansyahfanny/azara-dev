@@ -15,7 +15,7 @@ const CLASS_SERVICE = [
 			items: [
 				{
 					title: 'Paket SD Kelas 4 dan 5',
-					price: '525.000',
+					price: '550.000',
 					details: [
 						'Ruangan ber-AC',
 						'Bimbingan Pekerjaan Rumah',
@@ -25,7 +25,7 @@ const CLASS_SERVICE = [
 				},
 				{
 					title: 'Paket SD Kelas 6',
-					price: '550.000',
+					price: '575.000',
 					details: [
 						'Ruangan ber-AC',
 						'Bimbingan Pekerjaan Rumah',
@@ -104,6 +104,7 @@ const CLASS_SERVICE = [
 		},
 	},
 ];
+
 const Course = ({ isPrivate }: { isPrivate: boolean }) => {
 	return CLASS_SERVICE.map((data, i) => (
 		<ServiceCard

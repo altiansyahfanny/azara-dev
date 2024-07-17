@@ -23,7 +23,7 @@ const PriceCard = ({
 				<div className="">
 					<h3 className="text-sm text-gray-600">{item.title}</h3>
 					<p className="text-xl font-medium">
-						IDR. {item.price} <span className="text-sm">/ sesi</span>
+						IDR. {item.price} <span className="text-sm">/ {isPrivate ? 'sesi' : 'bulan'}</span>
 					</p>
 				</div>
 				<hr className="my-4" />
