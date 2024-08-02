@@ -162,7 +162,7 @@ const TableBrowse = () => {
 				return (
 					<div className="flex items-center gap-x-2">
 						<Table.ButtonAction onClick={() => navigate(`${classroom.id}`)} Icon={Eye} />
-						<Table.ButtonAction onClick={() => onClickButtonUpdate(classroom)} Icon={FilePenLine} />
+						{/* <Table.ButtonAction onClick={() => onClickButtonUpdate(classroom)} Icon={FilePenLine} /> */}
 					</div>
 				);
 			},
