@@ -1,21 +1,16 @@
 import { useGetClassroomsQuery } from '@/api/classroomApi';
 import Table from '@/components/table';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { formatNumber } from '@/helpers/app-helper';
 import { TableColumnType, TableProps as TablePropsAntd } from '@/lib/antd';
-import {
-	setDataState,
-	setFilterState,
-	setModalState,
-	setPaginationState,
-} from '@/store/features/classroomSlice';
+import { setFilterState, setModalState, setPaginationState } from '@/store/features/classroomSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { Classroom, ClassroomFilter } from '@/types/classroom.type';
-import { Eye, FilePenLine, PlusCircle } from 'lucide-react';
+import { Eye, PlusCircle } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import { useNavigate } from 'react-router-dom';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import UpdateClassroom from './update';
 
 const TableBrowse = () => {
@@ -42,13 +37,6 @@ const TableBrowse = () => {
 	const onOpenChangeUpdate = (value: boolean) => {
 		dispatch(setModalState({ value: { modalUpdate: value } }));
 	};
-
-	const onClickButtonUpdate = (classroom: Classroom) => {
-		dispatch(setDataState({ value: classroom }));
-		dispatch(setModalState({ value: { modalUpdate: true } }));
-	};
-
-	//
 
 	const [filter, setFilter] = useState<ClassroomFilter>({
 		cycleDescription: '',
@@ -162,7 +150,6 @@ const TableBrowse = () => {
 				return (
 					<div className="flex items-center gap-x-2">
 						<Table.ButtonAction onClick={() => navigate(`${classroom.id}`)} Icon={Eye} />
-						{/* <Table.ButtonAction onClick={() => onClickButtonUpdate(classroom)} Icon={FilePenLine} /> */}
 					</div>
 				);
 			},
