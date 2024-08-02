@@ -3,18 +3,25 @@ import Table from '@/components/table';
 import { Input } from '@/components/ui/input';
 import { formatNumber } from '@/helpers/app-helper';
 import { TableColumnType, TableProps as TablePropsAntd } from '@/lib/antd';
-import { setFilterState, setModalState, setPaginationState } from '@/store/features/classroomSlice';
+import {
+	setDataState,
+	setFilterState,
+	setModalState,
+	setPaginationState,
+} from '@/store/features/classroomSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { Classroom, ClassroomFilter } from '@/types/classroom.type';
-import { Eye, PlusCircle } from 'lucide-react';
+import { Eye, FilePenLine, PlusCircle } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import { useNavigate } from 'react-router-dom';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import UpdateClassroom from './update';
 
 const TableBrowse = () => {
 	const dispatch = useAppDispatch();
 
-	const { paginationState, filterState } = useAppSelector((state) => state.classroom);
+	const { paginationState, filterState, modalState } = useAppSelector((state) => state.classroom);
 
 	const {
 		data: classrooms,
@@ -30,6 +37,15 @@ const TableBrowse = () => {
 
 	const onOpenChange = (value: boolean) => {
 		dispatch(setModalState({ value: { modalCreate: value } }));
+	};
+
+	const onOpenChangeUpdate = (value: boolean) => {
+		dispatch(setModalState({ value: { modalUpdate: value } }));
+	};
+
+	const onClickButtonUpdate = (classroom: Classroom) => {
+		dispatch(setDataState({ value: classroom }));
+		dispatch(setModalState({ value: { modalUpdate: true } }));
 	};
 
 	//
@@ -143,7 +159,12 @@ const TableBrowse = () => {
 			textAlign: 'center',
 			width: 80,
 			render: (classroom: Classroom) => {
-				return <Table.ButtonAction onClick={() => navigate(`${classroom.id}`)} Icon={Eye} />;
+				return (
+					<div className="flex items-center gap-x-2">
+						<Table.ButtonAction onClick={() => navigate(`${classroom.id}`)} Icon={Eye} />
+						<Table.ButtonAction onClick={() => onClickButtonUpdate(classroom)} Icon={FilePenLine} />
+					</div>
+				);
 			},
 		},
 		{
@@ -165,26 +186,42 @@ const TableBrowse = () => {
 			...getColumnSearchProps('price'),
 		},
 	];
+
 	//
 
 	return (
-		<Table
-			dataSource={classrooms?.data.classrooms}
-			columns={columns}
-			loading={isLoading}
-			error={isError}
-			success={isSuccess}
-			actions={[{ Icon: PlusCircle, text: 'Tambah Kelas', onClick: () => onOpenChange(true) }]}
-			pagination={{
-				totalItems: paginationState.total,
-				itemsPerPage: paginationState.pageSize,
-				currentPage: paginationState.page,
-				onPageChange: (number) => {
-					dispatch(setPaginationState({ value: { page: number } }));
-				},
-				onPageSizeChange: (number) => dispatch(setPaginationState({ value: { pageSize: number } })),
-			}}
-		/>
+		<>
+			<Table
+				dataSource={classrooms?.data.classrooms}
+				columns={columns}
+				loading={isLoading}
+				error={isError}
+				success={isSuccess}
+				actions={[{ Icon: PlusCircle, text: 'Tambah Kelas', onClick: () => onOpenChange(true) }]}
+				pagination={{
+					totalItems: paginationState.total,
+					itemsPerPage: paginationState.pageSize,
+					currentPage: paginationState.page,
+					onPageChange: (number) => {
+						dispatch(setPaginationState({ value: { page: number } }));
+					},
+					onPageSizeChange: (number) =>
+						dispatch(setPaginationState({ value: { pageSize: number } })),
+				}}
+			/>
+
+			<Dialog open={modalState.modalUpdate} onOpenChange={onOpenChangeUpdate}>
+				<DialogContent>
+					<div className="max-h-96 bg-green-300x px-4 overflow-scroll no-scrollbar bggray">
+						<DialogHeader>
+							<DialogTitle>Edit Kelas</DialogTitle>
+						</DialogHeader>
+						<hr className="my-4" />
+						<UpdateClassroom />
+					</div>
+				</DialogContent>
+			</Dialog>
+		</>
 	);
 };
 

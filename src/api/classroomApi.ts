@@ -6,7 +6,6 @@ import { Classroom, ClassroomId, ClassroomsResponse } from '@/types/classroom.ty
 import { z } from 'zod';
 import { apiSlice } from './api';
 import { parseStringCurrencyToNumber } from '@/helpers/app-helper';
-// import { enrollStudentSchema } from '@/schema/classroomId';
 import { AssignTeacherAndCourseSchemaRequest, EnrollStudentRequest } from '@/model/classroom';
 
 export const classroomApiSlice = apiSlice.injectEndpoints({
@@ -41,11 +40,6 @@ export const classroomApiSlice = apiSlice.injectEndpoints({
 				return {
 					url: '/classroom/enroll',
 					method: 'POST',
-					// body: {
-					// 	...payload,
-					// 	studentId: payload.studentId.toString(),
-					// 	classroomId: payload.classroomId.toString(),
-					// },
 					body: payload,
 				};
 			},

@@ -8,6 +8,7 @@ const Service = () => {
 	const tooglePrivate = () => {
 		setIsPrivate(!isPrivate);
 	};
+
 	return (
 		<div id="service">
 			<div className="relative py-12 bg-custom-black px-5">
