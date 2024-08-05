@@ -1,20 +1,27 @@
 import { useGetCyclesQuery } from '@/api/cycleApi';
 import Table from '@/components/table';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import InputDate from '@/components/ui/input-date';
 import { TableColumnType, TableProps as TablePropsAntd } from '@/lib/antd';
-import { setFilterState, setModalState, setPaginationState } from '@/store/features/cycleSlice';
+import {
+	setDataState,
+	setFilterState,
+	setModalState,
+	setPaginationState,
+} from '@/store/features/cycleSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { Cycle, CycleFilter } from '@/types/cycle.type';
 import { format } from 'date-fns';
-import { PlusCircle } from 'lucide-react';
+import { FilePenLine, PlusCircle } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
+import UpdateCycle from './update';
 
 const TableBrowse = () => {
 	const dispatch = useAppDispatch();
 
-	const { paginationState, filterState } = useAppSelector((state) => state.cycle);
+	const { paginationState, filterState, modalState } = useAppSelector((state) => state.cycle);
 
 	const {
 		data: cycles,
@@ -30,6 +37,10 @@ const TableBrowse = () => {
 
 	const onOpenChange = (value: boolean) => {
 		dispatch(setModalState({ value: { modalCreate: value } }));
+	};
+
+	const onOpenChangeUpdate = (value: boolean) => {
+		dispatch(setModalState({ value: { modalUpdate: value } }));
 	};
 
 	//
@@ -137,7 +148,28 @@ const TableBrowse = () => {
 		},
 	});
 
+	const onClickButtonUpdate = (cycle: Cycle) => {
+		console.log('cycle : ', cycle);
+		// return;
+		dispatch(setDataState({ value: cycle }));
+		dispatch(setModalState({ value: { modalUpdate: true } }));
+	};
+
 	const columns: TablePropsAntd<Cycle>['columns'] = [
+		{
+			title: 'Aksi',
+			type: 'action',
+			key: 'action',
+			textAlign: 'center',
+			width: 80,
+			render: (cycle: Cycle) => {
+				return (
+					<div className="flex items-center gap-x-2">
+						<Table.ButtonAction onClick={() => onClickButtonUpdate(cycle)} Icon={FilePenLine} />
+					</div>
+				);
+			},
+		},
 		{
 			title: 'Tanggal Mulai',
 			dataIndex: 'startDate',
@@ -160,23 +192,38 @@ const TableBrowse = () => {
 	//
 
 	return (
-		<Table
-			dataSource={cycles?.data.cycles}
-			columns={columns}
-			loading={isLoading}
-			error={isError}
-			success={isSuccess}
-			actions={[{ Icon: PlusCircle, text: 'Tahun Ajaran', onClick: () => onOpenChange(true) }]}
-			pagination={{
-				totalItems: paginationState.total,
-				itemsPerPage: paginationState.pageSize,
-				currentPage: paginationState.page,
-				onPageChange: (number) => {
-					dispatch(setPaginationState({ value: { page: number } }));
-				},
-				onPageSizeChange: (number) => dispatch(setPaginationState({ value: { pageSize: number } })),
-			}}
-		/>
+		<>
+			<Table
+				dataSource={cycles?.data.cycles}
+				columns={columns}
+				loading={isLoading}
+				error={isError}
+				success={isSuccess}
+				actions={[{ Icon: PlusCircle, text: 'Tahun Ajaran', onClick: () => onOpenChange(true) }]}
+				pagination={{
+					totalItems: paginationState.total,
+					itemsPerPage: paginationState.pageSize,
+					currentPage: paginationState.page,
+					onPageChange: (number) => {
+						dispatch(setPaginationState({ value: { page: number } }));
+					},
+					onPageSizeChange: (number) =>
+						dispatch(setPaginationState({ value: { pageSize: number } })),
+				}}
+			/>
+
+			<Dialog open={modalState.modalUpdate} onOpenChange={onOpenChangeUpdate}>
+				<DialogContent>
+					<div className="max-h-96 bg-green-300x px-4 overflow-scroll no-scrollbar bggray">
+						<DialogHeader>
+							<DialogTitle>Edit Tahun Ajaran</DialogTitle>
+						</DialogHeader>
+						<hr className="my-4" />
+						<UpdateCycle />
+					</div>
+				</DialogContent>
+			</Dialog>
+		</>
 	);
 };
 

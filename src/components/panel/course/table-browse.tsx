@@ -3,13 +3,20 @@ import Table from '@/components/table';
 import { Input } from '@/components/ui/input';
 import { TableColumnType, TableProps as TablePropsAntd } from '@/lib/antd';
 import { setAssignCourse } from '@/store/features/classroomIdSlice';
-import { setFilterState, setModalState, setPaginationState } from '@/store/features/courseSlice';
+import {
+	setDataState,
+	setFilterState,
+	setModalState,
+	setPaginationState,
+} from '@/store/features/courseSlice';
 import { setModalState as setModalStateTeacherSlice } from '@/store/features/classroomIdSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { Course, CourseFilter } from '@/types/course.type';
-import { Plus, PlusCircle } from 'lucide-react';
+import { FilePenLine, Plus, PlusCircle } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import UpdateCourse from './update';
 
 interface TableBrowseProps {
 	isBrowse?: boolean;
@@ -18,7 +25,7 @@ interface TableBrowseProps {
 const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
 	const dispatch = useAppDispatch();
 
-	const { paginationState, filterState } = useAppSelector((state) => state.course);
+	const { paginationState, filterState, modalState } = useAppSelector((state) => state.course);
 
 	const onAssign = (course: Course) => {
 		dispatch(setAssignCourse({ value: { course } }));
@@ -40,6 +47,17 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
 
 	const onOpenChange = (value: boolean) => {
 		dispatch(setModalState({ value: { modalCreate: value } }));
+	};
+
+	const onOpenChangeUpdate = (value: boolean) => {
+		dispatch(setModalState({ value: { modalUpdate: value } }));
+	};
+
+	const onClickButtonUpdate = (course: Course) => {
+		console.log('course : ', course);
+		// return;
+		dispatch(setDataState({ value: course }));
+		dispatch(setModalState({ value: { modalUpdate: true } }));
 	};
 
 	//
@@ -130,6 +148,20 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
 
 	const columns: TablePropsAntd<Course>['columns'] = [
 		{
+			title: 'Aksi',
+			type: 'action',
+			key: 'action',
+			textAlign: 'center',
+			width: 80,
+			render: (course: Course) => {
+				return (
+					<div className="flex items-center gap-x-2">
+						<Table.ButtonAction onClick={() => onClickButtonUpdate(course)} Icon={FilePenLine} />
+					</div>
+				);
+			},
+		},
+		{
 			title: 'Nama Mata Pelajaran',
 			dataIndex: 'courseName',
 			key: 'courseName',
@@ -160,27 +192,41 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
 	//
 
 	return (
-		<Table
-			dataSource={courses?.data.courses}
-			columns={isBrowse ? columns : columnsWithAction}
-			loading={isLoading}
-			error={isError}
-			success={isSuccess}
-			actions={
-				isBrowse
-					? [{ Icon: PlusCircle, text: 'Mata Pelajaran', onClick: () => onOpenChange(true) }]
-					: []
-			}
-			pagination={{
-				totalItems: paginationState.total,
-				itemsPerPage: paginationState.pageSize,
-				currentPage: paginationState.page,
-				onPageChange: (number) => {
-					dispatch(setPaginationState({ value: { page: number } }));
-				},
-				onPageSizeChange: (number) => dispatch(setPaginationState({ value: { pageSize: number } })),
-			}}
-		/>
+		<>
+			<Table
+				dataSource={courses?.data.courses}
+				columns={isBrowse ? columns : columnsWithAction}
+				loading={isLoading}
+				error={isError}
+				success={isSuccess}
+				actions={
+					isBrowse
+						? [{ Icon: PlusCircle, text: 'Mata Pelajaran', onClick: () => onOpenChange(true) }]
+						: []
+				}
+				pagination={{
+					totalItems: paginationState.total,
+					itemsPerPage: paginationState.pageSize,
+					currentPage: paginationState.page,
+					onPageChange: (number) => {
+						dispatch(setPaginationState({ value: { page: number } }));
+					},
+					onPageSizeChange: (number) =>
+						dispatch(setPaginationState({ value: { pageSize: number } })),
+				}}
+			/>
+			<Dialog open={modalState.modalUpdate} onOpenChange={onOpenChangeUpdate}>
+				<DialogContent>
+					<div className="max-h-96 bg-green-300x px-4 overflow-scroll no-scrollbar bggray">
+						<DialogHeader>
+							<DialogTitle>Edit Mata Ajaran</DialogTitle>
+						</DialogHeader>
+						<hr className="my-4" />
+						<UpdateCourse />
+					</div>
+				</DialogContent>
+			</Dialog>
+		</>
 	);
 };
 

@@ -1,14 +1,6 @@
 import { useAddCourseMutation } from '@/api/courseApi';
 import { Button } from '@/components/ui/button';
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { Form } from '@/components/ui/form';
 import { createCourseSchema } from '@/schema/course';
 import { setModalState } from '@/store/features/courseSlice';
 import { useAppDispatch } from '@/store/store';
@@ -17,6 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { z } from 'zod';
+import FormCourse from './form';
 
 export default function CreateCourse() {
 	const dispatch = useAppDispatch();
@@ -31,7 +24,7 @@ export default function CreateCourse() {
 	const onSubmit = async (payload: z.infer<typeof createCourseSchema>) => {
 		try {
 			console.log('CreateCourse -> payload : ', payload);
-			// return;
+			return;
 
 			const result = await create(payload).unwrap();
 
@@ -49,41 +42,12 @@ export default function CreateCourse() {
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-				<FormField
-					control={form.control}
-					name="courseName"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Nama Mata Pelajaran</FormLabel>
-							<FormControl>
-								<Input {...field} />
-							</FormControl>
-							{/* <FormDescription>This is your public display name.</FormDescription> */}
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<FormField
-					control={form.control}
-					name="description"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Keterangan</FormLabel>
-							<FormControl>
-								<Input {...field} />
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
+				<FormCourse form={form} />
 
 				<div className="flex gap-2 items-center justify-end">
 					<Button type="submit" disabled={isLoading}>
 						Simpan
 					</Button>
-					{/* <Button type="reset" variant={'outline'} disabled={isLoading}>
-						Batal
-					</Button> */}
 				</div>
 			</form>
 		</Form>

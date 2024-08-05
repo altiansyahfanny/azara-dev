@@ -11,7 +11,7 @@ type ClassroomStateType = {
 	modalState: ModalStateType;
 	paginationState: Pagination;
 	filterState: ClassroomFilter;
-	dataState: Classroom;
+	dataState: Partial<Classroom>;
 };
 
 const initialState: ClassroomStateType = {
@@ -23,12 +23,7 @@ const initialState: ClassroomStateType = {
 		modalUpdate: false,
 	},
 
-	dataState: {
-		id: 0,
-		classroomName: '',
-		cycleDescription: '',
-		price: 0,
-	},
+	dataState: {},
 };
 
 export const ClassroomSlice = createSlice({
