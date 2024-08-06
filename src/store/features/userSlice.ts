@@ -1,20 +1,25 @@
+import { DummyProfile } from '@/assets/landing/img';
 import { Pagination } from '@/types/table.type';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 type ModalStateType = {
 	modalCreate: boolean;
+	modalUpdatePicture: boolean;
 };
 
 type AuthStateType = {
 	modalState: ModalStateType;
 	paginationState: Pagination;
+	dataPictureState: string;
 };
 
 const initialState: AuthStateType = {
 	modalState: {
 		modalCreate: false,
+		modalUpdatePicture: false,
 	},
 	paginationState: { page: 1, total: 10, pageSize: 10 },
+	dataPictureState: DummyProfile,
 };
 
 export const UserSlice = createSlice({
@@ -30,9 +35,13 @@ export const UserSlice = createSlice({
 		setPaginationState: (state, action: PayloadAction<{ value: Partial<Pagination> }>) => {
 			state.paginationState = { ...state.paginationState, ...action.payload.value };
 		},
+		setDataPictureState: (state, action: PayloadAction<{ value: string }>) => {
+			state.dataPictureState = action.payload.value;
+		},
 	},
 });
 
 export default UserSlice;
 
-export const { setState, setModalState, setPaginationState } = UserSlice.actions;
+export const { setState, setModalState, setPaginationState, setDataPictureState } =
+	UserSlice.actions;

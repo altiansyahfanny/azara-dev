@@ -2,15 +2,26 @@ import { useGetUserDetailQuery } from '@/api/userApi';
 import { DummyProfile } from '@/assets/landing/img';
 import Container from '@/components/core/container';
 import PageError from '@/components/page-error';
+import UpdatePicture from '@/components/panel/user/updatePicture';
 import SkeletonLoading from '@/components/skeleton-loading';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import useTitle from '@/hooks/useTitle';
+import { setModalState } from '@/store/features/userSlice';
+import { useAppDispatch, useAppSelector } from '@/store/store';
 
 const Profile = () => {
 	useTitle('Profile');
 
+	const dispatch = useAppDispatch();
+	const { modalState } = useAppSelector((state) => state.user);
+
 	const { data: user, isLoading, isError, isSuccess } = useGetUserDetailQuery();
+
+	const onOpenChangeModalPicture = (value: boolean) => {
+		dispatch(setModalState({ value: { modalUpdatePicture: value } }));
+	};
 
 	let content;
 
@@ -22,8 +33,6 @@ const Profile = () => {
 		content = <SkeletonLoading />;
 	}
 
-	console.log('user : ', user);
-
 	if (isSuccess) {
 		content = (
 			<div className="grid grid-cols-3 gap-4">
@@ -31,7 +40,8 @@ const Profile = () => {
 					<div className="rounded-lg border p-4 flex items-center justify-center flex-col gap-4">
 						<img
 							src={user.data.imageUrl ?? DummyProfile}
-							className="w-32 rounded-full aspect-square object-center object-cover"
+							className="w-32 rounded-full aspect-square object-center object-cover cursor-pointer"
+							onClick={() => onOpenChangeModalPicture(true)}
 						/>
 						<div className="text-center">
 							<p className="text-xl font-semibold">{`${user.data.firstName} ${user.data.lastName}`}</p>
@@ -80,7 +90,23 @@ const Profile = () => {
 		);
 	}
 
-	return <Container title="Profile">{content}</Container>;
+	return (
+		<Container title="Profile">
+			{content}
+
+			<Dialog open={modalState.modalUpdatePicture} onOpenChange={onOpenChangeModalPicture}>
+				<DialogContent>
+					<div className="max-h-96 bg-green-300x px-4 overflow-scroll no-scrollbar bggray">
+						<DialogHeader>
+							<DialogTitle>Edit Foto Profil</DialogTitle>
+						</DialogHeader>
+						<hr className="my-4" />
+						<UpdatePicture />
+					</div>
+				</DialogContent>
+			</Dialog>
+		</Container>
+	);
 };
 
 export default Profile;

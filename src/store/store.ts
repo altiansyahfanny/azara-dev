@@ -9,6 +9,7 @@ import CycleSlice from './features/cycleSlice';
 import ClassroomSlice from './features/classroomSlice';
 import ClassroomIdSlice from './features/classroomIdSlice';
 import TeacherSlice from './features/teacherSlice';
+import MeetingSlice from './features/meetingSlice';
 
 export const store = configureStore({
 	reducer: {
@@ -21,6 +22,7 @@ export const store = configureStore({
 		cycle: CycleSlice.reducer,
 		classroom: ClassroomSlice.reducer,
 		[ClassroomIdSlice.name]: ClassroomIdSlice.reducer,
+		[MeetingSlice.name]: MeetingSlice.reducer,
 	},
 	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
 });

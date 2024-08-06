@@ -78,7 +78,7 @@ const Table = <T,>({ dataSource, columns, loading, error, actions, pagination }:
 		if (loading) {
 			content = (
 				<TableRow>
-					<TableCell colSpan={4} className="border">
+					<TableCell colSpan={10} className="border">
 						<div className="flex items-center justify-center flex-col p-8 text-muted-foreground">
 							<Bars
 								visible={true}
@@ -163,7 +163,7 @@ const Table = <T,>({ dataSource, columns, loading, error, actions, pagination }:
 					</div>
 				</div>
 			) : null}
-			<TableShadcn>
+			<TableShadcn className="whitespace-nowrap overflow-x-scroll">
 				<TableHeader>
 					<TableRow>{tHead}</TableRow>
 				</TableHeader>

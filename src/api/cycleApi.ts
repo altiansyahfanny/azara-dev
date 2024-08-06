@@ -19,7 +19,7 @@ export const cycleApiSlice = apiSlice.injectEndpoints({
 			async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
 				try {
 					const { data } = await queryFulfilled;
-					console.log('useGetCyclesQuery -> Success : ', data.data.pagination);
+					console.log('useGetCyclesQuery -> Success : ', data.data);
 					dispatch(setPaginationState({ value: { total: data.data.pagination.totalData } }));
 				} catch (err) {
 					console.log('useGetCyclesQuery -> Error : ', err);
