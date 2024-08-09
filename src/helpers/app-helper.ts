@@ -1,3 +1,7 @@
+import { ApiResponse, ErrorResponse } from '@/types/api.type';
+import toast from 'react-hot-toast';
+
+
 export const formatNumber = (numbers: number) => {
 	const options = {
 		style: 'decimal',
@@ -10,3 +14,9 @@ export const formatNumber = (numbers: number) => {
 export const parseStringCurrencyToNumber = (str: string) => {
 	return Number(str.replace(/\./g, ''));
 };
+
+export const catchFunc = (err: unknown) => {
+	const error = err as ApiResponse<ErrorResponse>;
+	console.log('catchFunc : ', error.data.message);
+	toast.error(error.data.message);
+}

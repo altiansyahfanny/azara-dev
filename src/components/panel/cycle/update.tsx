@@ -1,4 +1,4 @@
-import { useAddCycleMutation } from '@/api/cycleApi';
+import { useUpdateCycleMutation } from '@/api/cycleApi';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { updateCycleSchema } from '@/schema/cycle';
@@ -6,7 +6,6 @@ import { setModalState } from '@/store/features/cycleSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { ApiResponse, ErrorResponse } from '@/types/api.type';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { format } from 'date-fns';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { z } from 'zod';
@@ -17,7 +16,7 @@ export default function UpdateCycle() {
 
 	const { dataState } = useAppSelector((state) => state.cycle);
 
-	const [create, { isLoading }] = useAddCycleMutation();
+	const [update, { isLoading }] = useUpdateCycleMutation();
 
 	const form = useForm<z.infer<typeof updateCycleSchema>>({
 		resolver: zodResolver(updateCycleSchema),
@@ -36,19 +35,18 @@ export default function UpdateCycle() {
 
 			const newPayload = {
 				...payload,
-				startDate: format(payload.startDate, 'yyyy-LL-dd'),
-				endDate: format(payload.endDate, 'yyyy-LL-dd'),
-				id: dataState.id,
+				id: dataState.id as number,
 			};
 
 			console.log('UpdateCycle -> newPayload : ', newPayload);
-			return;
+			
+			// return;
 
-			const result = await create(payload).unwrap();
+			const result = await update(newPayload).unwrap();
 
 			console.log('UpdateCycle -> onFinish -> success : ', result.message);
 
-			dispatch(setModalState({ value: { modalCreate: false } }));
+			dispatch(setModalState({ value: { modalUpdate: false } }));
 			toast.success(result.message);
 		} catch (err) {
 			const error = err as ApiResponse<ErrorResponse>;

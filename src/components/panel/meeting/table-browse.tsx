@@ -136,6 +136,9 @@ const TableBrowse = () => {
 					/>
 				);
 			} else {
+				if (['meetingDate'].includes(dataIndex)) {
+					return 'Hallo'
+				}
 				return text;
 			}
 		},
@@ -164,11 +167,36 @@ const TableBrowse = () => {
 			},
 		},
 		{
-			title: 'Kelas',
-			dataIndex: 'classroomName',
-			key: 'classroomName',
-			...getColumnSearchProps('classroomName'),
+			title: 'Jam Mulai',
+			dataIndex: 'startTime',
+			key: 'startTime',
+			// ...getColumnSearchProps('courseName'),
 		},
+		{
+			title: 'Jam Selesai',
+			dataIndex: 'endTime',
+			key: 'endTime',
+			// ...getColumnSearchProps('courseName'),
+		},
+		{
+			title: 'Tanggal Pertemuan',
+			dataIndex: 'meetingDate',
+			key: 'meetingDate',
+			// ...getColumnSearchProps('meetingDate'),
+			render: (text:string) => {
+				return <p>{format(text, 'yyyy-LL-dd')}</p>
+			}
+		},
+		{
+			title: 'Nomor Pertemuan',
+			dataIndex: 'meetingNumber',
+			key: 'meetingNumber',
+			// ...getColumnSearchProps('courseName'),
+		},
+		// {} teacher attendance
+		// {} representes by
+		// {} isVerified
+		// {} evidenceImageUrl
 		{
 			title: 'Mata Pelajaran',
 			dataIndex: 'courseName',
@@ -188,29 +216,14 @@ const TableBrowse = () => {
 			// ...getColumnSearchProps('courseName'),
 		},
 		{
-			title: 'Nomor Pertemuan',
-			dataIndex: 'meetingNumber',
-			key: 'meetingNumber',
-			// ...getColumnSearchProps('courseName'),
+			title: 'Kelas',
+			dataIndex: 'classroomName',
+			key: 'classroomName',
+			...getColumnSearchProps('classroomName'),
 		},
-		{
-			title: 'Tanggal Pertemuan',
-			dataIndex: 'meetingDate',
-			key: 'meetingDate',
-			// ...getColumnSearchProps('courseName'),
-		},
-		{
-			title: 'Jam Mulai',
-			dataIndex: 'startTime',
-			key: 'startTime',
-			// ...getColumnSearchProps('courseName'),
-		},
-		{
-			title: 'Jam Selesai',
-			dataIndex: 'endTime',
-			key: 'endTime',
-			// ...getColumnSearchProps('courseName'),
-		},
+		
+		
+		
 	];
 	//
 

@@ -43,6 +43,13 @@ const TableBrowse = () => {
 		dispatch(setModalState({ value: { modalUpdate: value } }));
 	};
 
+	const onClickButtonUpdate = (cycle: Cycle) => {
+		console.log('cycle : ', cycle);
+		// return;
+		dispatch(setDataState({ value: cycle }));
+		dispatch(setModalState({ value: { modalUpdate: true } }));
+	};
+
 	//
 
 	const [filter, setFilter] = useState<CycleFilter>({ description: '' });
@@ -147,13 +154,6 @@ const TableBrowse = () => {
 			}
 		},
 	});
-
-	const onClickButtonUpdate = (cycle: Cycle) => {
-		console.log('cycle : ', cycle);
-		// return;
-		dispatch(setDataState({ value: cycle }));
-		dispatch(setModalState({ value: { modalUpdate: true } }));
-	};
 
 	const columns: TablePropsAntd<Cycle>['columns'] = [
 		{

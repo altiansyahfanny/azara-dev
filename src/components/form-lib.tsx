@@ -10,6 +10,7 @@ import React from 'react';
 import { FieldValues, Path, UseFormReturn } from 'react-hook-form';
 import { Button } from './ui/button';
 import { Calendar } from './ui/calendar';
+import { InputPassword } from './landing-page/input-password';
 
 type FormLibProps<T extends FieldValues> = {
 	form: UseFormReturn<T, any, undefined>;
@@ -113,6 +114,21 @@ const FormLib = <T extends FieldValues>({
 									/>
 								</PopoverContent>
 							</Popover>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+			);
+
+		case 'password':
+			return (
+				<FormField
+					control={form.control}
+					name={name}
+					render={({ field }) => (
+						<FormItem className="flex flex-col">
+							<FormLabel>{label}</FormLabel>
+							<InputPassword {...field} />
 							<FormMessage />
 						</FormItem>
 					)}

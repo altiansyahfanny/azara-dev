@@ -1,5 +1,5 @@
 import { convertToQueryString } from '@/helpers/api-helper';
-import { createCourseSchema } from '@/schema/course';
+import { createCourseSchema, updateCourseSchema } from '@/schema/course';
 import { setPaginationState } from '@/store/features/courseSlice';
 import { ApiResponse, QueryParam } from '@/types/api.type';
 import { CourseFilter, CoursesResponse } from '@/types/course.type';
@@ -29,7 +29,15 @@ export const courseApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: ['Courses'],
 		}),
+		updateCourse: builder.mutation<ApiResponse, z.infer<typeof updateCourseSchema> & {id: number} >({
+			query: (payload) => ({
+				url: `/course/${payload.id}`,
+				method: 'PATCH',
+				body: payload,
+			}),
+			invalidatesTags: ['Courses'],
+		}),
 	}),
 });
 
-export const { useAddCourseMutation, useGetCoursesQuery } = courseApiSlice;
+export const { useAddCourseMutation, useGetCoursesQuery, useUpdateCourseMutation } = courseApiSlice;

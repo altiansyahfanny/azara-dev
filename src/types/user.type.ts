@@ -1,10 +1,12 @@
 import { Pagination } from './api.type';
 
 export type User = {
+	userId: number;
 	firstName: string;
 	lastName: string;
 	email: string;
 	imageUrl: string;
+	address: string;
 };
 
 export type UserDetail = {

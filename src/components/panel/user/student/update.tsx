@@ -1,27 +1,27 @@
 
-import { useUpdateUserMutation } from '@/api/userApi';
+import { useUpdateStudentMutation } from '@/api/studentApi';
 import FormLib from '@/components/form-lib';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
-import { catchFunc } from '@/helpers/app-helper';
-import { updateUserSchema } from '@/schema/user';
-import { setModalState } from '@/store/features/userSlice';
+import { updateStudentSchema } from '@/schema/student';
+import { setModalState } from '@/store/features/studentSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
+import { ApiResponse, ErrorResponse } from '@/types/api.type';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { z } from 'zod';
 
 
-export default function UpdateUser() {
+export default function UpdateStudent() {
 	const dispatch = useAppDispatch();
 
-	const [update, { isLoading }] = useUpdateUserMutation();
+	const [update, { isLoading }] = useUpdateStudentMutation();
 
-	const { dataState } = useAppSelector((state) => state.user);
+	const { dataState } = useAppSelector((state) => state.student);
 
-	const form = useForm<z.infer<typeof updateUserSchema>>({
-		resolver: zodResolver(updateUserSchema),
+	const form = useForm<z.infer<typeof updateStudentSchema>>({
+		resolver: zodResolver(updateStudentSchema),
 		mode: 'onChange',
 		defaultValues: {
 			firstName: dataState?.firstName,
@@ -31,21 +31,30 @@ export default function UpdateUser() {
 		},
 	});
 
-	const onSubmit = async (payload: z.infer<typeof updateUserSchema>) => {
+	const onSubmit = async (payload: z.infer<typeof updateStudentSchema>) => {
 		try {
-			console.log('UpdateUser -> payload : ', payload);
+			console.log('UpdateStudent -> payload : ', payload);
+			
+			const newPayload = {
+				...payload,
+				id: dataState?.userId as number
+			}
+			
+			console.log('UpdateStudent -> newPayload : ', newPayload);
 
 
 			// return;
 
-			const result = await update(payload).unwrap();
+			const result = await update(newPayload).unwrap();
 
-			console.log('UpdateUser -> onFinish -> success : ', result.message);
+			console.log('UpdateStudent -> onFinish -> success : ', result.message);
 
 			dispatch(setModalState({ value: { modalUpdate: false } }));
 			toast.success(result.message);
 		} catch (err) {
-			catchFunc(err)
+			const error = err as ApiResponse<ErrorResponse>;
+			console.log('UpdateClassroom -> onFinish -> error : ', error.data.message);
+			toast.error(error.data.message);
 		}
 	};
 

@@ -20,6 +20,7 @@ export type ClassroomStudent = {
 export type Classroom = {
 	id: number;
 	classroomName: string;
+	cycleId: number;
 	cycleDescription: string;
 	price: number;
 };

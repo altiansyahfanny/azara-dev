@@ -9,7 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { z } from 'zod';
-import FormCourse from './form';
+import FormLib from '@/components/form-lib';
 
 export default function CreateCourse() {
 	const dispatch = useAppDispatch();
@@ -24,7 +24,7 @@ export default function CreateCourse() {
 	const onSubmit = async (payload: z.infer<typeof createCourseSchema>) => {
 		try {
 			console.log('CreateCourse -> payload : ', payload);
-			return;
+			// return;
 
 			const result = await create(payload).unwrap();
 
@@ -42,7 +42,11 @@ export default function CreateCourse() {
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-				<FormCourse form={form} />
+				{/* <FormCourse form={form} /> */}
+
+				<FormLib form={form} name="courseName" label="Nama Mata Pelajaran" />
+				<FormLib form={form} name="description" label="Keterangan" />
+
 
 				<div className="flex gap-2 items-center justify-end">
 					<Button type="submit" disabled={isLoading}>

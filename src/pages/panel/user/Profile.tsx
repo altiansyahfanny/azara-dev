@@ -2,13 +2,16 @@ import { useGetUserDetailQuery } from '@/api/userApi';
 import { DummyProfile } from '@/assets/landing/img';
 import Container from '@/components/core/container';
 import PageError from '@/components/page-error';
+import UpdateUser from '@/components/panel/user/update';
+import UpdatePassword from '@/components/panel/user/updatePassword';
 import UpdatePicture from '@/components/panel/user/updatePicture';
 import SkeletonLoading from '@/components/skeleton-loading';
+import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import useTitle from '@/hooks/useTitle';
-import { setModalState } from '@/store/features/userSlice';
+import { setDataState, setModalState } from '@/store/features/userSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 
 const Profile = () => {
@@ -22,6 +25,15 @@ const Profile = () => {
 	const onOpenChangeModalPicture = (value: boolean) => {
 		dispatch(setModalState({ value: { modalUpdatePicture: value } }));
 	};
+
+	const onOpenChangeModalChangePasssword = (value: boolean) => {
+		dispatch(setModalState({ value: { modalChangePassword: value } }));
+	};
+	
+	const onOpenChangeModalUserUpdate = (value: boolean) => {
+		dispatch(setModalState({ value: { modalUpdate: value } }));
+	};
+	
 
 	let content;
 
@@ -47,6 +59,14 @@ const Profile = () => {
 							<p className="text-xl font-semibold">{`${user.data.firstName} ${user.data.lastName}`}</p>
 							<p className="text-muted-foreground">{user.data.email}</p>
 						</div>
+					</div>
+
+					<div className='mt-4 flex justify-end gap-x-2'>
+						<Button variant={'outline'} onClick={() => onOpenChangeModalChangePasssword(true)}>Edit Kata Sandi</Button>
+						<Button variant={'outline'} onClick={() => {
+							dispatch(setDataState({value: user.data}))
+							dispatch(setModalState({value: {modalUpdate: true}}))
+						}}>Edit Data Profil</Button>
 					</div>
 				</div>
 
@@ -102,6 +122,28 @@ const Profile = () => {
 						</DialogHeader>
 						<hr className="my-4" />
 						<UpdatePicture />
+					</div>
+				</DialogContent>
+			</Dialog>
+			<Dialog open={modalState.modalChangePassword} onOpenChange={onOpenChangeModalChangePasssword}>
+				<DialogContent>
+					<div className="max-h-96 bg-green-300x px-4 overflow-scroll no-scrollbar bggray">
+						<DialogHeader>
+							<DialogTitle>Edit Kata Sandi</DialogTitle>
+						</DialogHeader>
+						<hr className="my-4" />
+						<UpdatePassword />
+					</div>
+				</DialogContent>
+			</Dialog>
+			<Dialog open={modalState.modalUpdate} onOpenChange={onOpenChangeModalUserUpdate}>
+				<DialogContent>
+					<div className="max-h-96 bg-green-300x px-4 overflow-scroll no-scrollbar bggray">
+						<DialogHeader>
+							<DialogTitle>Edit Data Profil</DialogTitle>
+						</DialogHeader>
+						<hr className="my-4" />
+						<UpdateUser />
 					</div>
 				</DialogContent>
 			</Dialog>

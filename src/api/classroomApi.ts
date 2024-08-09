@@ -1,5 +1,5 @@
 import { convertToQueryString } from '@/helpers/api-helper';
-import { createClassroomSchema } from '@/schema/classroom';
+import { createClassroomSchema, updateClassroomSchema } from '@/schema/classroom';
 import { setPaginationState } from '@/store/features/classroomSlice';
 import { ApiResponse, QueryParam } from '@/types/api.type';
 import { Classroom, ClassroomId, ClassroomsResponse } from '@/types/classroom.type';
@@ -35,6 +35,14 @@ export const classroomApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: ['Classrooms'],
 		}),
+		updateClassroom: builder.mutation<ApiResponse, z.infer<typeof updateClassroomSchema> & { id: number }>({
+			query: (payload) => ({
+				url: `/classroom/${payload.id}`,
+				method: 'PATCH',
+				body: { ...payload, price: parseStringCurrencyToNumber(payload.price) },
+			}),
+			invalidatesTags: ['Classrooms'],
+		}),
 		enrollStudent: builder.mutation<ApiResponse, EnrollStudentRequest>({
 			query: (payload) => {
 				return {
@@ -62,4 +70,5 @@ export const {
 	useGetClassroomQuery,
 	useEnrollStudentMutation,
 	useAssignTeacherAndCourseMutation,
+	useUpdateClassroomMutation
 } = classroomApiSlice;

@@ -55,6 +55,7 @@ const TableBrowse = () => {
 		classroomName: '',
 		price: '',
 	});
+
 	const [searchedColumn, setSearchedColumn] = useState<string>();
 
 	useEffect(() => {

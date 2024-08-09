@@ -1,16 +1,17 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { StudentFilter } from '../../types/user.type';
+import { Student, StudentFilter } from '../../types/user.type';
 import { Pagination } from '@/types/table.type';
 
-type ModalType = {
+type ModalStateType = {
 	modalAddIsOpen: boolean;
-	modalUpdateIsOpen: boolean;
+	modalUpdate: boolean;
 };
 
 type StudentStateType = {
-	modalState: ModalType;
+	modalState: ModalStateType;
 	paginationState: Pagination;
 	filterState: StudentFilter;
+	dataState: Partial<Student>
 };
 
 const initialState: StudentStateType = {
@@ -19,8 +20,9 @@ const initialState: StudentStateType = {
 
 	modalState: {
 		modalAddIsOpen: false,
-		modalUpdateIsOpen: false,
+		modalUpdate: false,
 	},
+	dataState: {}
 };
 
 export const StudentSlice = createSlice({
@@ -34,9 +36,17 @@ export const StudentSlice = createSlice({
 		setFilterState: (state, action: PayloadAction<{ value: Partial<StudentFilter> }>) => {
 			state.filterState = { ...state.filterState, ...action.payload.value };
 		},
+
+		setModalState: (state, action: PayloadAction<{ value: Partial<ModalStateType> }>) => {
+			state.modalState = { ...state.modalState, ...action.payload.value };
+		},
+
+		setDataState: (state, action: PayloadAction<{ value: Partial<Student> }>) => {
+			state.dataState = action.payload.value;
+		},
 	},
 });
 
 export default StudentSlice;
 
-export const { setFilterState, setPaginationState } = StudentSlice.actions;
+export const { setFilterState, setPaginationState, setDataState , setModalState} = StudentSlice.actions;

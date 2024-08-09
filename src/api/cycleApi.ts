@@ -1,5 +1,5 @@
 import { convertToQueryString } from '@/helpers/api-helper';
-import { createCycleSchema } from '@/schema/cycle';
+import { createCycleSchema, updateCycleSchema } from '@/schema/cycle';
 import { setPaginationState } from '@/store/features/cycleSlice';
 import { ApiResponse, QueryParam } from '@/types/api.type';
 import { Cycle, CyclesResponse } from '@/types/cycle.type';
@@ -42,7 +42,21 @@ export const cycleApiSlice = apiSlice.injectEndpoints({
 			},
 			invalidatesTags: ['Cycles'],
 		}),
+		updateCycle: builder.mutation<ApiResponse, z.infer<typeof updateCycleSchema> & {id: number}>({
+			query: (payload) => {
+				return {
+					url: `/cycle/${payload.id}`,
+					method: 'PATCH',
+					body: {
+						...payload,
+						startDate: format(payload.startDate, 'yyyy-LL-dd'),
+						endDate: format(payload.endDate, 'yyyy-LL-dd'),
+					},
+				};
+			},
+			invalidatesTags: ['Cycles'],
+		}),
 	}),
 });
 
-export const { useAddCycleMutation, useGetCyclesQuery, useFetchCyclesQuery } = cycleApiSlice;
+export const { useAddCycleMutation, useGetCyclesQuery, useFetchCyclesQuery, useUpdateCycleMutation } = cycleApiSlice;

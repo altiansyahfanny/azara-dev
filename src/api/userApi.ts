@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { apiSlice } from './api';
-import { createUserSchema } from '@/schema/user';
+import { createUserSchema, updateUserPasswordSchema, updateUserSchema } from '@/schema/user';
 import { ApiResponse } from '@/types/api.type';
 import { UserDetail } from '@/types/user.type';
 import { setDataPictureState } from '@/store/features/userSlice';
@@ -15,6 +15,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: ['Students'],
 		}),
+		
 		getUserDetail: builder.query<ApiResponse<UserDetail>, void>({
 			query: () => ({
 				url: '/user',
@@ -42,7 +43,23 @@ export const userApiSlice = apiSlice.injectEndpoints({
 			}),
 			invalidatesTags: ['User'],
 		}),
+		changePassword: builder.mutation<ApiResponse, z.infer<typeof updateUserPasswordSchema>>({
+			query: (payload) => ({
+				url: '/user/password',
+				method: 'PATCH',
+				body: payload,
+			}),
+			// invalidatesTags: ['User'],
+		}),
+		updateUser: builder.mutation<ApiResponse, z.infer<typeof updateUserSchema>>({
+			query: (payload) => ({
+				url: '/user',
+				method: 'PATCH',
+				body: payload,
+			}),
+			invalidatesTags: ['User'],
+		}),
 	}),
 });
 
-export const { useAddUserMutation, useGetUserDetailQuery, useChangeImageMutation } = userApiSlice;
+export const { useAddUserMutation, useGetUserDetailQuery, useChangeImageMutation,useChangePasswordMutation, useUpdateUserMutation  } = userApiSlice;

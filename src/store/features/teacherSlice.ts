@@ -1,16 +1,16 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { TeacherFilter } from '../../types/user.type';
+import { Teacher, TeacherFilter } from '../../types/user.type';
 import { Pagination } from '@/types/table.type';
 
-type ModalType = {
-	modalAddIsOpen: boolean;
-	modalUpdateIsOpen: boolean;
+type ModalStateType = {
+	modalUpdate: boolean;
 };
 
 type TeacherStateType = {
-	modalState: ModalType;
+	modalState: ModalStateType;
 	paginationState: Pagination;
 	filterState: TeacherFilter;
+	dataState:Partial<Teacher>
 };
 
 const initialState: TeacherStateType = {
@@ -18,9 +18,10 @@ const initialState: TeacherStateType = {
 	paginationState: { page: 1, total: 10, pageSize: 10 },
 
 	modalState: {
-		modalAddIsOpen: false,
-		modalUpdateIsOpen: false,
+		modalUpdate: false,
 	},
+
+	dataState: {}
 };
 
 export const TeacherSlice = createSlice({
@@ -34,9 +35,17 @@ export const TeacherSlice = createSlice({
 		setFilterState: (state, action: PayloadAction<{ value: Partial<TeacherFilter> }>) => {
 			state.filterState = { ...state.filterState, ...action.payload.value };
 		},
+
+		setModalState: (state, action: PayloadAction<{ value: Partial<ModalStateType> }>) => {
+			state.modalState = { ...state.modalState, ...action.payload.value };
+		},
+
+		setDataState: (state, action: PayloadAction<{ value: Partial<Teacher> }>) => {
+			state.dataState = action.payload.value;
+		},
 	},
 });
 
 export default TeacherSlice;
 
-export const { setFilterState, setPaginationState } = TeacherSlice.actions;
+export const { setFilterState, setPaginationState, setDataState, setModalState } = TeacherSlice.actions;

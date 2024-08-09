@@ -4,12 +4,18 @@ import Table from '@/components/table';
 import { Input } from '@/components/ui/input';
 import { TableColumnType, TableProps as TablePropsAntd } from '@/lib/antd';
 import { setAssignCourse, setModalState } from '@/store/features/classroomIdSlice';
+import { setModalState as setModalStateTeacher} from '@/store/features/teacherSlice';
 import { setFilterState, setPaginationState } from '@/store/features/teacherSlice';
+import { setDataState } from '@/store/features/teacherSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { Teacher, TeacherFilter } from '@/types/user.type';
-import { Plus } from 'lucide-react';
+import { FilePenLine, Plus } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import UpdateTeacher from './update';
+
+
 
 interface TableBrowseProps {
 	isBrowse?: boolean;
@@ -19,6 +25,7 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
 	const dispatch = useAppDispatch();
 
 	const { paginationState, filterState } = useAppSelector((state) => state.teacher);
+	const { modalState } = useAppSelector((state) => state.teacher);
 
 	const {
 		data: teachers,
@@ -36,6 +43,17 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
 		dispatch(setAssignCourse({ value: { teacher } }));
 		dispatch(setModalState({ value: { modalFormAssignTeacherAndCourse: true } }));
 		dispatch(setModalState({ value: { modalAssignTeacher: false } }));
+	};
+
+	const onClickButtonUpdate = (teacher: Teacher) => {
+		console.log('teacher : ', teacher)
+
+		dispatch(setDataState({ value: teacher }));
+		dispatch(setModalStateTeacher({ value: { modalUpdate: true } }));
+	}
+
+	const onOpenChangeUpdate = (value: boolean) => {
+		dispatch(setModalStateTeacher({ value: { modalUpdate: value } }));
 	};
 
 	const [filter, setFilter] = useState<TeacherFilter>({ firstName: '', lastName: '' });
@@ -124,6 +142,29 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
 
 	const columns: TablePropsAntd<Teacher>['columns'] = [
 		{
+			title: 'Aksi',
+			type: 'action',
+			key: 'action',
+			textAlign: 'center',
+			width: 80,
+			render: (teacher: Teacher) => {
+				return (
+					<div className='flex gap-x-2'>
+						{
+							!isBrowse && (
+								<Table.ButtonAction onClick={() => onEnroll(teacher)} Icon={Plus} />
+							)
+						}
+						{
+							isBrowse && (
+								<Table.ButtonAction onClick={() => onClickButtonUpdate(teacher)} Icon={FilePenLine} />
+							)
+						}
+					</div>
+				);
+			},
+		},
+		{
 			title: 'Pic.',
 			key: 'pic',
 			textAlign: 'center',
@@ -154,37 +195,39 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
 		},
 	];
 
-	const columnsWithAction = [
-		{
-			title: 'Aksi',
-			type: 'action',
-			key: 'action',
-			textAlign: 'center',
-			width: 80,
-			render: (teacher: Teacher) => {
-				return <Table.ButtonAction onClick={() => onEnroll(teacher)} Icon={Plus} />;
-			},
-		},
-		...columns,
-	];
+	
 
 	return (
-		<Table
-			dataSource={teachers?.data.teachers}
-			columns={isBrowse ? columns : columnsWithAction}
-			loading={isLoading}
-			error={isError}
-			success={isSuccess}
-			pagination={{
-				totalItems: paginationState.total,
-				itemsPerPage: paginationState.pageSize,
-				currentPage: paginationState.page,
-				onPageChange: (number) => {
-					dispatch(setPaginationState({ value: { page: number } }));
-				},
-				onPageSizeChange: (number) => dispatch(setPaginationState({ value: { pageSize: number } })),
-			}}
-		/>
+		<>
+			<Table
+				dataSource={teachers?.data.teachers}
+				columns={columns}
+				loading={isLoading}
+				error={isError}
+				success={isSuccess}
+				pagination={{
+					totalItems: paginationState.total,
+					itemsPerPage: paginationState.pageSize,
+					currentPage: paginationState.page,
+					onPageChange: (number) => {
+						dispatch(setPaginationState({ value: { page: number } }));
+					},
+					onPageSizeChange: (number) => dispatch(setPaginationState({ value: { pageSize: number } })),
+				}}
+			/>
+
+			<Dialog open={modalState.modalUpdate} onOpenChange={onOpenChangeUpdate}>
+				<DialogContent>
+					<div className="max-h-96 bg-green-300x px-4 overflow-scroll no-scrollbar bggray">
+						<DialogHeader>
+							<DialogTitle>Edit Guru</DialogTitle>
+						</DialogHeader>
+						<hr className="my-4" />
+						<UpdateTeacher />
+					</div>
+				</DialogContent>
+			</Dialog>
+		</>
 	);
 };
 

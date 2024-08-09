@@ -3,6 +3,8 @@ import { apiSlice } from './api';
 import { TeacherFilter, TeachersResponse } from '@/types/user.type';
 import { convertToQueryString } from '@/helpers/api-helper';
 import { setPaginationState } from '@/store/features/teacherSlice';
+import { z } from 'zod';
+import { updateTeacherSchema } from '@/schema/teacher';
 
 export const UserApiSlice = apiSlice.injectEndpoints({
 	endpoints: (builder) => ({
@@ -19,10 +21,20 @@ export const UserApiSlice = apiSlice.injectEndpoints({
 			},
 			providesTags: ['Teachers'],
 		}),
+
+		updateTeacher: builder.mutation<ApiResponse, z.infer<typeof updateTeacherSchema> & {id: number}>({
+			query: (payload) => ({
+				url: `/teacher/${payload.id}`,
+				method: 'PATCH',
+				body: payload,
+			}),
+			invalidatesTags: ['Teachers'],
+		}),
 	}),
 });
 
 export const {
 	useGetTeachersQuery,
+	useUpdateTeacherMutation
 	// useAddUserMutation, useGetUserQuery, useGetUserProfileQuery
 } = UserApiSlice;
