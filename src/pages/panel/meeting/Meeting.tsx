@@ -1,35 +1,36 @@
 import Container from '@/components/core/container';
+import CreateMeeting from '@/components/panel/meeting/create';
 import TableBrowse from '@/components/panel/meeting/table-browse';
-// import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import useTitle from '@/hooks/useTitle';
-// import { setModalState } from '@/store/features/cycleSlice';
-// import { useAppDispatch, useAppSelector } from '@/store/store';
+import { setModalState } from '@/store/features/meetingSlice';
+import { useAppDispatch, useAppSelector } from '@/store/store';
 
 const Meeting = () => {
 	useTitle('Pertemuan');
 
-	// const dispatch = useAppDispatch();
+	const dispatch = useAppDispatch();
 
-	// const { modalState } = useAppSelector((state) => state.cycle);
+	const { modalState } = useAppSelector((state) => state.meeting);
 
-	// const onOpenChange = (value: boolean) => {
-	// 	dispatch(setModalState({ value: { modalCreate: value } }));
-	// };
+	const onOpenChange = (value: boolean) => {
+		dispatch(setModalState({ value: { modalCreate: value } }));
+	};
 
 	return (
 		<Container title="Pertemuan">
 			<TableBrowse />
-			{/* <Dialog open={modalState.modalCreate} onOpenChange={onOpenChange}>
+			<Dialog open={modalState.modalCreate} onOpenChange={onOpenChange}>
 				<DialogContent>
 					<div className="max-h-96 bg-green-300x px-4 overflow-scroll no-scrollbar bggray">
 						<DialogHeader>
-							<DialogTitle>Tambah Tahun Ajaran</DialogTitle>
+							<DialogTitle>Tambah Pertemuan</DialogTitle>
 						</DialogHeader>
 						<hr className="my-4" />
-						<CreateCycle />
+						<CreateMeeting />
 					</div>
 				</DialogContent>
-			</Dialog> */}
+			</Dialog>
 		</Container>
 	);
 };
