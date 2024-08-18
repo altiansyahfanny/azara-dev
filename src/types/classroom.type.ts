@@ -13,6 +13,7 @@ export type ClassroomCourse = {
 };
 
 export type ClassroomStudent = {
+    enrollmentId: number;
     studentId: number;
     firstName: string;
     lastName: string;

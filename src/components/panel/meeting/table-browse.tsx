@@ -1,5 +1,6 @@
 import { apiSlice } from "@/api/api";
 import {
+    useDeleteMeetingMutation,
     useGetMeetingsQuery,
     useVerifyMeetingMutation,
 } from "@/api/meetingApi";
@@ -26,7 +27,7 @@ import {
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { Meeting, MeetingFilter } from "@/types/meeting.type";
 import { format, parse } from "date-fns";
-import { Check, FilePenLine, PlusCircle } from "lucide-react";
+import { Check, Eye, FilePenLine, PlusCircle, Trash } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import Highlighter from "react-highlight-words";
 import toast from "react-hot-toast";
@@ -37,10 +38,14 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
+import { useNavigate } from "react-router-dom";
 
 const TableBrowse = () => {
     const dispatch = useAppDispatch();
     const auth = useAuth();
+    const navigate = useNavigate();
+
+    const [idMeetingToDelete, setIdMeetingToDelete] = useState<number | null>();
 
     const { paginationState, filterState, modalState } = useAppSelector(
         (state) => state.meeting
@@ -223,8 +228,17 @@ const TableBrowse = () => {
                 return (
                     <div className="flex items-center gap-x-2">
                         <Table.ButtonAction
+                            onClick={() => navigate(`${meeting.id}`)}
+                            Icon={Eye}
+                        />
+                        <Table.ButtonAction
                             onClick={() => onClickButtonUpdate(meeting)}
                             Icon={FilePenLine}
+                        />
+                        <Table.ButtonAction
+                            onClick={() => onClickButtonDelete(meeting)}
+                            Icon={Trash}
+                            disabled={isLoadingDelete}
                         />
                         {auth.isAdmin && (
                             <Table.ButtonAction
@@ -326,9 +340,18 @@ const TableBrowse = () => {
         dispatch(setModalState({ value: { modalUpdate: true } }));
     };
 
+    const onClickButtonDelete = (meeting: Meeting) => {
+        console.log("onClickButtonDelete -> meeting : ", meeting);
+        setIdMeetingToDelete(meeting.id);
+        dispatch(setModalState({ value: { alartDelete: true } }));
+        // // return
+    };
+
     const [idMeeting, setIdMeeting] = useState<number | null>(null);
 
     const [verify, { isLoading: isLoadingVerify }] = useVerifyMeetingMutation();
+    const [deleteMeeting, { isLoading: isLoadingDelete }] =
+        useDeleteMeetingMutation();
 
     const onClickButtonVerify = async (meeting: Meeting) => {
         console.log("onClickButtonVerify -> meeting : ", meeting);
@@ -362,8 +385,43 @@ const TableBrowse = () => {
         }
     };
 
+    const onSubmittedDelete = async () => {
+        if (!idMeetingToDelete) {
+            return toast.error("ID Pertemuan tidak ditemukan");
+        }
+
+        try {
+            console.log(
+                "onSubmittedDelete -> idMeeiting : ",
+                idMeetingToDelete
+            );
+
+            // return;
+
+            const result = await deleteMeeting({
+                id: idMeetingToDelete,
+            }).unwrap();
+
+            console.log(
+                "Delete Meeting -> onFinish -> success : ",
+                result.message
+            );
+
+            dispatch(setModalState({ value: { alartDelete: false } }));
+            toast.success(result.message);
+        } catch (err) {
+            catchFunc(err);
+        } finally {
+            setIdMeetingToDelete(null);
+        }
+    };
+
     const onOpenChangeVerify = (value: boolean) => {
         dispatch(setModalState({ value: { alertVerify: value } }));
+    };
+
+    const onOpenChangeDelete = (value: boolean) => {
+        dispatch(setModalState({ value: { alartDelete: value } }));
     };
 
     return (
@@ -426,6 +484,13 @@ const TableBrowse = () => {
                 title="Verifikasi Pertemuan"
                 description="Apakah anda yakin ingin memverifikasi pertemuan ini?"
                 onSubmit={onSubmittedVerify}
+            />
+            <ConfirmAlert
+                open={modalState.alartDelete}
+                onOpenChange={onOpenChangeDelete}
+                title="Hapus Pertemuan"
+                description="Apakah anda yakin ingin menghapus pertemuan ini?"
+                onSubmit={onSubmittedDelete}
             />
         </>
     );

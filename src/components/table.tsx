@@ -150,7 +150,7 @@ const Table = <T,>({
                                                         : "start",
                                             }}
                                         >
-                                            {column.render(data)}
+                                            {column.render(data, key)}
                                         </div>
                                     </TableCell>
                                 );
@@ -162,7 +162,9 @@ const Table = <T,>({
                                     >
                                         {column.render
                                             ? column.render(
-                                                  data[column.dataIndex]
+                                                  data[column.dataIndex],
+                                                  data,
+                                                  key
                                               )
                                             : data[column.dataIndex]}
                                     </TableCell>

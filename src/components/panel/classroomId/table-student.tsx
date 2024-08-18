@@ -19,6 +19,7 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import UpdateEnrollStudent from "./update-enroll-student";
+import { format } from "date-fns";
 
 interface TableStudentProps {
     classroom: ApiResponse<ClassroomId> | undefined;
@@ -45,7 +46,7 @@ const TableStudent: React.FC<TableStudentProps> = ({
             setDataStateUpdateEnrollStudent({
                 value: {
                     ...student,
-                    joinDate: "2024-08-20",
+                    joinDate: student.joinDate,
                     studentId: student.studentId,
                 },
             })
@@ -121,6 +122,14 @@ const TableStudent: React.FC<TableStudentProps> = ({
             dataIndex: "lastName",
             key: "lastName",
             render: (text: any) => text,
+        },
+        {
+            title: "Tanggal Bergabung",
+            dataIndex: "joinDate",
+            key: "joinDate",
+            render: (text: any) => {
+                return <p>{format(text, "yyyy-LL-dd")}</p>;
+            },
         },
     ];
 

@@ -13,6 +13,7 @@ import Test from "@/pages/panel/Testing";
 import { Route, Routes } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import UserProfile from "@/pages/landing-page/UserProfile";
+import MeetingId from "@/pages/panel/meeting/MeetingId";
 
 const Dashboard = lazy(() => import("@/pages/panel/Dashboard"));
 const Attendance = lazy(() => import("@/pages/panel/Attendance"));
@@ -75,6 +76,7 @@ const Router = () => {
                     <Route path="/classroom" element={<Classroom />} />
                     <Route path="/classroom/:id" element={<ClassroomId />} />
                     <Route path="/meeting" element={<Meeting />} />
+                    <Route path="/meeting/:id" element={<MeetingId />} />
                 </Route>
             </Route>
             {/* 

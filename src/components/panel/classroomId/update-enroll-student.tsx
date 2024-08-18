@@ -46,14 +46,14 @@ const UpdateEnrollStudent = () => {
             );
 
             const newPayload = {
-                id: dataStateUpdateEnrollStudent.studentId as number,
+                id: dataStateUpdateEnrollStudent.enrollmentId as number,
                 classroomId: id as string,
                 joinDate: payload.joinDate,
             };
 
             console.log("newPayload : ", newPayload);
 
-            return;
+            // return;
 
             const result = await updateEnroll(newPayload).unwrap();
 

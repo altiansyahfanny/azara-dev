@@ -111,7 +111,7 @@ export const classroomApiSlice = apiSlice.injectEndpoints({
                     },
                 };
             },
-            invalidatesTags: ["Meetings"],
+            invalidatesTags: ["Classroom"],
         }),
         assignTeacherAndCourse: builder.mutation<
             ApiResponse,

@@ -6,6 +6,7 @@ type ModalStateType = {
     modalCreate: boolean;
     modalUpdate: boolean;
     alertVerify: boolean;
+    alartDelete: boolean;
 };
 
 type MeetingStateType = {
@@ -25,6 +26,7 @@ const initialState: MeetingStateType = {
         modalCreate: false,
         modalUpdate: false,
         alertVerify: false,
+        alartDelete: false,
     },
 
     dataState: {},

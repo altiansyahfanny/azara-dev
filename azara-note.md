@@ -1,9 +1,9 @@
-Progress : 9 / 31
+Progress : 13 / 31
 
 teacher feature
 [X] create meeting
 [X] get teacher meeting
-[.] edit meeting
+[X] edit meeting
 [*] create meeting attendance
 [*] get meeting attendance by id
 [*] edit meeting attendance
@@ -11,14 +11,14 @@ teacher feature
 admin feature
 [X] verify meeting
 [X] get meetings
-[*] get meetings by id
+[X] get meetings by id
 [*] get meeting attendance by id
 [*] edit meeting attendance
 [X] edit classroom
 [X] edit course
-[*] edit enrollment
+[X] edit enrollment
 [X] edit cycle
-[*] edit meeting
+[X] edit meeting
 [*] edit attendance
 [X] edit student
 [X] edit teacher

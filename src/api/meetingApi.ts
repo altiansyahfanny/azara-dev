@@ -6,6 +6,7 @@ import { apiSlice } from "./api";
 import { z } from "zod";
 import { createMeetingSchema, updateMeetingSchema } from "@/schema/meeting";
 import { format } from "date-fns";
+import { MeetingId } from "@/types/meetingId.type";
 
 export const meetingApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -32,6 +33,11 @@ export const meetingApiSlice = apiSlice.injectEndpoints({
             providesTags: ["Meetings"],
         }),
 
+        getMeeting: builder.query<ApiResponse<MeetingId>, string>({
+            query: (id) => `/meeting/${id}`,
+            providesTags: ["Meeting"],
+        }),
+
         addMeeting: builder.mutation<
             ApiResponse,
             z.infer<typeof createMeetingSchema>
@@ -56,6 +62,14 @@ export const meetingApiSlice = apiSlice.injectEndpoints({
             invalidatesTags: ["Meetings"],
         }),
 
+        deleteMeeting: builder.mutation<ApiResponse, { id: number }>({
+            query: (payload) => ({
+                url: `/meeting/${payload.id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Meetings"],
+        }),
+
         updateMeeting: builder.mutation<
             ApiResponse,
             z.infer<typeof updateMeetingSchema> & { id: number }
@@ -66,10 +80,34 @@ export const meetingApiSlice = apiSlice.injectEndpoints({
                     method: "PATCH",
                     body: {
                         ...payload,
+                        meetingDate: format(payload.meetingDate, "yyyy-LL-dd"),
                     },
                 };
             },
             invalidatesTags: ["Meetings"],
+        }),
+
+        getAttendace: builder.query<
+            ApiResponse<MeetingsResponse>,
+            QueryParam<Meeting>
+        >({
+            query: (q) => `/meeting?${convertToQueryString(q)}`,
+            async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled;
+                    console.log("useGetMeetingsQuery -> Success : ", data.data);
+                    dispatch(
+                        setPaginationState({
+                            value: {
+                                totalPage: data.data.pagination.totalPage,
+                            },
+                        })
+                    );
+                } catch (err) {
+                    console.log("useGetMeetingsQuery -> Error : ", err);
+                }
+            },
+            providesTags: ["Meetings"],
         }),
     }),
 });
@@ -79,4 +117,6 @@ export const {
     useAddMeetingMutation,
     useVerifyMeetingMutation,
     useUpdateMeetingMutation,
+    useGetMeetingQuery,
+    useDeleteMeetingMutation,
 } = meetingApiSlice;

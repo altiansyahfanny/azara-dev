@@ -33,6 +33,7 @@ const routes = [
     { path: "/classroom", breadcrumb: "Kelas" },
     { path: "classroom/:id", breadcrumb: "Detil" },
     { path: "meeting", breadcrumb: "Meeting" },
+    { path: "meeting/:id", breadcrumb: "Detil" },
     { path: "attendance", breadcrumb: "Kehadiran" },
     { path: "setting", breadcrumb: "Pengaturan" },
 ];
