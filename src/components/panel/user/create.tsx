@@ -18,7 +18,7 @@ import {
 import { createUserSchema } from "@/schema/user";
 import { useAddUserMutation } from "@/api/userApi";
 import { setModalState } from "@/store/features/userSlice";
-import { useAppDispatch, useAppSelector } from "@/store/store";
+import { useAppDispatch } from "@/store/store";
 import { ApiResponse, ErrorResponse } from "@/types/api.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -28,8 +28,6 @@ import { InputPassword } from "@/components/landing-page/input-password";
 
 export default function CreateUser() {
     const dispatch = useAppDispatch();
-
-    const userState = useAppSelector((state) => state.user);
 
     const [create, { isLoading }] = useAddUserMutation();
 
