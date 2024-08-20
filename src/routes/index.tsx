@@ -8,15 +8,14 @@ import SignUp from "@/pages/auth/SignUp";
 import Forbidden from "@/pages/common/Forbidden";
 import NotFound from "@/pages/common/NotFound";
 import LandingPage from "@/pages/landing-page";
-import Test from "@/pages/panel/Testing";
 
 import { Route, Routes } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import UserProfile from "@/pages/landing-page/UserProfile";
 import MeetingId from "@/pages/panel/meeting/MeetingId";
+import Payment from "@/pages/panel/payment/Payment";
 
 const Dashboard = lazy(() => import("@/pages/panel/Dashboard"));
-const Attendance = lazy(() => import("@/pages/panel/Attendance"));
 const Course = lazy(() => import("@/pages/panel/Course"));
 const Cycle = lazy(() => import("@/pages/panel/Cycle"));
 const Setting = lazy(() => import("@/pages/panel/Setting"));
@@ -68,9 +67,8 @@ const Router = () => {
                         <Route path="/user" element={<User />} />
                         <Route path="/cycle" element={<Cycle />} />
                         <Route path="/course" element={<Course />} />
-                        <Route path="/attendance" element={<Attendance />} />
+                        <Route path="/payment" element={<Payment />} />
                         <Route path="/setting" element={<Setting />} />
-                        <Route path="/test" element={<Test />} />
                     </Route>
                     <Route path="/user/profile" element={<Profile />} />
                     <Route path="/classroom" element={<Classroom />} />

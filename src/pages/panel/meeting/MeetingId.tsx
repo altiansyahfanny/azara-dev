@@ -39,8 +39,6 @@ const MeetingId = () => {
         isSuccess,
     } = useGetMeetingQuery(id as string);
 
-    console.log("meeting : ", meeting);
-
     let content: any;
 
     if (isError) return <PageError />;

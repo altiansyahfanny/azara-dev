@@ -1,44 +1,56 @@
-import { Pagination } from './api.type';
+import { Pagination } from "./api.type";
+import { Sorting } from "./table.type";
 
 export type User = {
-	userId: number;
-	firstName: string;
-	lastName: string;
-	email: string;
-	imageUrl: string;
-	address: string;
+    userId: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    imageUrl: string;
+    address: string;
 };
 
 export type UserDetail = {
-	id: number;
-	firstName: string;
-	lastName: string;
-	email: string;
-	imageUrl: string;
-	role: string;
-	address: string;
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    imageUrl: string;
+    role: string;
+    address: string;
 };
 
 export type StudentFilter = {
-	firstName?: string;
-	lastName?: string;
+    firstName?: string;
+    lastName?: string;
+};
+
+export type StudentSorting = {
+    // sort?: keyof StudentFilter;
+    sort?: string;
+    sortDirection?: Sorting;
 };
 
 export type Student = User & { studentId: number };
 
 export type StudentsResponse = {
-	pagination: Pagination;
-	students: Student[];
+    pagination: Pagination;
+    students: Student[];
 };
 
 export type TeacherFilter = {
-	firstName?: string;
-	lastName?: string;
+    firstName?: string;
+    lastName?: string;
+};
+
+export type TeacherSorting = {
+    sort?: string;
+    sortDirection?: Sorting;
 };
 
 export type Teacher = User & { teacherId: number };
 
 export type TeachersResponse = {
-	pagination: Pagination;
-	teachers: Teacher[];
+    pagination: Pagination;
+    teachers: Teacher[];
 };

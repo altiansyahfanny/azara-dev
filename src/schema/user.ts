@@ -7,14 +7,14 @@ export const createUserSchema = z.object({
     firstName: z
         .string({ required_error: "Nama Depan tidak boleh kosong" })
         .min(3, "Nama Depan harus memiliki 3 minimal karakter")
-        .regex(/^[A-Za-z]+$/, {
-            message: "Hanya boleh mengandung huruf",
+        .regex(/^[A-Za-z\s]+$/, {
+            message: "Nama Depan hanya boleh mengandung huruf",
         }),
     lastName: z
         .string({ required_error: "Nama Belakang tidak boleh kosong" })
         .min(3, "Nama Belakang harus memiliki 3 minimal karakter")
-        .regex(/^[A-Za-z]+$/, {
-            message: "Hanya boleh mengandung huruf",
+        .regex(/^[A-Za-z\s]+$/, {
+            message: "Nama Belakang hanya boleh mengandung huruf",
         }),
     role: z
         .string({ required_error: "Role tidak boleh kosong" })
@@ -37,14 +37,14 @@ export const updateUserSchema = z.object({
     firstName: z
         .string({ required_error: "Nama Depan tidak boleh kosong" })
         .min(3, "Nama Depan harus memiliki 3 minimal karakter")
-        .regex(/^[A-Za-z]+$/, {
-            message: "Hanya boleh mengandung huruf",
+        .regex(/^[A-Za-z\s]+$/, {
+            message: "Nama Depan hanya boleh mengandung huruf",
         }),
     lastName: z
         .string({ required_error: "Nama Belakang tidak boleh kosong" })
         .min(3, "Nama Belakang harus memiliki 3 minimal karakter")
-        .regex(/^[A-Za-z]+$/, {
-            message: "Hanya boleh mengandung huruf",
+        .regex(/^[A-Za-z\s]+$/, {
+            message: "Nama Belakang hanya boleh mengandung huruf",
         }),
     address: z
         .string({ required_error: "Alamat tidak boleh kosong" })

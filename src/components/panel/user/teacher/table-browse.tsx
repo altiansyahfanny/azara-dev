@@ -7,7 +7,10 @@ import {
     setAssignCourse,
     setModalState,
 } from "@/store/features/classroomIdSlice";
-import { setModalState as setModalStateTeacher } from "@/store/features/teacherSlice";
+import {
+    setModalState as setModalStateTeacher,
+    setSortingState,
+} from "@/store/features/teacherSlice";
 import {
     setFilterState,
     setPaginationState,
@@ -34,10 +37,8 @@ interface TableBrowseProps {
 const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
     const dispatch = useAppDispatch();
 
-    const { paginationState, filterState } = useAppSelector(
-        (state) => state.teacher
-    );
-    const { modalState } = useAppSelector((state) => state.teacher);
+    const { paginationState, filterState, modalState, sortingState } =
+        useAppSelector((state) => state.teacher);
 
     const {
         data: teachers,
@@ -49,6 +50,7 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
         page: paginationState.page,
         limit: paginationState.pageSize,
         ...filterState,
+        ...sortingState,
     });
 
     const onEnroll = (teacher: Teacher) => {
@@ -209,6 +211,7 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
             title: "Nama Depan",
             dataIndex: "firstName",
             key: "firstName",
+            sorter: true,
             ...getColumnSearchProps("firstName"),
         },
         {
@@ -248,6 +251,16 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
 
                         dispatch(apiSlice.util.invalidateTags(["Teachers"]));
                     },
+                }}
+                onChange={(column, sortDirection) => {
+                    dispatch(
+                        setSortingState({
+                            value: {
+                                sort: column,
+                                sortDirection: sortDirection,
+                            },
+                        })
+                    );
                 }}
             />
 

@@ -32,10 +32,9 @@ const routes = [
     { path: "/user/profile", breadcrumb: "Profile" },
     { path: "/classroom", breadcrumb: "Kelas" },
     { path: "classroom/:id", breadcrumb: "Detil" },
-    { path: "meeting", breadcrumb: "Meeting" },
+    { path: "meeting", breadcrumb: "Pertemuan" },
     { path: "meeting/:id", breadcrumb: "Detil" },
-    { path: "attendance", breadcrumb: "Kehadiran" },
-    { path: "setting", breadcrumb: "Pengaturan" },
+    { path: "payment", breadcrumb: "Pembayaran" },
 ];
 
 const Header = () => {

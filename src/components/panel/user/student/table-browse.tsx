@@ -1,31 +1,32 @@
+import { apiSlice } from "@/api/api";
 import { useGetStudentsQuery } from "@/api/studentApi";
 import { DummyProfile } from "@/assets/dashboard/img";
 import Table from "@/components/table";
-import { Input } from "@/components/ui/input";
-import { TableColumnType, TableProps as TablePropsAntd } from "@/lib/antd";
-import {
-    setEnrollStudent,
-    setModalState,
-} from "@/store/features/classroomIdSlice";
-import { setModalState as setModalStateTeacher } from "@/store/features/studentSlice";
-import {
-    setDataState,
-    setFilterState,
-    setPaginationState,
-} from "@/store/features/studentSlice";
-import { useAppDispatch, useAppSelector } from "@/store/store";
-import { Student, StudentFilter } from "@/types/user.type";
-import { FilePenLine, Plus } from "lucide-react";
-import React, { useEffect, useState } from "react";
-import Highlighter from "react-highlight-words";
 import {
     Dialog,
     DialogContent,
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { TableColumnType, TableProps as TablePropsAntd } from "@/lib/antd";
+import {
+    setEnrollStudent,
+    setModalState,
+} from "@/store/features/classroomIdSlice";
+import {
+    setDataState,
+    setFilterState,
+    setModalState as setModalStateTeacher,
+    setPaginationState,
+    setSortingState,
+} from "@/store/features/studentSlice";
+import { useAppDispatch, useAppSelector } from "@/store/store";
+import { Student, StudentFilter } from "@/types/user.type";
+import { FilePenLine, Plus } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import Highlighter from "react-highlight-words";
 import UpdateStudent from "./update";
-import { apiSlice } from "@/api/api";
 
 interface TableBrowseProps {
     isBrowse?: boolean;
@@ -34,10 +35,8 @@ interface TableBrowseProps {
 const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
     const dispatch = useAppDispatch();
 
-    const { paginationState, filterState } = useAppSelector(
-        (state) => state.student
-    );
-    const { modalState } = useAppSelector((state) => state.student);
+    const { paginationState, filterState, modalState, sortingState } =
+        useAppSelector((state) => state.student);
 
     const {
         data: students,
@@ -49,6 +48,7 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
         page: paginationState.page,
         limit: paginationState.pageSize,
         ...filterState,
+        ...sortingState,
     });
 
     const onEnroll = (student: Student) => {
@@ -207,6 +207,7 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
             title: "Nama Depan",
             dataIndex: "firstName",
             key: "firstName",
+            sorter: true,
             ...getColumnSearchProps("firstName"),
         },
         {
@@ -246,6 +247,16 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
 
                         dispatch(apiSlice.util.invalidateTags(["Students"]));
                     },
+                }}
+                onChange={(column, sortDirection) => {
+                    dispatch(
+                        setSortingState({
+                            value: {
+                                sort: column,
+                                sortDirection: sortDirection,
+                            },
+                        })
+                    );
                 }}
             />
 

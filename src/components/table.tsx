@@ -14,10 +14,11 @@ import {
 } from "@/components/ui/table";
 import { TableProps as TablePropsAntd } from "@/lib/antd";
 import { cn } from "@/lib/utils";
-import { FolderOpen, Search, XCircle } from "lucide-react";
+import { Sorting } from "@/types/table.type";
+import { ArrowUpDown, FolderOpen, Search, XCircle } from "lucide-react";
 import React, { useState } from "react";
-import Pagination, { PaginationProps } from "./pagination";
 import { Bars } from "react-loader-spinner";
+import Pagination, { PaginationProps } from "./pagination";
 
 type Action = {
     onClick?: () => void;
@@ -33,6 +34,7 @@ export type TableProps<T> = {
     success?: boolean;
     actions?: Action[];
     pagination?: PaginationProps;
+    onChange?: (column: string, sortDirection: Sorting) => void;
 };
 
 const Table = <T,>({
@@ -42,8 +44,11 @@ const Table = <T,>({
     error,
     actions,
     pagination,
+    onChange,
 }: TableProps<T>) => {
     const [popover, setPopover] = useState<{ [key: string]: boolean }>({});
+    const [isSort, setIsSort] = useState(false);
+    const [sortDirection, setSortDirection] = useState<Sorting>(null);
 
     const onConfirm = (columnKey: string) => {
         setPopover((prev) => ({ ...prev, [columnKey]: false }));
@@ -52,6 +57,25 @@ const Table = <T,>({
     const filterDropdownParams = (columnKey: string) => ({
         confirm: () => onConfirm(columnKey),
     });
+
+    const handleSort = (dataIndex: string) => {
+        let newSortDirection: Sorting = null;
+
+        if (!sortDirection) {
+            // Jika nilai awal tidak ada, ubah ke "ASC"
+            newSortDirection = "ASC";
+        } else if (sortDirection === "ASC") {
+            // Jika nilai saat ini "ASC", ubah ke "DESC"
+            newSortDirection = "DESC";
+        } else if (sortDirection === "DESC") {
+            // Jika nilai saat ini "DESC", ubah ke nilai kosong
+            newSortDirection = null;
+        }
+
+        onChange && onChange(dataIndex, sortDirection);
+        setSortDirection(newSortDirection);
+        setIsSort(newSortDirection !== null);
+    };
 
     const tHead = columns?.map((column, key) => (
         <TableHead
@@ -62,31 +86,50 @@ const Table = <T,>({
             <div className="flex justify-between items-center gap-x-8">
                 <span
                     className="flex-1 whitespace-nowrap"
-                    style={{ textAlign: column.textAlign ?? "left" }}
+                    style={{
+                        textAlign: column.textAlign ?? "left",
+                    }}
                 >
                     {column.title}
                 </span>
-                {column.filterDropdown && (
-                    <Popover
-                        open={popover[column.dataIndex]}
-                        onOpenChange={(isOpen) =>
-                            setPopover((prev) => ({
-                                ...prev,
-                                [column.dataIndex]: isOpen,
-                            }))
-                        }
-                    >
-                        <PopoverTrigger asChild>
-                            <button>
-                                <Search className="h-4 w-4" />
+                {(column.sorter || column.filterDropdown) && (
+                    <div className="flex items-center gap-2">
+                        {column.sorter && (
+                            <button
+                                onClick={() => {
+                                    handleSort(column.dataIndex);
+                                }}
+                            >
+                                <ArrowUpDown
+                                    className={`h-4 w-4 ${
+                                        isSort && "text-black"
+                                    }`}
+                                />
                             </button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-fit" align="end">
-                            {column.filterDropdown(
-                                filterDropdownParams(column.dataIndex)
-                            )}
-                        </PopoverContent>
-                    </Popover>
+                        )}
+                        {column.filterDropdown && (
+                            <Popover
+                                open={popover[column.dataIndex]}
+                                onOpenChange={(isOpen) =>
+                                    setPopover((prev) => ({
+                                        ...prev,
+                                        [column.dataIndex]: isOpen,
+                                    }))
+                                }
+                            >
+                                <PopoverTrigger asChild>
+                                    <button>
+                                        <Search className="h-4 w-4" />
+                                    </button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-fit" align="end">
+                                    {column.filterDropdown(
+                                        filterDropdownParams(column.dataIndex)
+                                    )}
+                                </PopoverContent>
+                            </Popover>
+                        )}
+                    </div>
                 )}
             </div>
         </TableHead>

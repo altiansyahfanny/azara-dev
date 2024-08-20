@@ -31,7 +31,7 @@ export default function CreateMeeting() {
         try {
             console.log("CreateMeeting -> payload : ", payload);
 
-            // return;
+            return;
 
             const result = await create(payload).unwrap();
 
@@ -139,15 +139,21 @@ export default function CreateMeeting() {
                     label="Kehadiran Guru"
                     type="select"
                     options={teacherAttendanceOptions}
+                    onChangeFunc={() => {
+                        form.setValue("representedBy", "");
+                    }}
                 />
                 <FormLib
                     form={form}
                     name="representedBy"
                     label="Perwakilan"
-                    disabled={form.getValues("teacherAttendance") === "present"}
+                    disabled={
+                        form.getValues("teacherAttendance") === "present" ||
+                        form.getValues("teacherAttendance") === "absent"
+                    }
                 />
 
-                <FormLib form={form} name="handBook" label="handBook" />
+                <FormLib form={form} name="handBook" label="Buku Pedoman" />
 
                 <div className="flex gap-2 items-center justify-end">
                     <Button type="submit" disabled={isLoading}>

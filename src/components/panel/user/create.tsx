@@ -35,11 +35,16 @@ export default function CreateUser() {
         resolver: zodResolver(createUserSchema),
         mode: "onChange",
         defaultValues: {
-            email: "guru@gmail.com",
-            firstName: "Guru",
-            lastName: "",
-            password: "test1234",
+            // email: "guru@gmail.com",
+            // firstName: "Guru",
+            // lastName: "",
+            // password: "test1234",
             // role: userState.defaultTab,
+
+            email: "",
+            firstName: "",
+            lastName: "",
+            password: "",
         },
     });
 

@@ -7,6 +7,7 @@ import { z } from "zod";
 import { createMeetingSchema, updateMeetingSchema } from "@/schema/meeting";
 import { format } from "date-fns";
 import { MeetingId } from "@/types/meetingId.type";
+import { setDataSourcesCreate } from "@/store/features/attendanceSlice";
 
 export const meetingApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -26,6 +27,11 @@ export const meetingApiSlice = apiSlice.injectEndpoints({
                             },
                         })
                     );
+                    // dispatch(
+                    //     setDataSourcesCreate({
+                    //         value: data.data.meetings,
+                    //     })
+                    // );
                 } catch (err) {
                     console.log("useGetMeetingsQuery -> Error : ", err);
                 }
@@ -35,6 +41,23 @@ export const meetingApiSlice = apiSlice.injectEndpoints({
 
         getMeeting: builder.query<ApiResponse<MeetingId>, string>({
             query: (id) => `/meeting/${id}`,
+            async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled;
+                    console.log("useGetMeetingQuery -> Success : ", data);
+
+                    dispatch(
+                        setDataSourcesCreate({
+                            value: data.data.students.map((student) => ({
+                                ...student,
+                                status: "unregistered",
+                            })),
+                        })
+                    );
+                } catch (err) {
+                    console.log("useGetMeetingsQuery -> Error : ", err);
+                }
+            },
             providesTags: ["Meeting"],
         }),
 

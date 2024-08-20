@@ -44,7 +44,7 @@ const baseQueryWithReauth = async (
     let result = await baseQuery(args, api, extraOptions);
 
     // If you want, handle other status codes, too
-    if (result?.error?.status === 403) {
+    if (result?.error?.status === 401) {
         if (!mutex.isLocked()) {
             const release = await mutex.acquire();
 
@@ -108,7 +108,8 @@ export const apiSlice = createApi({
         "User",
         "Meetings",
         "Meeting",
-        "Attendaces",
+        "Attendances",
+        "Payments",
     ],
     endpoints: () => ({}),
 });

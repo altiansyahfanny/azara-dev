@@ -470,7 +470,7 @@ const TableBrowse = () => {
                 <DialogContent>
                     <div className="max-h-96 bg-green-300x px-4 overflow-scroll no-scrollbar bggray">
                         <DialogHeader>
-                            <DialogTitle>Edit Tahun Ajaran</DialogTitle>
+                            <DialogTitle>Edit Pertemuan</DialogTitle>
                         </DialogHeader>
                         <hr className="my-4" />
                         <UpdateMeeting />

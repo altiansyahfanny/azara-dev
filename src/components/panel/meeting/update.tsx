@@ -50,7 +50,7 @@ export default function UpdateMeeting() {
 
             console.log("UpdateMeeting -> newPayload : ", newPayload);
 
-            // return;
+            return;
 
             const result = await update(newPayload).unwrap();
 
@@ -161,6 +161,9 @@ export default function UpdateMeeting() {
                     label="Kehadiran Guru"
                     type="select"
                     options={teacherAttendanceOptions}
+                    onChangeFunc={() => {
+                        form.setValue("representedBy", "");
+                    }}
                 />
                 <FormLib
                     form={form}

@@ -1,20 +1,32 @@
-import { MeetingAttendance } from "@/types/meetingId.type";
+import { MeetingAttendance, MeetingStudent } from "@/types/meetingId.type";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 type ModalStateType = {
     modalUpdate: boolean;
+    modalCreate: boolean;
+    alartDelete: boolean;
 };
+
+type AttendanceStatusType = "present" | "absent" | "left" | "unregistered";
+
+export type DataSourcesCreateType =
+    | (MeetingStudent & { status: AttendanceStatusType })[]
+    | undefined;
 
 type AttendanceStateType = {
     modalState: ModalStateType;
-    dataSources: MeetingAttendance[] | undefined;
+    dataSourcesUpdate: MeetingAttendance[] | undefined;
+    dataSourcesCreate: DataSourcesCreateType;
 };
 
 const initialState: AttendanceStateType = {
     modalState: {
         modalUpdate: false,
+        modalCreate: false,
+        alartDelete: false,
     },
-    dataSources: undefined,
+    dataSourcesUpdate: undefined,
+    dataSourcesCreate: undefined,
 };
 
 export const AttendanceSlice = createSlice({
@@ -28,11 +40,20 @@ export const AttendanceSlice = createSlice({
             state.modalState = { ...state.modalState, ...action.payload.value };
         },
 
-        setDataSources: (
+        setDataSourcesUpdate: (
             state,
             action: PayloadAction<{ value: MeetingAttendance[] }>
         ) => {
-            state.dataSources = action.payload.value;
+            state.dataSourcesUpdate = action.payload.value;
+        },
+
+        setDataSourcesCreate: (
+            state,
+            action: PayloadAction<{
+                value: DataSourcesCreateType;
+            }>
+        ) => {
+            state.dataSourcesCreate = action.payload.value;
         },
     },
 });
@@ -41,6 +62,7 @@ export default AttendanceSlice;
 
 export const {
     setModalState,
-    setDataSources,
+    setDataSourcesUpdate,
     //setDataState
+    setDataSourcesCreate,
 } = AttendanceSlice.actions;

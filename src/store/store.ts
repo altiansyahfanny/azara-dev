@@ -11,6 +11,7 @@ import ClassroomIdSlice from "./features/classroomIdSlice";
 import TeacherSlice from "./features/teacherSlice";
 import MeetingSlice from "./features/meetingSlice";
 import AttendanceSlice from "./features/attendanceSlice";
+import PaymnentSlice from "./features/paymentSlice";
 
 export const store = configureStore({
     reducer: {
@@ -25,6 +26,7 @@ export const store = configureStore({
         [ClassroomIdSlice.name]: ClassroomIdSlice.reducer,
         [MeetingSlice.name]: MeetingSlice.reducer,
         [AttendanceSlice.name]: AttendanceSlice.reducer,
+        [PaymnentSlice.name]: PaymnentSlice.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(apiSlice.middleware),

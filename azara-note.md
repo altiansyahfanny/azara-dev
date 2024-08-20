@@ -1,28 +1,27 @@
-Progress : 13 / 31
+Progress : 18 / 30
 
 teacher feature
 [X] create meeting
 [X] get teacher meeting
 [X] edit meeting
-[*] create meeting attendance
-[*] get meeting attendance by id
-[*] edit meeting attendance
+[X] create meeting attendance
+[X] get attendance by meeting id
+[X] edit meeting attendance
 
 admin feature
 [X] verify meeting
 [X] get meetings
 [X] get meetings by id
-[*] get meeting attendance by id
-[*] edit meeting attendance
+[X] get attendance by meeting id
+[X] edit meeting attendance
 [X] edit classroom
 [X] edit course
 [X] edit enrollment
 [X] edit cycle
 [X] edit meeting
-[*] edit attendance
 [X] edit student
 [X] edit teacher
-[*] edit teacher course assignment
+[*] edit teacher course assignment // BE
 [*] teacher payment table
 [*] create payment enrollment
 [*] edit payment enrollment
