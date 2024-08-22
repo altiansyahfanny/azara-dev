@@ -13,7 +13,6 @@ import MeetingSlice from "./features/meetingSlice";
 import AttendanceSlice from "./features/attendanceSlice";
 import PaymnentSlice from "./features/paymentSlice";
 import PaymentHistorySlice from "./features/paymentHistorySlice";
-import { paymentHistoryApiSlice } from "@/api/paymentHistoryApi";
 
 export const store = configureStore({
     reducer: {

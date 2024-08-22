@@ -16,8 +16,6 @@ const UpdatePaymentHistory = () => {
 
     const { dataStateUpdate } = useAppSelector((state) => state.paymentHistory);
 
-    console.log("dataStateUpdate", dataStateUpdate);
-
     const [update, { isLoading }] = useUpdatePaymentHistoryMutation();
 
     const form = useForm<z.infer<typeof updatePaymentHistorySchema>>({
@@ -35,12 +33,6 @@ const UpdatePaymentHistory = () => {
         payload: z.infer<typeof updatePaymentHistorySchema>
     ) => {
         try {
-            // console.log("payload", {
-            //     ...payload,
-            //     id: dataStateUpdate?.id as number,
-            // });
-            // return;
-
             const result = await update({
                 ...payload,
                 id: dataStateUpdate?.id as number,
