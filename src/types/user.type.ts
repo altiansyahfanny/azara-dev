@@ -1,5 +1,4 @@
 import { Pagination } from "./api.type";
-import { Sorting } from "./table.type";
 
 export type User = {
     userId: number;
@@ -25,12 +24,6 @@ export type StudentFilter = {
     lastName?: string;
 };
 
-export type StudentSorting = {
-    // sort?: keyof StudentFilter;
-    sort?: string;
-    sortDirection?: Sorting;
-};
-
 export type Student = User & { studentId: number };
 
 export type StudentsResponse = {
@@ -41,11 +34,6 @@ export type StudentsResponse = {
 export type TeacherFilter = {
     firstName?: string;
     lastName?: string;
-};
-
-export type TeacherSorting = {
-    sort?: string;
-    sortDirection?: Sorting;
 };
 
 export type Teacher = User & { teacherId: number };

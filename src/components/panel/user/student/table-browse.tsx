@@ -252,7 +252,7 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
                     dispatch(
                         setSortingState({
                             value: {
-                                sort: column,
+                                sort: sortDirection ? column : "",
                                 sortDirection: sortDirection,
                             },
                         })

@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { Pagination } from "@/types/table.type";
+import { Pagination, SortDirection, Sorting } from "@/types/table.type";
 import { Meeting, MeetingFilter } from "@/types/meeting.type";
 
 type ModalStateType = {
@@ -13,6 +13,7 @@ type MeetingStateType = {
     modalState: ModalStateType;
     paginationState: Pagination;
     filterState: MeetingFilter;
+    sortingState: Sorting;
     dataState: Partial<Meeting>;
 };
 
@@ -20,6 +21,7 @@ const initialState: MeetingStateType = {
     filterState: {
         isVerified: "false",
     },
+    sortingState: {},
     paginationState: { page: 1, totalPage: 1, pageSize: 10 },
 
     modalState: {
@@ -53,6 +55,22 @@ export const MeetingSlice = createSlice({
             state.filterState = action.payload.value;
         },
 
+        setSortingState: (
+            state,
+            action: PayloadAction<{
+                value: {
+                    // sort: keyof StudentFilter;
+                    sort: string;
+                    sortDirection: SortDirection;
+                };
+            }>
+        ) => {
+            state.sortingState = {
+                sort: action.payload.value.sort,
+                sortDirection: action.payload.value.sortDirection,
+            };
+        },
+
         setModalState: (
             state,
             action: PayloadAction<{ value: Partial<ModalStateType> }>
@@ -73,4 +91,5 @@ export const {
     setPaginationState,
     setModalState,
     setDataState,
+    setSortingState,
 } = MeetingSlice.actions;

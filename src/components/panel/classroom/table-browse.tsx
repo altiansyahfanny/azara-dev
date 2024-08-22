@@ -8,6 +8,7 @@ import {
     setFilterState,
     setModalState,
     setPaginationState,
+    setSortingState,
 } from "@/store/features/classroomSlice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { Classroom, ClassroomFilter } from "@/types/classroom.type";
@@ -27,9 +28,8 @@ import { apiSlice } from "@/api/api";
 const TableBrowse = () => {
     const dispatch = useAppDispatch();
 
-    const { paginationState, filterState, modalState } = useAppSelector(
-        (state) => state.classroom
-    );
+    const { paginationState, filterState, sortingState, modalState } =
+        useAppSelector((state) => state.classroom);
 
     const {
         data: classrooms,
@@ -41,6 +41,7 @@ const TableBrowse = () => {
         page: paginationState.page,
         limit: paginationState.pageSize,
         ...filterState,
+        ...sortingState,
     });
 
     const onOpenChange = (value: boolean) => {
@@ -196,6 +197,7 @@ const TableBrowse = () => {
             title: "Nama Mata Pelajaran",
             dataIndex: "classroomName",
             key: "classroomName",
+            sorter: true,
             ...getColumnSearchProps("classroomName"),
         },
         {
@@ -250,6 +252,16 @@ const TableBrowse = () => {
 
                         dispatch(apiSlice.util.invalidateTags(["Classrooms"]));
                     },
+                }}
+                onChange={(column, sortDirection) => {
+                    dispatch(
+                        setSortingState({
+                            value: {
+                                sort: sortDirection ? column : "",
+                                sortDirection: sortDirection,
+                            },
+                        })
+                    );
                 }}
             />
 

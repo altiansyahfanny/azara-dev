@@ -15,6 +15,7 @@ import {
     setFilterState,
     setModalState,
     setPaginationState,
+    setSortingState,
 } from "@/store/features/cycleSlice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { Cycle, CycleFilter } from "@/types/cycle.type";
@@ -27,9 +28,8 @@ import UpdateCycle from "./update";
 const TableBrowse = () => {
     const dispatch = useAppDispatch();
 
-    const { paginationState, filterState, modalState } = useAppSelector(
-        (state) => state.cycle
-    );
+    const { paginationState, filterState, sortingState, modalState } =
+        useAppSelector((state) => state.cycle);
 
     const {
         data: cycles,
@@ -41,6 +41,7 @@ const TableBrowse = () => {
         page: paginationState.page,
         limit: paginationState.pageSize,
         ...filterState,
+        ...sortingState,
     });
 
     const onOpenChange = (value: boolean) => {
@@ -197,12 +198,14 @@ const TableBrowse = () => {
             title: "Tanggal Mulai",
             dataIndex: "startDate",
             key: "startDate",
+            sorter: true,
             ...getColumnSearchProps("startDate"),
         },
         {
             title: "Tanggal Selesai",
             dataIndex: "endDate",
             key: "endDate",
+            sorter: true,
             ...getColumnSearchProps("endDate"),
         },
         {
@@ -247,6 +250,16 @@ const TableBrowse = () => {
 
                         dispatch(apiSlice.util.invalidateTags(["Cycles"]));
                     },
+                }}
+                onChange={(column, sortDirection) => {
+                    dispatch(
+                        setSortingState({
+                            value: {
+                                sort: sortDirection ? column : "",
+                                sortDirection: sortDirection,
+                            },
+                        })
+                    );
                 }}
             />
 

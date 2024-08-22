@@ -27,6 +27,11 @@ export type Meeting = {
 export type MeetingFilter = {
     isVerified?: string;
     classroomName?: string;
+    courseName?: string;
+    meetingDate?: {
+        startFrom?: string;
+        endTo?: string;
+    };
 };
 
 export type MeetingsResponse = {

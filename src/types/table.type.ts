@@ -4,7 +4,12 @@ export type Pagination = {
     // total: number;
     totalPage: number;
 };
-export type Sorting = "ASC" | "DESC" | null;
+export type SortDirection = "ASC" | "DESC" | null;
+
+export type Sorting = {
+    sort?: string;
+    sortDirection?: SortDirection;
+};
 
 // ANTD
 import type * as React from "react";

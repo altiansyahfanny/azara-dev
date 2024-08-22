@@ -1,6 +1,6 @@
-import { Pagination, Sorting } from "@/types/table.type";
+import { Pagination, SortDirection, Sorting } from "@/types/table.type";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { Teacher, TeacherFilter, TeacherSorting } from "../../types/user.type";
+import { Teacher, TeacherFilter } from "../../types/user.type";
 
 type ModalStateType = {
     modalUpdate: boolean;
@@ -10,7 +10,7 @@ type TeacherStateType = {
     modalState: ModalStateType;
     paginationState: Pagination;
     filterState: TeacherFilter;
-    sortingState: TeacherSorting;
+    sortingState: Sorting;
     dataState: Partial<Teacher>;
 };
 
@@ -56,7 +56,7 @@ export const TeacherSlice = createSlice({
                 value: {
                     // sort: keyof StudentFilter;
                     sort: string;
-                    sortDirection: Sorting;
+                    sortDirection: SortDirection;
                 };
             }>
         ) => {

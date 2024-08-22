@@ -6,8 +6,14 @@ import {
 } from "@/api/meetingApi";
 import ConfirmAlert from "@/components/confirm-alert";
 import Table from "@/components/table";
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import InputDate from "@/components/ui/input-date";
+import InputDateRange from "@/components/ui/input-date-range";
 import {
     Select,
     SelectContent,
@@ -23,6 +29,7 @@ import {
     setFilterState,
     setModalState,
     setPaginationState,
+    setSortingState,
 } from "@/store/features/meetingSlice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { Meeting, MeetingFilter } from "@/types/meeting.type";
@@ -31,14 +38,8 @@ import { Check, Eye, FilePenLine, PlusCircle, Trash } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import Highlighter from "react-highlight-words";
 import toast from "react-hot-toast";
-import UpdateMeeting from "./update";
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog";
 import { useNavigate } from "react-router-dom";
+import UpdateMeeting from "./update";
 
 const TableBrowse = () => {
     const dispatch = useAppDispatch();
@@ -47,9 +48,8 @@ const TableBrowse = () => {
 
     const [idMeetingToDelete, setIdMeetingToDelete] = useState<number | null>();
 
-    const { paginationState, filterState, modalState } = useAppSelector(
-        (state) => state.meeting
-    );
+    const { paginationState, filterState, modalState, sortingState } =
+        useAppSelector((state) => state.meeting);
 
     const {
         data: meetings,
@@ -61,6 +61,7 @@ const TableBrowse = () => {
         page: paginationState.page,
         limit: paginationState.pageSize,
         ...filterState,
+        ...sortingState,
     });
 
     const onOpenChange = (value: boolean) => {
@@ -74,6 +75,10 @@ const TableBrowse = () => {
     const [filter, setFilter] = useState<MeetingFilter>({
         classroomName: "",
         isVerified: "true",
+        meetingDate: {
+            startFrom: "",
+            endTo: "",
+        },
     });
 
     const [searchedColumn, setSearchedColumn] = useState<string>();
@@ -114,21 +119,55 @@ const TableBrowse = () => {
 
             let content;
             if (["meetingDate"].includes(dataIndex)) {
-                const value = filter && filter[dataIndex];
+                const value = {
+                    from: filter?.meetingDate?.startFrom
+                        ? parse(
+                              filter?.meetingDate
+                                  ?.startFrom as unknown as string,
+                              "yyyy-LL-dd",
+                              new Date()
+                          )
+                        : undefined,
+                    to: filter?.meetingDate?.endTo
+                        ? parse(
+                              filter?.meetingDate?.endTo as unknown as string,
+                              "yyyy-LL-dd",
+                              new Date()
+                          )
+                        : undefined,
+                };
 
                 content = (
-                    <div className="w-52">
-                        <InputDate
-                            value={
-                                value ? new Date(value as string) : undefined
-                            }
+                    <div className="w-56">
+                        <InputDateRange
+                            value={value ? value : undefined}
                             onSelect={(e) => {
+                                let startFrom: string | undefined = undefined;
+                                let endTo: string | undefined = undefined;
+
+                                if (e) {
+                                    if (e.from) {
+                                        startFrom = format(
+                                            new Date(e.from),
+                                            "yyyy-LL-dd"
+                                        );
+                                    }
+                                    if (e.to) {
+                                        endTo = format(
+                                            new Date(e.to),
+                                            "yyyy-LL-dd"
+                                        );
+                                    }
+                                }
+
+                                const meetingDate = {
+                                    startFrom,
+                                    endTo,
+                                };
+
                                 setFilter((prev) => ({
                                     ...prev!,
-                                    [dataIndex]: format(
-                                        e as Date,
-                                        "yyyy-LL-dd"
-                                    ),
+                                    meetingDate,
                                 }));
                             }}
                         />
@@ -194,7 +233,9 @@ const TableBrowse = () => {
         },
         render: (text: any) => {
             const searchWords = filter[dataIndex];
-
+            if (["meetingDate"].includes(dataIndex)) {
+                return format(new Date(text), "yyyy-MM-dd");
+            }
             if (["isVerified"].includes(dataIndex)) {
                 return text ? "Sudah" : "Belum";
             } else {
@@ -284,10 +325,11 @@ const TableBrowse = () => {
             title: "Tanggal Pertemuan",
             dataIndex: "meetingDate",
             key: "meetingDate",
-            // ...getColumnSearchProps('meetingDate'),
-            render: (text: string) => {
-                return <p>{format(text, "yyyy-LL-dd")}</p>;
-            },
+            sorter: true,
+            ...getColumnSearchProps("meetingDate"),
+            // render: (text: string) => {
+            //     return <p>{format(text, "yyyy-LL-dd")}</p>;
+            // },
         },
         {
             title: "Nomor Pertemuan",
@@ -303,7 +345,8 @@ const TableBrowse = () => {
             title: "Mata Pelajaran",
             dataIndex: "courseName",
             key: "courseName",
-            // ...getColumnSearchProps('courseName'),
+            sorter: true,
+            ...getColumnSearchProps("courseName"),
         },
         {
             title: "Nama Depan Guru",
@@ -327,6 +370,7 @@ const TableBrowse = () => {
             title: "Kelas",
             dataIndex: "classroomName",
             key: "classroomName",
+            sorter: true,
             ...getColumnSearchProps("classroomName"),
         },
     ];
@@ -460,6 +504,16 @@ const TableBrowse = () => {
 
                         dispatch(apiSlice.util.invalidateTags(["Meetings"]));
                     },
+                }}
+                onChange={(column, sortDirection) => {
+                    dispatch(
+                        setSortingState({
+                            value: {
+                                sort: sortDirection ? column : "",
+                                sortDirection: sortDirection,
+                            },
+                        })
+                    );
                 }}
             />
 

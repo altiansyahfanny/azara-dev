@@ -8,6 +8,7 @@ import {
     setFilterState,
     setModalState,
     setPaginationState,
+    setSortingState,
 } from "@/store/features/courseSlice";
 import { setModalState as setModalStateTeacherSlice } from "@/store/features/classroomIdSlice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
@@ -31,9 +32,8 @@ interface TableBrowseProps {
 const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
     const dispatch = useAppDispatch();
 
-    const { paginationState, filterState, modalState } = useAppSelector(
-        (state) => state.course
-    );
+    const { paginationState, filterState, sortingState, modalState } =
+        useAppSelector((state) => state.course);
 
     const onAssign = (course: Course) => {
         dispatch(setAssignCourse({ value: { course } }));
@@ -55,6 +55,7 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
         page: paginationState.page,
         limit: paginationState.pageSize,
         ...filterState,
+        ...sortingState,
     });
 
     const onOpenChange = (value: boolean) => {
@@ -196,6 +197,7 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
             title: "Nama Mata Pelajaran",
             dataIndex: "courseName",
             key: "courseName",
+            sorter: true,
             ...getColumnSearchProps("courseName"),
         },
 
@@ -249,6 +251,16 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
 
                         dispatch(apiSlice.util.invalidateTags(["Courses"]));
                     },
+                }}
+                onChange={(column, sortDirection) => {
+                    dispatch(
+                        setSortingState({
+                            value: {
+                                sort: sortDirection ? column : "",
+                                sortDirection: sortDirection,
+                            },
+                        })
+                    );
                 }}
             />
             <Dialog

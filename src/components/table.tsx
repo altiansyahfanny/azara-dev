@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/table";
 import { TableProps as TablePropsAntd } from "@/lib/antd";
 import { cn } from "@/lib/utils";
-import { Sorting } from "@/types/table.type";
+import { SortDirection } from "@/types/table.type";
 import { ArrowUpDown, FolderOpen, Search, XCircle } from "lucide-react";
 import React, { useState } from "react";
 import { Bars } from "react-loader-spinner";
@@ -34,7 +34,7 @@ export type TableProps<T> = {
     success?: boolean;
     actions?: Action[];
     pagination?: PaginationProps;
-    onChange?: (column: string, sortDirection: Sorting) => void;
+    onChange?: (column: string, sortDirection: SortDirection) => void;
 };
 
 const Table = <T,>({
@@ -48,7 +48,8 @@ const Table = <T,>({
 }: TableProps<T>) => {
     const [popover, setPopover] = useState<{ [key: string]: boolean }>({});
     const [isSort, setIsSort] = useState(false);
-    const [sortDirection, setSortDirection] = useState<Sorting>(null);
+    const [sortDirection, setSortDirection] = useState<SortDirection>(null);
+    const [sortColumn, setSortColumn] = useState<string | null>(null);
 
     const onConfirm = (columnKey: string) => {
         setPopover((prev) => ({ ...prev, [columnKey]: false }));
@@ -59,22 +60,27 @@ const Table = <T,>({
     });
 
     const handleSort = (dataIndex: string) => {
-        let newSortDirection: Sorting = null;
+        let newSortDirection: SortDirection = null;
 
-        if (!sortDirection) {
-            // Jika nilai awal tidak ada, ubah ke "ASC"
+        if (sortColumn === dataIndex) {
+            if (sortDirection === null) {
+                // Jika nilai awal tidak ada, ubah ke "ASC"
+                newSortDirection = "ASC";
+            } else if (sortDirection === "ASC") {
+                // Jika nilai saat ini "ASC", ubah ke "DESC"
+                newSortDirection = "DESC";
+            } else if (sortDirection === "DESC") {
+                // Jika nilai saat ini "DESC", ubah ke nilai kosong
+                newSortDirection = null;
+            }
+        } else {
             newSortDirection = "ASC";
-        } else if (sortDirection === "ASC") {
-            // Jika nilai saat ini "ASC", ubah ke "DESC"
-            newSortDirection = "DESC";
-        } else if (sortDirection === "DESC") {
-            // Jika nilai saat ini "DESC", ubah ke nilai kosong
-            newSortDirection = null;
         }
 
-        onChange && onChange(dataIndex, sortDirection);
+        onChange && onChange(dataIndex, newSortDirection);
         setSortDirection(newSortDirection);
-        setIsSort(newSortDirection !== null);
+        setIsSort(sortColumn === dataIndex ? newSortDirection !== null : true);
+        setSortColumn(dataIndex);
     };
 
     const tHead = columns?.map((column, key) => (
@@ -102,7 +108,10 @@ const Table = <T,>({
                             >
                                 <ArrowUpDown
                                     className={`h-4 w-4 ${
-                                        isSort && "text-black"
+                                        isSort &&
+                                        column.dataIndex === sortColumn
+                                            ? "text-black"
+                                            : ""
                                     }`}
                                 />
                             </button>
