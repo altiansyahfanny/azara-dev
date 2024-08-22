@@ -24,7 +24,7 @@ import { useParams } from "react-router-dom";
 import CreateAttendance from "./create-attendance";
 import UpdateAttendace from "./update-attendance";
 
-const statusMapper = {
+const teacherAttendaceStatusMapper = {
     present: <Badge>Hadir</Badge>,
     absent: <Badge>Absen</Badge>,
     leave: <Badge>Izin</Badge>,
@@ -92,7 +92,9 @@ const TableAttendance = () => {
             dataIndex: "status",
             width: 80,
             render: (text: "present" | "absent") => (
-                <div className="flex justify-center">{statusMapper[text]}</div>
+                <div className="flex justify-center">
+                    {teacherAttendaceStatusMapper[text]}
+                </div>
             ),
         },
     ];

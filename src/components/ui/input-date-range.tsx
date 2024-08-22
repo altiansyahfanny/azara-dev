@@ -9,14 +9,14 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { SelectSingleEventHandler } from "react-day-picker";
+import { DateRange, SelectRangeEventHandler } from "react-day-picker";
 
-interface InputDateProps {
-    value: Date | undefined;
-    onSelect: SelectSingleEventHandler | undefined;
+interface InputDateRangeProps {
+    value: DateRange | undefined;
+    onSelect: SelectRangeEventHandler | undefined;
 }
 
-const InputDate: React.FC<InputDateProps> = ({ value, onSelect }) => {
+const InputDateRange: React.FC<InputDateRangeProps> = ({ value, onSelect }) => {
     return (
         <Popover>
             <PopoverTrigger asChild>
@@ -27,8 +27,15 @@ const InputDate: React.FC<InputDateProps> = ({ value, onSelect }) => {
                         !value && "text-muted-foreground"
                     )}
                 >
-                    {value ? (
-                        format(value, "yyyy-LL-dd")
+                    {value?.from ? (
+                        value.to ? (
+                            <>
+                                {format(value.from, "dd-LL-yyyy")} -{" "}
+                                {format(value.to, "dd-LL-yyyy")}
+                            </>
+                        ) : (
+                            format(value.from, "dd-LL-yyyy")
+                        )
                     ) : (
                         <span>Pilih Tanggal</span>
                     )}
@@ -37,15 +44,16 @@ const InputDate: React.FC<InputDateProps> = ({ value, onSelect }) => {
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
                 <Calendar
-                    mode="single"
+                    initialFocus
+                    mode="range"
+                    defaultMonth={value?.from}
                     selected={value}
                     onSelect={onSelect}
-                    // disabled={(date: Date) => date < new Date()}
-                    initialFocus
+                    numberOfMonths={2}
                 />
             </PopoverContent>
         </Popover>
     );
 };
 
-export default InputDate;
+export default InputDateRange;

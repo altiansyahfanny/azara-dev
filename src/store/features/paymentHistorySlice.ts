@@ -1,37 +1,31 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { PaymentHistory, PaymentHistoryFilter } from "@/types/payment.type";
 import { Pagination } from "@/types/table.type";
-import { Payment, PaymentFilter } from "@/types/payment.type";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 type ModalStateType = {
-    modalCreate: boolean;
     modalUpdate: boolean;
+    alertDelete: boolean;
 };
 
-type PaymentStateType = {
+type PaymentHistoryStateType = {
     modalState: ModalStateType;
     paginationState: Pagination;
-    filterState: PaymentFilter;
-    dataState: Partial<Payment>;
-    dataStateCreate: Partial<Payment>;
-    defaultTab: string;
+    filterState: PaymentHistoryFilter;
+    dataStateUpdate: Partial<PaymentHistory>;
 };
 
-const initialState: PaymentStateType = {
-    filterState: {},
-    paginationState: { page: 1, totalPage: 1, pageSize: 10 },
-
+const initialState: PaymentHistoryStateType = {
     modalState: {
-        modalCreate: false,
+        alertDelete: false,
         modalUpdate: false,
     },
-
-    dataState: {},
-    dataStateCreate: {},
-    defaultTab: "list",
+    filterState: {},
+    paginationState: { page: 1, totalPage: 1, pageSize: 10 },
+    dataStateUpdate: {},
 };
 
-export const PaymentSlice = createSlice({
-    name: "payment",
+export const PaymentHistorySlice = createSlice({
+    name: "paymentHistory",
     initialState,
     reducers: {
         setPaginationState: (
@@ -46,7 +40,7 @@ export const PaymentSlice = createSlice({
 
         setFilterState: (
             state,
-            action: PayloadAction<{ value: Partial<PaymentFilter> }>
+            action: PayloadAction<{ value: Partial<PaymentHistoryFilter> }>
         ) => {
             state.filterState = {
                 ...state.filterState,
@@ -61,25 +55,20 @@ export const PaymentSlice = createSlice({
             state.modalState = { ...state.modalState, ...action.payload.value };
         },
 
-        setDataState: (state, action: PayloadAction<{ value: Payment }>) => {
-            state.dataState = action.payload.value;
-        },
-
-        setDataCreateState: (
+        setDataUpdateState: (
             state,
-            action: PayloadAction<{ value: Payment }>
+            action: PayloadAction<{ value: PaymentHistory }>
         ) => {
-            state.dataStateCreate = action.payload.value;
+            state.dataStateUpdate = action.payload.value;
         },
     },
 });
 
-export default PaymentSlice;
+export default PaymentHistorySlice;
 
 export const {
     setFilterState,
     setPaginationState,
     setModalState,
-    setDataState,
-    setDataCreateState,
-} = PaymentSlice.actions;
+    setDataUpdateState,
+} = PaymentHistorySlice.actions;

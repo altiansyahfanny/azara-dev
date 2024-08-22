@@ -1,8 +1,10 @@
 import { convertToQueryString } from "@/helpers/api-helper";
-import { createPaymentSchema, updatePaymentSchema } from "@/schema/payment";
+import { parseStringCurrencyToNumber } from "@/helpers/app-helper";
+import { createPaymentSchema } from "@/schema/payment";
 import { setPaginationState } from "@/store/features/paymentSlice";
 import { ApiResponse, QueryParam } from "@/types/api.type";
-import { PaymentFilter, PaymentsResponse } from "@/types/payment.type";
+import { PaymentHistoryFilter, PaymentsResponse } from "@/types/payment.type";
+import { format } from "date-fns";
 import { z } from "zod";
 import { apiSlice } from "./api";
 
@@ -10,14 +12,14 @@ export const paymentApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getPayments: builder.query<
             ApiResponse<PaymentsResponse>,
-            QueryParam<PaymentFilter>
+            QueryParam<PaymentHistoryFilter>
         >({
             query: (q) => `/teacher-payment?${convertToQueryString(q)}`,
             async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
                 try {
                     const { data } = await queryFulfilled;
                     console.log(
-                        "useGetPaymentsQuery -> Success : ",
+                        "useGetPaymentsHistoryQuery -> Success : ",
                         data.data.pagination
                     );
                     dispatch(
@@ -33,6 +35,7 @@ export const paymentApiSlice = apiSlice.injectEndpoints({
             },
             providesTags: ["Payments"],
         }),
+
         addPayment: builder.mutation<
             ApiResponse,
             z.infer<typeof createPaymentSchema>
@@ -40,26 +43,15 @@ export const paymentApiSlice = apiSlice.injectEndpoints({
             query: (payload) => ({
                 url: "/teacher-payment/new",
                 method: "POST",
-                body: payload,
+                body: {
+                    ...payload,
+                    paymentDate: format(payload.paymentDate, "yyyy-LL-dd"),
+                    amount: parseStringCurrencyToNumber(payload.amount),
+                },
             }),
-            invalidatesTags: ["Payments"],
-        }),
-        updatePayment: builder.mutation<
-            ApiResponse,
-            z.infer<typeof updatePaymentSchema> & { id: number }
-        >({
-            query: (payload) => ({
-                url: `/teacher-payment/${payload.id}`,
-                method: "PATCH",
-                body: payload,
-            }),
-            invalidatesTags: ["Payments"],
+            invalidatesTags: ["PaymentsHistory"],
         }),
     }),
 });
 
-export const {
-    useAddPaymentMutation,
-    useGetPaymentsQuery,
-    useUpdatePaymentMutation,
-} = paymentApiSlice;
+export const { useAddPaymentMutation, useGetPaymentsQuery } = paymentApiSlice;

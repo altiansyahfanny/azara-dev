@@ -9,6 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { TableColumnType, TableProps as TablePropsAntd } from "@/lib/antd";
 import {
+    setDataCreateState,
     setFilterState,
     setModalState,
     setPaginationState,
@@ -18,15 +19,18 @@ import { Payment, PaymentFilter } from "@/types/payment.type";
 import { PlusCircle } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import Highlighter from "react-highlight-words";
-// import UpdatePayment from "./update";
 import { apiSlice } from "@/api/api";
 import { formatNumber } from "@/helpers/app-helper";
+import CreatePayment from "./create";
+// import { Badge } from "@/components/ui/badge";
 
-interface TableBrowseProps {
-    isBrowse?: boolean;
-}
+export const teacherAttendanceStatusMapper = {
+    present: <p>Hadir</p>,
+    absent: <p>Absen</p>,
+    represented: <p>Diwakilkan</p>,
+};
 
-const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
+const TableBrowse = () => {
     const dispatch = useAppDispatch();
 
     const { paginationState, filterState, modalState } = useAppSelector(
@@ -45,14 +49,6 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
         ...filterState,
     });
 
-    const onOpenChange = (value: boolean) => {
-        dispatch(setModalState({ value: { modalCreate: value } }));
-    };
-
-    const onOpenChangeUpdate = (value: boolean) => {
-        dispatch(setModalState({ value: { modalUpdate: value } }));
-    };
-
     const onOpenChangeCreate = (value: boolean) => {
         dispatch(setModalState({ value: { modalCreate: value } }));
     };
@@ -60,14 +56,11 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
     //
 
     const [filter, setFilter] = useState<PaymentFilter>({
-        teacherAttendance: "",
         representedBy: "",
-        totalPayment: "",
         firstName: "",
         lastName: "",
-        accountNumber: "",
-        bankName: "",
     });
+
     const [searchedColumn, setSearchedColumn] = useState<string>();
 
     useEffect(() => {
@@ -151,12 +144,34 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
                     />
                 );
             } else {
-                return text;
+                return text ?? "-";
             }
         },
     });
 
+    const onClickButtonCreate = (payment: Payment) => {
+        dispatch(setDataCreateState({ value: payment }));
+        dispatch(setModalState({ value: { modalCreate: true } }));
+    };
+
     const columns: TablePropsAntd<Payment>["columns"] = [
+        {
+            title: "Aksi",
+            type: "action",
+            key: "action",
+            textAlign: "center",
+            width: 80,
+            render: (payment: Payment) => {
+                return (
+                    <div className="flex items-center gap-x-2">
+                        <Table.ButtonAction
+                            onClick={() => onClickButtonCreate(payment)}
+                            Icon={PlusCircle}
+                        />
+                    </div>
+                );
+            },
+        },
         {
             title: "Nama Depan Guru",
             dataIndex: "firstName",
@@ -167,17 +182,24 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
             title: "Nama Belakang Guru",
             dataIndex: "lastName",
             key: "lastName",
+            ...getColumnSearchProps("lastName"),
         },
         {
             title: "Kehadiran Guru",
             dataIndex: "teacherAttendance",
             key: "teacherAttendance",
+            render: (text: "present" | "absent" | "represented") => (
+                <div className="flex">
+                    {text ? teacherAttendanceStatusMapper[text] : "-"}
+                </div>
+            ),
         },
         {
             title: "Diwakilkan Oleh",
             dataIndex: "representedBy",
             key: "representedBy",
-            render: (text: string) => text || "-",
+            ...getColumnSearchProps("representedBy"),
+            // render: (text: string) => text || "-",
         },
         {
             title: "Nomor Rekening",
@@ -209,17 +231,6 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
                 loading={isLoading}
                 error={isError}
                 success={isSuccess}
-                actions={
-                    isBrowse
-                        ? [
-                              {
-                                  Icon: PlusCircle,
-                                  text: "Pembayaran",
-                                  onClick: () => onOpenChange(true),
-                              },
-                          ]
-                        : []
-                }
                 pagination={{
                     totalPages: paginationState.totalPage,
                     itemsPerPage: paginationState.pageSize,
@@ -253,21 +264,7 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
                             <DialogTitle>Tambah Pembayaran</DialogTitle>
                         </DialogHeader>
                         <hr className="my-4" />
-                        {/* <UpdatePayment /> */}
-                    </div>
-                </DialogContent>
-            </Dialog>
-            <Dialog
-                open={modalState.modalUpdate}
-                onOpenChange={onOpenChangeUpdate}
-            >
-                <DialogContent>
-                    <div className="max-h-96 bg-green-300x px-4 overflow-scroll no-scrollbar bggray">
-                        <DialogHeader>
-                            <DialogTitle>Edit Mata Ajaran</DialogTitle>
-                        </DialogHeader>
-                        <hr className="my-4" />
-                        {/* <UpdatePayment /> */}
+                        <CreatePayment />
                     </div>
                 </DialogContent>
             </Dialog>

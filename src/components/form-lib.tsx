@@ -36,6 +36,7 @@ type FormLibProps<T extends FieldValues> = {
     disabledCalendar?: (date: Date) => boolean;
     // calendar?: React.ReactNode;
     onChangeFunc?: () => void;
+    readOnly?: boolean;
 };
 
 type FormLibInputProps<T extends FieldValues> = FormLibProps<T> & {};
@@ -48,6 +49,7 @@ const FormLib = <T extends FieldValues>({
     options,
     disabled = false,
     onChangeFunc,
+    readOnly,
 }: // calendar,
 // disabledCalendar,
 FormLibInputProps<T>) => {
@@ -199,7 +201,11 @@ FormLibInputProps<T>) => {
                         <FormItem>
                             <FormLabel>{label}</FormLabel>
                             <FormControl>
-                                <Input {...field} disabled={disabled} />
+                                <Input
+                                    {...field}
+                                    disabled={disabled}
+                                    readOnly={readOnly}
+                                />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

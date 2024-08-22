@@ -110,6 +110,7 @@ export const apiSlice = createApi({
         "Meeting",
         "Attendances",
         "Payments",
+        "PaymentsHistory",
     ],
     endpoints: () => ({}),
 });

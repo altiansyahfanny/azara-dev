@@ -22,7 +22,7 @@ admin feature
 [X] edit student
 [X] edit teacher
 [*] edit teacher course assignment // BE
-[*] teacher payment table
+[X] teacher payment table
 [*] create payment enrollment
 [*] edit payment enrollment
 [*] get payment enrollment list
