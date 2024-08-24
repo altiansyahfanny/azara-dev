@@ -1,15 +1,12 @@
-import { useUpdateEnrollStudentMutation } from "@/api/classroomApi";
+import { useUpdateAssignTeacherAndCourseMutation } from "@/api/classroomApi";
 import FormLib from "@/components/form-lib";
 import { Button } from "@/components/ui/button";
 import { Form, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-    enrollStudentSchema,
-    updateEnrollStudentSchema,
-} from "@/schema/classroomId";
+import { catchFunc } from "@/helpers/app-helper";
+import { updateAssignTeacherCourseSchema } from "@/schema/classroomId";
 import { setModalState } from "@/store/features/classroomIdSlice";
 import { useAppSelector } from "@/store/store";
-import { ApiResponse, ErrorResponse } from "@/types/api.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -17,57 +14,58 @@ import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { z } from "zod";
 
-const UpdateEnrollStudent = () => {
+const UpdateAssignTeacherCourse = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
-    const { dataStateUpdateEnrollStudent } = useAppSelector(
+    const { dataStateAssignTeacherCourse } = useAppSelector(
         (state) => state.classroomId
     );
 
-    const [updateEnroll, { isLoading }] = useUpdateEnrollStudentMutation();
+    const [updateAssignTeacherCourse, { isLoading }] =
+        useUpdateAssignTeacherAndCourseMutation();
 
-    const form = useForm<z.infer<typeof updateEnrollStudentSchema>>({
-        resolver: zodResolver(enrollStudentSchema),
+    const form = useForm<z.infer<typeof updateAssignTeacherCourseSchema>>({
+        resolver: zodResolver(updateAssignTeacherCourseSchema),
         mode: "onChange",
         defaultValues: {
-            joinDate: new Date(
-                dataStateUpdateEnrollStudent?.joinDate as string
-            ),
+            paymentPrice:
+                dataStateAssignTeacherCourse?.paymentPrice?.toString(),
+            classroomId: id,
         },
     });
 
     const onSubmit = async (
-        payload: z.infer<typeof updateEnrollStudentSchema>
+        payload: z.infer<typeof updateAssignTeacherCourseSchema>
     ) => {
         try {
-            console.log("updateEnrollStudent -> payload : ", payload);
+            console.log("updateAssignTeacher -> payload : ", payload);
             console.log(
-                "updateEnrollStudent -> studentId : ",
-                dataStateUpdateEnrollStudent.studentId
+                "updateAssignTeacher -> id : ",
+                dataStateAssignTeacherCourse.id
             );
 
+            return;
+
             const newPayload = {
-                id: dataStateUpdateEnrollStudent.enrollmentId as number,
+                id: dataStateAssignTeacherCourse.id as number,
                 classroomId: id as string,
-                joinDate: payload.joinDate,
+                paymentPrice: payload.paymentPrice,
             };
 
             console.log("newPayload : ", newPayload);
 
-            // return;
+            return;
 
-            const result = await updateEnroll(newPayload).unwrap();
+            const result = await updateAssignTeacherCourse(newPayload).unwrap();
 
-            console.log("updateEnrollStudent -> success : ", result.message);
+            console.log("updateAssignTeacher -> success : ", result.message);
 
             dispatch(
                 setModalState({ value: { modalUpdateEnrollStudent: false } })
             );
             toast.success(result.message);
         } catch (err) {
-            const error = err as ApiResponse<ErrorResponse>;
-            console.log("updateEnrollStudent -> error : ", error.data.message);
-            toast.error(error.data.message);
+            catchFunc(err);
         }
     };
     return (
@@ -78,17 +76,24 @@ const UpdateEnrollStudent = () => {
                     className="space-y-8"
                 >
                     <FormItem>
-                        <FormLabel>Nama Siswa</FormLabel>
+                        <FormLabel>Nama Mata Pelajaran</FormLabel>
                         <Input
                             readOnly
-                            value={`${dataStateUpdateEnrollStudent?.firstName} ${dataStateUpdateEnrollStudent?.lastName}`}
+                            value={dataStateAssignTeacherCourse?.courseName}
+                        />
+                    </FormItem>
+                    <FormItem>
+                        <FormLabel>Nama Guru</FormLabel>
+                        <Input
+                            readOnly
+                            value={`${dataStateAssignTeacherCourse?.teacher?.firstName} ${dataStateAssignTeacherCourse?.teacher?.lastName}`}
                         />
                     </FormItem>
                     <FormLib
                         form={form}
-                        name="joinDate"
-                        label="Tanggal Bergabung"
-                        type="date"
+                        name="paymentPrice"
+                        label="Harga"
+                        type="number"
                     />
 
                     <div className="flex gap-2 items-center justify-end">
@@ -102,4 +107,4 @@ const UpdateEnrollStudent = () => {
     );
 };
 
-export default UpdateEnrollStudent;
+export default UpdateAssignTeacherCourse;

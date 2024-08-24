@@ -13,6 +13,7 @@ import {
     setFilterState,
     setModalState,
     setPaginationState,
+    setSortingState,
 } from "@/store/features/paymentSlice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { Payment, PaymentFilter } from "@/types/payment.type";
@@ -33,9 +34,8 @@ export const teacherAttendanceStatusMapper = {
 const TableBrowse = () => {
     const dispatch = useAppDispatch();
 
-    const { paginationState, filterState, modalState } = useAppSelector(
-        (state) => state.payment
-    );
+    const { paginationState, filterState, modalState, sortingState } =
+        useAppSelector((state) => state.payment);
 
     const {
         data: payments,
@@ -47,6 +47,7 @@ const TableBrowse = () => {
         page: paginationState.page,
         limit: paginationState.pageSize,
         ...filterState,
+        ...sortingState,
     });
 
     const onOpenChangeCreate = (value: boolean) => {
@@ -217,6 +218,7 @@ const TableBrowse = () => {
             title: "Total Pembayaran",
             dataIndex: "totalPayment",
             key: "totalPayment",
+            sorter: true,
             render: (text: number) => formatNumber(text),
         },
     ];
@@ -252,6 +254,16 @@ const TableBrowse = () => {
 
                         dispatch(apiSlice.util.invalidateTags(["Payments"]));
                     },
+                }}
+                onChange={(column, sortDirection) => {
+                    dispatch(
+                        setSortingState({
+                            value: {
+                                sort: sortDirection ? column : "",
+                                sortDirection: sortDirection,
+                            },
+                        })
+                    );
                 }}
             />
             <Dialog

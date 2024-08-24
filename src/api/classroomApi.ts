@@ -18,7 +18,10 @@ import {
     AssignTeacherAndCourseSchemaRequest,
     EnrollStudentRequest,
 } from "@/model/classroom";
-import { updateEnrollStudentSchema } from "@/schema/classroomId";
+import {
+    updateAssignTeacherCourseSchema,
+    updateEnrollStudentSchema,
+} from "@/schema/classroomId";
 import { format } from "date-fns";
 
 export const classroomApiSlice = apiSlice.injectEndpoints({
@@ -124,6 +127,30 @@ export const classroomApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["Classroom"],
         }),
+        updateAssignTeacherAndCourse: builder.mutation<
+            ApiResponse,
+            z.infer<typeof updateAssignTeacherCourseSchema> & { id: number }
+        >({
+            query: (payload) => ({
+                url: `/classroom/assign-course/${payload.id}`,
+                method: "PATCH",
+                body: {
+                    ...payload,
+                    paymentPrice: parseStringCurrencyToNumber(
+                        payload.paymentPrice
+                    ),
+                },
+            }),
+            invalidatesTags: ["Classroom"],
+        }),
+
+        deleteEnrollment: builder.mutation<ApiResponse, { id: number }>({
+            query: (payload) => ({
+                url: `/classroom/enroll/${payload.id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Classroom"],
+        }),
     }),
 });
 
@@ -136,4 +163,6 @@ export const {
     useUpdateClassroomMutation,
     useFetchClassroomCoursesQuery,
     useUpdateEnrollStudentMutation,
+    useUpdateAssignTeacherAndCourseMutation,
+    useDeleteEnrollmentMutation,
 } = classroomApiSlice;

@@ -1,5 +1,5 @@
 import { PaymentHistory, PaymentHistoryFilter } from "@/types/payment.type";
-import { Pagination } from "@/types/table.type";
+import { Pagination, SortDirection, Sorting } from "@/types/table.type";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 type ModalStateType = {
@@ -11,16 +11,18 @@ type PaymentHistoryStateType = {
     modalState: ModalStateType;
     paginationState: Pagination;
     filterState: PaymentHistoryFilter;
+    sortingState: Sorting;
     dataStateUpdate: Partial<PaymentHistory>;
 };
 
 const initialState: PaymentHistoryStateType = {
+    filterState: {},
+    paginationState: { page: 1, totalPage: 1, pageSize: 10 },
+    sortingState: {},
     modalState: {
         alertDelete: false,
         modalUpdate: false,
     },
-    filterState: {},
-    paginationState: { page: 1, totalPage: 1, pageSize: 10 },
     dataStateUpdate: {},
 };
 
@@ -48,6 +50,22 @@ export const PaymentHistorySlice = createSlice({
             };
         },
 
+        setSortingState: (
+            state,
+            action: PayloadAction<{
+                value: {
+                    // sort: keyof StudentFilter;
+                    sort: string;
+                    sortDirection: SortDirection;
+                };
+            }>
+        ) => {
+            state.sortingState = {
+                sort: action.payload.value.sort,
+                sortDirection: action.payload.value.sortDirection,
+            };
+        },
+
         setModalState: (
             state,
             action: PayloadAction<{ value: Partial<ModalStateType> }>
@@ -71,4 +89,5 @@ export const {
     setPaginationState,
     setModalState,
     setDataUpdateState,
+    setSortingState,
 } = PaymentHistorySlice.actions;

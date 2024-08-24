@@ -14,6 +14,7 @@ import {
     setFilterState,
     setModalState,
     setPaginationState,
+    setSortingState,
 } from "@/store/features/paymentHistorySlice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { PaymentHistory, PaymentHistoryFilter } from "@/types/payment.type";
@@ -33,9 +34,8 @@ import UpdatePaymentHistory from "./update";
 const TableBrowse = () => {
     const dispatch = useAppDispatch();
 
-    const { paginationState, filterState, modalState } = useAppSelector(
-        (state) => state.paymentHistory
-    );
+    const { paginationState, filterState, modalState, sortingState } =
+        useAppSelector((state) => state.paymentHistory);
 
     const [idPaymentHistoryToDelete, setIdPaymentHistoryToDelete] = useState<
         number | null
@@ -59,6 +59,7 @@ const TableBrowse = () => {
         page: paginationState.page,
         limit: paginationState.pageSize,
         ...filterState,
+        ...sortingState,
     });
 
     //
@@ -267,6 +268,7 @@ const TableBrowse = () => {
             title: "Tanggal Pembayaran",
             dataIndex: "paymentDate",
             key: "paymentDate",
+            sorter: true,
             ...getColumnSearchProps("paymentDate"),
             // render: (text: string) => {
             //     return <p>{format(text, "yyyy-LL-dd")}</p>;
@@ -357,6 +359,16 @@ const TableBrowse = () => {
 
                         dispatch(apiSlice.util.invalidateTags(["Payments"]));
                     },
+                }}
+                onChange={(column, sortDirection) => {
+                    dispatch(
+                        setSortingState({
+                            value: {
+                                sort: sortDirection ? column : "",
+                                sortDirection: sortDirection,
+                            },
+                        })
+                    );
                 }}
             />
 

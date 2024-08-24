@@ -1,11 +1,11 @@
 import Table from "@/components/table";
-import React from "react";
+import React, { useState } from "react";
 import { TableProps as TablePropsAntd } from "@/lib/antd";
 import { ApiResponse } from "@/types/api.type";
 import { ClassroomId, ClassroomStudent } from "@/types/classroom.type";
 import SkeletonLoading from "@/components/skeleton-loading";
 import { Button } from "@/components/ui/button";
-import { FilePenLine, PlusCircle } from "lucide-react";
+import { FilePenLine, PlusCircle, Trash } from "lucide-react";
 import {
     setDataStateUpdateEnrollStudent,
     setEnrollStudent,
@@ -20,6 +20,10 @@ import {
 } from "@/components/ui/dialog";
 import UpdateEnrollStudent from "./update-enroll-student";
 import { format } from "date-fns";
+import ConfirmAlert from "@/components/confirm-alert";
+import { useDeleteEnrollmentMutation } from "@/api/classroomApi";
+import toast from "react-hot-toast";
+import { catchFunc } from "@/helpers/app-helper";
 
 interface TableStudentProps {
     classroom: ApiResponse<ClassroomId> | undefined;
@@ -34,6 +38,9 @@ const TableStudent: React.FC<TableStudentProps> = ({
 }) => {
     const dispatch = useAppDispatch();
     const { modalState } = useAppSelector((state) => state.classroomId);
+    const [enrollmentIdToDelete, setEnrollmentIdToDelete] = useState<
+        number | null
+    >();
 
     const onOpenChangeUpdate = (value: boolean) => {
         dispatch(setModalState({ value: { modalUpdateEnrollStudent: value } }));
@@ -52,6 +59,51 @@ const TableStudent: React.FC<TableStudentProps> = ({
             })
         );
         dispatch(setModalState({ value: { modalUpdateEnrollStudent: true } }));
+    };
+
+    const onClickButtonDelete = (student: ClassroomStudent) => {
+        console.log("onClickButtonDelete -> student : ", student);
+        setEnrollmentIdToDelete(student.enrollmentId);
+        dispatch(setModalState({ value: { alertDeleteEnrollStudent: true } }));
+    };
+
+    const onOpenChangeDelete = (value: boolean) => {
+        dispatch(setModalState({ value: { alertDeleteEnrollStudent: value } }));
+    };
+
+    const [deleteEnrollment] = useDeleteEnrollmentMutation();
+
+    const onSubmittedDelete = async () => {
+        if (!enrollmentIdToDelete) {
+            return toast.error("ID Pertemuan tidak ditemukan");
+        }
+
+        try {
+            console.log(
+                "onSubmittedDelete -> enrollmentIdToDelete : ",
+                enrollmentIdToDelete
+            );
+
+            // return;
+
+            const result = await deleteEnrollment({
+                id: enrollmentIdToDelete,
+            }).unwrap();
+
+            console.log(
+                "Delete Enrollment -> onFinish -> success : ",
+                result.message
+            );
+
+            dispatch(
+                setModalState({ value: { alertDeleteEnrollStudent: false } })
+            );
+            toast.success(result.message);
+        } catch (err) {
+            catchFunc(err);
+        } finally {
+            setEnrollmentIdToDelete(null);
+        }
     };
 
     let content;
@@ -107,6 +159,11 @@ const TableStudent: React.FC<TableStudentProps> = ({
                             onClick={() => onClickButtonUpdate(student)}
                             Icon={FilePenLine}
                         />
+                        <Table.ButtonAction
+                            onClick={() => onClickButtonDelete(student)}
+                            Icon={Trash}
+                            // disabled={isLoadingDelete}
+                        />
                     </div>
                 );
             },
@@ -150,13 +207,21 @@ const TableStudent: React.FC<TableStudentProps> = ({
                 <DialogContent>
                     <div className="max-h-96 bg-green-300x px-4 overflow-scroll no-scrollbar bggray">
                         <DialogHeader>
-                            <DialogTitle>Edit</DialogTitle>
+                            <DialogTitle>Edit Tanggal Bergabung</DialogTitle>
                         </DialogHeader>
                         <hr className="my-4" />
                         <UpdateEnrollStudent />
                     </div>
                 </DialogContent>
             </Dialog>
+
+            <ConfirmAlert
+                open={modalState.alertDeleteEnrollStudent}
+                onOpenChange={onOpenChangeDelete}
+                title="Hapus Pendaftaan"
+                description="Apakah anda yakin ingin menghapus pendaftaran ini?"
+                onSubmit={onSubmittedDelete}
+            />
         </>
     );
 };

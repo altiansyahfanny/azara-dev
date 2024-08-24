@@ -1,4 +1,8 @@
-import { Classroom, ClassroomStudent } from "@/types/classroom.type";
+import {
+    Classroom,
+    ClassroomCourse,
+    ClassroomStudent,
+} from "@/types/classroom.type";
 import { Course } from "@/types/course.type";
 import { Student, Teacher } from "@/types/user.type";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
@@ -20,6 +24,8 @@ type ModalStateType = {
     modalFormAssignTeacherAndCourse: boolean;
     modalFormEnrollStudent: boolean;
     modalUpdateEnrollStudent: boolean;
+    modalUpdateAssignTeacherCourse: boolean;
+    alertDeleteEnrollStudent: boolean;
 };
 
 type ClassroomIdStateType = {
@@ -27,6 +33,7 @@ type ClassroomIdStateType = {
     assignCourse: AssignCourse;
     enrollStudent: EnrollStudent;
     dataStateUpdateEnrollStudent: Partial<ClassroomStudent>;
+    dataStateAssignTeacherCourse: Partial<ClassroomCourse>;
 };
 
 const initialState: ClassroomIdStateType = {
@@ -37,6 +44,8 @@ const initialState: ClassroomIdStateType = {
         modalFormAssignTeacherAndCourse: false,
         modalFormEnrollStudent: false,
         modalUpdateEnrollStudent: false,
+        modalUpdateAssignTeacherCourse: false,
+        alertDeleteEnrollStudent: false,
     },
     assignCourse: {
         classroom: null,
@@ -48,6 +57,7 @@ const initialState: ClassroomIdStateType = {
         student: null,
     },
     dataStateUpdateEnrollStudent: {},
+    dataStateAssignTeacherCourse: {},
 };
 
 export const ClassroomIdSlice = createSlice({
@@ -91,6 +101,12 @@ export const ClassroomIdSlice = createSlice({
         ) => {
             state.dataStateUpdateEnrollStudent = action.payload.value;
         },
+        setDataStateAssignTeacherCourse: (
+            state,
+            action: PayloadAction<{ value: ClassroomCourse }>
+        ) => {
+            state.dataStateAssignTeacherCourse = action.payload.value;
+        },
     },
 });
 
@@ -103,4 +119,5 @@ export const {
     setEnrollStudent,
     resetEnrollStudent,
     setDataStateUpdateEnrollStudent,
+    setDataStateAssignTeacherCourse,
 } = ClassroomIdSlice.actions;
