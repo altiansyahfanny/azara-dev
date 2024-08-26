@@ -1,34 +1,45 @@
-import { useGetTeachersQuery } from "@/api/teacherApi";
+import { apiSlice } from "@/api/api";
+import {
+    useGetTeachersQuery,
+    useVerifyTeacherMutation,
+} from "@/api/teacherApi";
 import { DummyProfile } from "@/assets/dashboard/img";
+import ConfirmAlert from "@/components/confirm-alert";
 import Table from "@/components/table";
-import { Input } from "@/components/ui/input";
-import { TableColumnType, TableProps as TablePropsAntd } from "@/lib/antd";
-import {
-    setAssignCourse,
-    setModalState,
-} from "@/store/features/classroomIdSlice";
-import {
-    setModalState as setModalStateTeacher,
-    setSortingState,
-} from "@/store/features/teacherSlice";
-import {
-    setFilterState,
-    setPaginationState,
-} from "@/store/features/teacherSlice";
-import { setDataState } from "@/store/features/teacherSlice";
-import { useAppDispatch, useAppSelector } from "@/store/store";
-import { Teacher, TeacherFilter } from "@/types/user.type";
-import { FilePenLine, Plus } from "lucide-react";
-import React, { useEffect, useState } from "react";
-import Highlighter from "react-highlight-words";
 import {
     Dialog,
     DialogContent,
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import { catchFunc } from "@/helpers/app-helper";
+import { TableColumnType, TableProps as TablePropsAntd } from "@/lib/antd";
+import {
+    setAssignCourse,
+    setModalState,
+} from "@/store/features/classroomIdSlice";
+import {
+    setDataState,
+    setFilterState,
+    setModalState as setModalStateTeacher,
+    setPaginationState,
+    setSortingState,
+} from "@/store/features/teacherSlice";
+import { useAppDispatch, useAppSelector } from "@/store/store";
+import { Teacher, TeacherFilter } from "@/types/user.type";
+import { Check, FilePenLine, Plus } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import Highlighter from "react-highlight-words";
+import toast from "react-hot-toast";
 import UpdateTeacher from "./update";
-import { apiSlice } from "@/api/api";
 
 interface TableBrowseProps {
     isBrowse?: boolean;
@@ -112,15 +123,44 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
                 if (e.key === "Enter") onSearch();
             };
 
-            let content = (
-                <Input
-                    name={dataIndex}
-                    onChange={onChange}
-                    value={filter && (filter[dataIndex] as string | undefined)}
-                    onKeyDown={onKeyDown}
-                    autoComplete="off"
-                />
-            );
+            let content;
+
+            if (["isActive"].includes(dataIndex)) {
+                content = (
+                    <Select
+                        onValueChange={(e) =>
+                            setFilter((prev) => ({
+                                ...prev!,
+                                isActive: e,
+                            }))
+                        }
+                        value={
+                            filter && (filter[dataIndex] as string | undefined)
+                        }
+                    >
+                        <SelectTrigger className="w-40">
+                            <SelectValue placeholder={`Pilih Status`} />
+                        </SelectTrigger>
+
+                        <SelectContent>
+                            <SelectItem value={"true"}>Aktif</SelectItem>
+                            <SelectItem value={"false"}>Tidak Aktif</SelectItem>
+                        </SelectContent>
+                    </Select>
+                );
+            } else {
+                content = (
+                    <Input
+                        name={dataIndex}
+                        onChange={onChange}
+                        value={
+                            filter && (filter[dataIndex] as string | undefined)
+                        }
+                        onKeyDown={onKeyDown}
+                        autoComplete="off"
+                    />
+                );
+            }
 
             return (
                 <div className="flex flex-col gap-2">
@@ -146,6 +186,10 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
         render: (text: any) => {
             const searchWords = filter[dataIndex];
 
+            if (dataIndex === "isActive") {
+                return text ? "Aktif" : "Tidak Aktif";
+            }
+
             if (searchedColumn === dataIndex) {
                 return (
                     <Highlighter
@@ -164,6 +208,12 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
         },
     });
 
+    const onClickButtonVerify = (teacher: Teacher) => {
+        setIdTeacherToVerify(teacher.teacherId);
+        setIsVerify(teacher.isActive);
+        dispatch(setModalStateTeacher({ value: { alertVerify: true } }));
+    };
+
     const columns: TablePropsAntd<Teacher>["columns"] = [
         {
             title: "Aksi",
@@ -181,10 +231,20 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
                             />
                         )}
                         {isBrowse && (
-                            <Table.ButtonAction
-                                onClick={() => onClickButtonUpdate(teacher)}
-                                Icon={FilePenLine}
-                            />
+                            <>
+                                <Table.ButtonAction
+                                    onClick={() => onClickButtonUpdate(teacher)}
+                                    Icon={FilePenLine}
+                                />
+                                <Table.ButtonAction
+                                    onClick={() => onClickButtonVerify(teacher)}
+                                    Icon={Check}
+                                    disabled={isLoadingVerify}
+                                    variant={
+                                        teacher.isActive ? "default" : "outline"
+                                    }
+                                />
+                            </>
                         )}
                     </div>
                 );
@@ -220,7 +280,52 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
             key: "lastName",
             ...getColumnSearchProps("lastName"),
         },
+        {
+            title: "Status",
+            dataIndex: "isActive",
+            key: "isActive",
+            ...getColumnSearchProps("isActive"),
+        },
     ];
+
+    const onOpenChangeVerify = (value: boolean) => {
+        dispatch(setModalStateTeacher({ value: { alertVerify: value } }));
+    };
+
+    const [verify, { isLoading: isLoadingVerify }] = useVerifyTeacherMutation();
+
+    const [idTeacherToVerify, setIdTeacherToVerify] = useState<number | null>();
+    const [isVerify, setIsVerify] = useState<boolean>(false);
+
+    const onSubmittedVerify = async () => {
+        if (!idTeacherToVerify) {
+            return toast.error("ID Guru tidak ditemukan");
+        }
+
+        try {
+            console.log("onSubmittedVerify -> idTeacher : ", idTeacherToVerify);
+
+            // return;
+
+            const result = await verify({
+                id: idTeacherToVerify,
+                activeStatus: !isVerify,
+            }).unwrap();
+
+            console.log(
+                "Verify Teacher -> onFinish -> success : ",
+                result.message
+            );
+
+            dispatch(setModalStateTeacher({ value: { alertVerify: false } }));
+            toast.success(result.message);
+        } catch (err) {
+            catchFunc(err);
+        } finally {
+            setIdTeacherToVerify(null);
+            setIsVerify(false);
+        }
+    };
 
     return (
         <>
@@ -278,6 +383,16 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
                     </div>
                 </DialogContent>
             </Dialog>
+
+            <ConfirmAlert
+                open={modalState.alertVerify}
+                onOpenChange={onOpenChangeVerify}
+                title="Verifikasi Guru"
+                description={`Apakah anda yakin ingin ${
+                    isVerify ? "menonaktifkan" : "mengaktifkan"
+                } guru ini?`}
+                onSubmit={onSubmittedVerify}
+            />
         </>
     );
 };

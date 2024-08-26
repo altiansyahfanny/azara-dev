@@ -4,6 +4,7 @@ import { Teacher, TeacherFilter } from "../../types/user.type";
 
 type ModalStateType = {
     modalUpdate: boolean;
+    alertVerify: boolean;
 };
 
 type TeacherStateType = {
@@ -21,6 +22,7 @@ const initialState: TeacherStateType = {
 
     modalState: {
         modalUpdate: false,
+        alertVerify: false,
     },
 
     dataState: {},

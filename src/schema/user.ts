@@ -49,4 +49,6 @@ export const updateUserSchema = z.object({
     address: z
         .string({ required_error: "Alamat tidak boleh kosong" })
         .min(3, "Alamat harus memiliki 3 minimal karakter"),
+    bankName: z.string().optional(),
+    accountNumber: z.string().optional(),
 });

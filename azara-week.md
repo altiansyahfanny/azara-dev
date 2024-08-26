@@ -8,3 +8,9 @@
 [X] Integrate create & edit attendance
 [X] Kondisi logout maks 1 hari
 [*] Cicil cari info jadwal siswa
+
+=================================================================================
+
+26/08/2024
+[X] Menambahkan fitur verifikasi guru
+[X] Menambahkan bankName, accountNumber di profile (siswa/teacher/admin)

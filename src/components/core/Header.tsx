@@ -28,7 +28,7 @@ const routes = [
     { path: "/dashboard", breadcrumb: "Dahsboard" },
     { path: "/course", breadcrumb: "Mata Pelajaran" },
     { path: "/cycle", breadcrumb: "Tahun Ajaran" },
-    { path: "/user", breadcrumb: "User" },
+    { path: "/user", breadcrumb: "Pengguna" },
     { path: "/user/profile", breadcrumb: "Profile" },
     { path: "/classroom", breadcrumb: "Kelas" },
     { path: "classroom/:id", breadcrumb: "Detil" },

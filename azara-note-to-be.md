@@ -1,5 +1,5 @@
 Kalau expired token 403
 Kalau semisal teacherAttendance === null | absent
 
-Tanya kolom payment list dan payment history yang bisa disort
-Sort teacher payment list (paymentPrice / total payment) masih ngebug
+Apa edit teacher assigment sudah?
+Tidak ada data bank saat getUserDetail (siswa)

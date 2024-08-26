@@ -42,11 +42,23 @@ export const UserApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ["Teachers"],
         }),
+        verifyTeacher: builder.mutation<
+            ApiResponse,
+            { id: number; activeStatus: boolean }
+        >({
+            query: (payload) => ({
+                url: `/teacher/manage/${payload.id}`,
+                method: "PATCH",
+                body: { activeStatus: payload.activeStatus },
+            }),
+            invalidatesTags: ["Teachers"],
+        }),
     }),
 });
 
 export const {
     useGetTeachersQuery,
     useUpdateTeacherMutation,
+    useVerifyTeacherMutation,
     // useAddUserMutation, useGetUserQuery, useGetUserProfileQuery
 } = UserApiSlice;

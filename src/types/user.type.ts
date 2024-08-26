@@ -16,7 +16,9 @@ export type UserDetail = {
     email: string;
     imageUrl: string;
     role: string;
-    address: string;
+    address?: string;
+    bankName?: string;
+    accountNumber?: string;
 };
 
 export type StudentFilter = {
@@ -34,9 +36,10 @@ export type StudentsResponse = {
 export type TeacherFilter = {
     firstName?: string;
     lastName?: string;
+    isActive?: string;
 };
 
-export type Teacher = User & { teacherId: number };
+export type Teacher = User & { teacherId: number; isActive: boolean };
 
 export type TeachersResponse = {
     pagination: Pagination;
