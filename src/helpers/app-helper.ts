@@ -19,3 +19,10 @@ export const catchFunc = (err: unknown) => {
     console.log("catchFunc : ", error.data.message);
     toast.error(error.data.message);
 };
+
+export const teacherAttendaceStatusMapper = {
+    present: "Hadir",
+    absent: "Absen",
+    leave: "Izin",
+    represented: "Diwakilkan",
+};

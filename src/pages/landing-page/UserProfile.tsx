@@ -83,7 +83,7 @@ const UserProfile = () => {
                     </div>
                 </div>
 
-                <Tabs defaultValue={"detail"} className="mt-4">
+                <Tabs defaultValue={"schedule"} className="mt-4">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center">
                             <TabsList>

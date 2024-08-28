@@ -61,6 +61,31 @@ export const meetingApiSlice = apiSlice.injectEndpoints({
             providesTags: ["Meeting"],
         }),
 
+        getUserMeetings: builder.query<
+            ApiResponse<MeetingsResponse>,
+            QueryParam<Meeting>
+        >({
+            query: (q) => `/meeting/user?${convertToQueryString(q)}`,
+            async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
+                try {
+                    const { data } = await queryFulfilled;
+                    console.log(
+                        "useGetUserMeetingsQuery -> Success : ",
+                        data.data
+                    );
+                    dispatch(
+                        setPaginationState({
+                            value: {
+                                totalPage: data.data.pagination.totalPage,
+                            },
+                        })
+                    );
+                } catch (err) {
+                    console.log("useGetUserMeetingsQuery -> Error : ", err);
+                }
+            },
+        }),
+
         addMeeting: builder.mutation<
             ApiResponse,
             z.infer<typeof createMeetingSchema>
@@ -142,4 +167,5 @@ export const {
     useUpdateMeetingMutation,
     useGetMeetingQuery,
     useDeleteMeetingMutation,
+    useGetUserMeetingsQuery,
 } = meetingApiSlice;

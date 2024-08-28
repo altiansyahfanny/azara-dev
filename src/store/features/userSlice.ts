@@ -7,6 +7,7 @@ type ModalStateType = {
     modalUpdate: boolean;
     modalUpdatePicture: boolean;
     modalChangePassword: boolean;
+    modalDetailEvent: boolean;
 };
 
 type AuthStateType = {
@@ -22,6 +23,7 @@ const initialState: AuthStateType = {
         modalUpdatePicture: false,
         modalUpdate: false,
         modalChangePassword: false,
+        modalDetailEvent: false,
     },
     dataPictureState: DummyProfile,
     dataState: {},

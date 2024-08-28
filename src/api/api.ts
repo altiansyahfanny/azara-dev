@@ -37,10 +37,6 @@ const baseQueryWithReauth = async (
 ) => {
     await mutex.waitForUnlock();
 
-    // console.log(args) // request url, method, body
-    // console.log(api) // signal, dispatch, getState()
-    // console.log(extraOptions) //custom like {shout: true}
-
     let result = await baseQuery(args, api, extraOptions);
 
     // If you want, handle other status codes, too
@@ -75,12 +71,14 @@ const baseQueryWithReauth = async (
                     // retry original query with new access token
                     result = await baseQuery(args, api, extraOptions);
                 } else {
-                    console.log("REAUTH -> ERROR...");
+                    console.log("REAUTH -> ERROR... : ", refreshResult);
 
                     if (refreshResult?.error?.status === 403) {
                         (refreshResult.error.data as any).message =
                             "Sesi anda telah berakhir";
                     }
+
+                    window.location.href = "/sign-in";
 
                     return refreshResult;
                 }
