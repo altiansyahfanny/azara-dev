@@ -1,71 +1,65 @@
 import { apiSlice } from '@/api/api';
-import { useGetStudentsQuery } from '@/api/studentApi';
-import { DummyProfile } from '@/assets/dashboard/img';
 import Table from '@/components/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { formatNumber } from '@/helpers/app-helper';
 import { TableColumnType, TableProps as TablePropsAntd } from '@/lib/antd';
-import { setEnrollStudent, setModalState } from '@/store/features/classroomIdSlice';
 import {
-	setDataState,
+	setDataCreateState,
 	setFilterState,
-	setModalState as setModalStateTeacher,
+	setModalState,
 	setPaginationState,
 	setSortingState,
-} from '@/store/features/studentSlice';
+} from '@/store/features/studentPaymentListSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
-import { Student, StudentFilter } from '@/types/user.type';
-import { FilePenLine, Plus } from 'lucide-react';
+import { PlusCircle } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
-import UpdateStudent from './update';
+import CreatePayment from './create';
+import { useGetStudentPaymentsQuery } from '@/api/studentPaymentApi';
+import { Badge } from '@/components/ui/badge';
+import { StudentPayment, StudentPaymentFilter } from '@/types/stundentPayment.type';
+// import FilterPaymentDate from './filter-payment-date';
+// import { Badge } from "@/components/ui/badge";
 
-interface TableBrowseProps {
-	isBrowse?: boolean;
-}
+export const teacherAttendanceStatusMapper = {
+	present: <p>Hadir</p>,
+	absent: <p>Absen</p>,
+	represented: <p>Diwakilkan</p>,
+};
 
-const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
+const TableBrowse = () => {
 	const dispatch = useAppDispatch();
 
 	const { paginationState, filterState, modalState, sortingState } = useAppSelector(
-		(state) => state.student
+		(state) => state.studentPaymentList
 	);
 
 	const {
-		data: students,
+		data: studentPayments,
 		isLoading,
-		isError,
 		isSuccess,
+		isError,
 		refetch,
 		isFetching,
-	} = useGetStudentsQuery({
+	} = useGetStudentPaymentsQuery({
 		page: paginationState.page,
 		limit: paginationState.pageSize,
 		...filterState,
 		...sortingState,
 	});
 
-	const onEnroll = (student: Student) => {
-		dispatch(setEnrollStudent({ value: { student } }));
-		dispatch(setModalState({ value: { modalEnrollStudent: false } }));
-		dispatch(setModalState({ value: { modalFormEnrollStudent: true } }));
+	const onOpenChangeCreate = (value: boolean) => {
+		dispatch(setModalState({ value: { modalCreate: value } }));
 	};
 
-	const onClickButtonUpdate = (student: Student) => {
-		console.log('student : ', student);
+	//
 
-		dispatch(setDataState({ value: student }));
-		dispatch(setModalStateTeacher({ value: { modalUpdate: true } }));
-	};
-
-	const onOpenChangeUpdate = (value: boolean) => {
-		dispatch(setModalStateTeacher({ value: { modalUpdate: value } }));
-	};
-
-	const [filter, setFilter] = useState<StudentFilter>({
-		firstName: '',
-		lastName: '',
+	const [filter, setFilter] = useState<StudentPaymentFilter>({
+		forPayment: true,
+		classroomName: '',
 	});
+
 	const [searchedColumn, setSearchedColumn] = useState<string>();
 
 	useEffect(() => {
@@ -73,12 +67,12 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
 		refetch();
 	}, []);
 
-	const handleSearch = (dataIndex: keyof StudentFilter) => {
+	const handleSearch = (dataIndex: keyof StudentPayment) => {
 		setSearchedColumn(dataIndex);
 		dispatch(setFilterState({ value: filter }));
 	};
 
-	const handleReset = (dataIndex: keyof StudentFilter) => {
+	const handleReset = (dataIndex: keyof StudentPayment) => {
 		const newFilter = { ...filter, [dataIndex]: '' };
 		// delete newFilter[dataIndex];
 		setFilter(newFilter);
@@ -89,7 +83,9 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
 		setFilter((prev) => ({ ...prev!, [e.target.name]: e.target.value }));
 	};
 
-	const getColumnSearchProps = (dataIndex: keyof StudentFilter): TableColumnType<Student> => ({
+	const getColumnSearchProps = (
+		dataIndex: keyof StudentPaymentFilter
+	): TableColumnType<StudentPayment> => ({
 		filterDropdown: ({ confirm }) => {
 			const onSearch = () => {
 				handleSearch(dataIndex);
@@ -147,43 +143,31 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
 					/>
 				);
 			} else {
-				return text;
+				return text ?? '-';
 			}
 		},
 	});
 
-	const columns: TablePropsAntd<Student>['columns'] = [
+	const onClickButtonCreate = (studentPayment: StudentPayment) => {
+		dispatch(setDataCreateState({ value: studentPayment }));
+		dispatch(setModalState({ value: { modalCreate: true } }));
+	};
+
+	const columns: TablePropsAntd<StudentPayment>['columns'] = [
 		{
 			title: 'Aksi',
 			type: 'action',
 			key: 'action',
 			textAlign: 'center',
 			width: 80,
-			render: (student: Student) => {
+			render: (studentPayment: StudentPayment) => {
 				return (
-					<div className="flex gap-x-2">
-						{!isBrowse && <Table.ButtonAction onClick={() => onEnroll(student)} Icon={Plus} />}
-						{isBrowse && (
-							<Table.ButtonAction onClick={() => onClickButtonUpdate(student)} Icon={FilePenLine} />
-						)}
+					<div className="flex items-center gap-x-2">
+						<Table.ButtonAction
+							onClick={() => onClickButtonCreate(studentPayment)}
+							Icon={PlusCircle}
+						/>
 					</div>
-				);
-			},
-		},
-		{
-			title: 'Pic.',
-			key: 'pic',
-			textAlign: 'center',
-			width: 100,
-			render: (student: Student) => {
-				return (
-					<img
-						alt="Product image"
-						className="aspect-square rounded-md object-cover"
-						height="64"
-						src={student?.imageUrl ?? DummyProfile}
-						width="64"
-					/>
 				);
 			},
 		},
@@ -191,7 +175,6 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
 			title: 'Nama Depan',
 			dataIndex: 'firstName',
 			key: 'firstName',
-			sorter: true,
 			...getColumnSearchProps('firstName'),
 		},
 		{
@@ -200,12 +183,42 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
 			key: 'lastName',
 			...getColumnSearchProps('lastName'),
 		},
+		{
+			title: 'Kelas',
+			dataIndex: 'classroomName',
+			key: 'classroomName',
+			...getColumnSearchProps('classroomName'),
+		},
+		{
+			title: 'Harga Kelas',
+			dataIndex: 'classroomPrice',
+			key: 'classroomPrice',
+			// sorter: true,
+			render: (text: number) => formatNumber(text),
+		},
+		{
+			title: 'Status Pembayaran',
+			dataIndex: 'paymentStatus',
+			key: 'paymentStatus',
+			textAlign: 'center',
+			render: (text: boolean) => (
+				<div className="flex justify-center">
+					{text ? (
+						<Badge variant={'secondary'}>Sudah</Badge>
+					) : (
+						<Badge variant={'destructive'}>Belum</Badge>
+					)}
+				</div>
+			),
+		},
 	];
+
+	//
 
 	return (
 		<>
 			<Table
-				dataSource={students?.data.students}
+				dataSource={studentPayments?.data.students}
 				columns={columns}
 				loading={isLoading || isFetching}
 				error={isError}
@@ -227,7 +240,7 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
 							})
 						);
 
-						dispatch(apiSlice.util.invalidateTags(['Students']));
+						dispatch(apiSlice.util.invalidateTags(['Payments']));
 					},
 				}}
 				onChange={(column, sortDirection) => {
@@ -241,15 +254,14 @@ const TableBrowse: React.FC<TableBrowseProps> = ({ isBrowse = true }) => {
 					);
 				}}
 			/>
-
-			<Dialog open={modalState.modalUpdate} onOpenChange={onOpenChangeUpdate}>
+			<Dialog open={modalState.modalCreate} onOpenChange={onOpenChangeCreate}>
 				<DialogContent>
-					<div className="max-h-96 bg-green-300x px-4 overflow-scroll no-scrollbar bggray">
+					<div className="max-h-96 px-4 overflow-scroll no-scrollbar bggray">
 						<DialogHeader>
-							<DialogTitle>Edit Siswa</DialogTitle>
+							<DialogTitle>Tambah Pembayaran</DialogTitle>
 						</DialogHeader>
 						<hr className="my-4" />
-						<UpdateStudent />
+						<CreatePayment />
 					</div>
 				</DialogContent>
 			</Dialog>

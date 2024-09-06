@@ -8,12 +8,12 @@ const initialState: PaymentStateType = {
 	defaultTab: 'list',
 };
 
-export const PaymentSlice = createSlice({
-	name: 'payment',
+export const StudentPaymentSlice = createSlice({
+	name: 'studentPayment',
 	initialState,
 	reducers: {},
 });
 
-export default PaymentSlice;
+export default StudentPaymentSlice;
 
-export const {} = PaymentSlice.actions;
+export const {} = StudentPaymentSlice.actions;

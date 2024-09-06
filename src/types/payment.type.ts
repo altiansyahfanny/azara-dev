@@ -1,50 +1,53 @@
-import { Pagination } from "./api.type";
+import { Pagination } from './api.type';
 
 export type Payment = {
-    teacherId: number;
-    teacherAttendance: string;
-    representedBy?: string;
-    totalPayment: string;
-    firstName: string;
-    lastName: string;
-    accountNumber?: string;
-    bankName?: string;
+	teacherId: number;
+	teacherAttendance: string;
+	representedBy?: string;
+	totalPayment: string;
+	firstName: string;
+	lastName: string;
+	accountNumber?: string;
+	bankName?: string;
 };
 
 export type PaymentFilter = {
-    teacherAttendance?: string;
-    representedBy?: string;
-    totalPayment?: string;
-    firstName?: string;
-    lastName?: string;
-    accountNumber?: string;
-    bankName?: string;
+	teacherAttendance?: string;
+	representedBy?: string;
+	totalPayment?: string;
+	firstName?: string;
+	lastName?: string;
+	accountNumber?: string;
+	bankName?: string;
+	startFrom?: string;
+	endTo?: string;
 };
 
 export type PaymentsResponse = {
-    pagination: Pagination;
-    payments: Payment[];
+	pagination: Pagination;
+	payments: Payment[];
 };
 
 export type PaymentHistory = {
-    id: number;
-    recipientName: string;
-    amount: number;
-    paymentDate: string;
-    teacherId: number;
-    accountNumber: string;
-    bankName: string;
+	id: number;
+	recipientName: string;
+	amount: number;
+	paymentDate: string;
+	teacherId: number;
+	accountNumber: string;
+	bankName: string;
 };
 
 export type PaymentHistoryFilter = {
-    recipientName?: string;
-    paymentDate?: {
-        startFrom?: string;
-        endTo?: string;
-    };
+	recipientName?: string;
+
+	paymentDate?: {
+		startFrom?: string;
+		endTo?: string;
+	};
 };
 
 export type PaymentsHistoryResponse = {
-    pagination: Pagination;
-    payments: PaymentHistory[];
+	pagination: Pagination;
+	payments: PaymentHistory[];
 };
