@@ -1,33 +1,43 @@
-import { PaymentHistory, PaymentHistoryFilter } from '@/types/payment.type';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Pagination, SortDirection, Sorting } from '@/types/table.type';
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { StudentPayment, StudentPaymentFilter } from '@/types/stundentPayment.type';
 
 type ModalStateType = {
+	modalCreate: boolean;
 	modalUpdate: boolean;
-	alertDelete: boolean;
+	modalFilter: boolean;
 };
 
-type PaymentHistoryStateType = {
+type StudentPaymentListStateType = {
+	// defaultTab: string;
 	modalState: ModalStateType;
 	paginationState: Pagination;
-	filterState: PaymentHistoryFilter;
+	filterState: StudentPaymentFilter;
 	sortingState: Sorting;
-	dataStateUpdate: Partial<PaymentHistory>;
+	dataState: Partial<StudentPayment>;
+	dataStateCreate: Partial<StudentPayment>;
 };
 
-const initialState: PaymentHistoryStateType = {
-	filterState: {},
+const initialState: StudentPaymentListStateType = {
+	// defaultTab: 'list',
+	filterState: {
+		forPayment: true,
+	},
 	paginationState: { page: 1, totalPage: 1, pageSize: 10 },
 	sortingState: {},
+
 	modalState: {
-		alertDelete: false,
+		modalCreate: false,
 		modalUpdate: false,
+		modalFilter: false,
 	},
-	dataStateUpdate: {},
+
+	dataState: {},
+	dataStateCreate: {},
 };
 
-export const PaymentHistorySlice = createSlice({
-	name: 'paymentHistory',
+export const StudentPaymentListSlice = createSlice({
+	name: 'studentPaymentList',
 	initialState,
 	reducers: {
 		setPaginationState: (state, action: PayloadAction<{ value: Partial<Pagination> }>) => {
@@ -37,7 +47,7 @@ export const PaymentHistorySlice = createSlice({
 			};
 		},
 
-		setFilterState: (state, action: PayloadAction<{ value: Partial<PaymentHistoryFilter> }>) => {
+		setFilterState: (state, action: PayloadAction<{ value: Partial<StudentPaymentFilter> }>) => {
 			state.filterState = {
 				...state.filterState,
 				...action.payload.value,
@@ -64,18 +74,23 @@ export const PaymentHistorySlice = createSlice({
 			state.modalState = { ...state.modalState, ...action.payload.value };
 		},
 
-		setDataUpdateState: (state, action: PayloadAction<{ value: PaymentHistory }>) => {
-			state.dataStateUpdate = action.payload.value;
+		setDataState: (state, action: PayloadAction<{ value: StudentPayment }>) => {
+			state.dataState = action.payload.value;
+		},
+
+		setDataCreateState: (state, action: PayloadAction<{ value: StudentPayment }>) => {
+			state.dataStateCreate = action.payload.value;
 		},
 	},
 });
 
-export default PaymentHistorySlice;
+export default StudentPaymentListSlice;
 
 export const {
 	setFilterState,
 	setPaginationState,
 	setModalState,
-	setDataUpdateState,
+	setDataState,
+	setDataCreateState,
 	setSortingState,
-} = PaymentHistorySlice.actions;
+} = StudentPaymentListSlice.actions;

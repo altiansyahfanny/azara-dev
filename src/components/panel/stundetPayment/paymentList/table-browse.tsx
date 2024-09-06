@@ -1,65 +1,63 @@
-import { useGetClassroomsQuery } from '@/api/classroomApi';
+import { apiSlice } from '@/api/api';
 import Table from '@/components/table';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { formatNumber } from '@/helpers/app-helper';
 import { TableColumnType, TableProps as TablePropsAntd } from '@/lib/antd';
 import {
-	setDataState,
+	setDataCreateState,
 	setFilterState,
 	setModalState,
 	setPaginationState,
 	setSortingState,
-} from '@/store/features/classroomSlice';
+} from '@/store/features/studentPaymentListSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
-import { Classroom, ClassroomFilter } from '@/types/classroom.type';
-import { Eye, FilePenLine, PlusCircle } from 'lucide-react';
+import { PlusCircle } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
-import { useNavigate } from 'react-router-dom';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import UpdateClassroom from './update';
-import { apiSlice } from '@/api/api';
+import CreatePayment from './create';
+import { useGetStudentPaymentsQuery } from '@/api/studentPaymentApi';
+import { Badge } from '@/components/ui/badge';
+import { StudentPayment, StudentPaymentFilter } from '@/types/stundentPayment.type';
+// import FilterPaymentDate from './filter-payment-date';
+// import { Badge } from "@/components/ui/badge";
+
+export const teacherAttendanceStatusMapper = {
+	present: <p>Hadir</p>,
+	absent: <p>Absen</p>,
+	represented: <p>Diwakilkan</p>,
+};
 
 const TableBrowse = () => {
 	const dispatch = useAppDispatch();
 
-	const { paginationState, filterState, sortingState, modalState } = useAppSelector(
-		(state) => state.classroom
+	const { paginationState, filterState, modalState, sortingState } = useAppSelector(
+		(state) => state.studentPaymentList
 	);
 
 	const {
-		data: classrooms,
+		data: studentPayments,
 		isLoading,
 		isSuccess,
 		isError,
 		refetch,
 		isFetching,
-	} = useGetClassroomsQuery({
+	} = useGetStudentPaymentsQuery({
 		page: paginationState.page,
 		limit: paginationState.pageSize,
 		...filterState,
 		...sortingState,
 	});
 
-	const onOpenChange = (value: boolean) => {
+	const onOpenChangeCreate = (value: boolean) => {
 		dispatch(setModalState({ value: { modalCreate: value } }));
-	};
-
-	const onOpenChangeUpdate = (value: boolean) => {
-		dispatch(setModalState({ value: { modalUpdate: value } }));
-	};
-
-	const onClickButtonUpdate = (classroom: Classroom) => {
-		dispatch(setDataState({ value: classroom }));
-		dispatch(setModalState({ value: { modalUpdate: true } }));
 	};
 
 	//
 
-	const [filter, setFilter] = useState<ClassroomFilter>({
-		cycleDescription: '',
+	const [filter, setFilter] = useState<StudentPaymentFilter>({
+		forPayment: true,
 		classroomName: '',
-		price: '',
 	});
 
 	const [searchedColumn, setSearchedColumn] = useState<string>();
@@ -69,12 +67,12 @@ const TableBrowse = () => {
 		refetch();
 	}, []);
 
-	const handleSearch = (dataIndex: keyof ClassroomFilter) => {
+	const handleSearch = (dataIndex: keyof StudentPayment) => {
 		setSearchedColumn(dataIndex);
 		dispatch(setFilterState({ value: filter }));
 	};
 
-	const handleReset = (dataIndex: keyof ClassroomFilter) => {
+	const handleReset = (dataIndex: keyof StudentPayment) => {
 		const newFilter = { ...filter, [dataIndex]: '' };
 		// delete newFilter[dataIndex];
 		setFilter(newFilter);
@@ -85,7 +83,9 @@ const TableBrowse = () => {
 		setFilter((prev) => ({ ...prev!, [e.target.name]: e.target.value }));
 	};
 
-	const getColumnSearchProps = (dataIndex: keyof ClassroomFilter): TableColumnType<Classroom> => ({
+	const getColumnSearchProps = (
+		dataIndex: keyof StudentPaymentFilter
+	): TableColumnType<StudentPayment> => ({
 		filterDropdown: ({ confirm }) => {
 			const onSearch = () => {
 				handleSearch(dataIndex);
@@ -130,7 +130,7 @@ const TableBrowse = () => {
 		render: (text: any) => {
 			const searchWords = filter[dataIndex];
 
-			if (dataIndex === 'price') {
+			if (searchedColumn === dataIndex) {
 				return (
 					<Highlighter
 						highlightStyle={{
@@ -139,65 +139,77 @@ const TableBrowse = () => {
 						}}
 						searchWords={[searchWords as string]}
 						autoEscape
-						textToHighlight={text ? formatNumber(text as number).toString() : ''}
+						textToHighlight={text ? text.toString() : ''}
 					/>
 				);
 			} else {
-				if (searchedColumn === dataIndex) {
-					return (
-						<Highlighter
-							highlightStyle={{
-								backgroundColor: '#ffc069',
-								padding: 0,
-							}}
-							searchWords={[searchWords as string]}
-							autoEscape
-							textToHighlight={text ? text.toString() : ''}
-						/>
-					);
-				} else {
-					return text;
-				}
+				return text ?? '-';
 			}
 		},
 	});
 
-	const navigate = useNavigate();
+	const onClickButtonCreate = (studentPayment: StudentPayment) => {
+		dispatch(setDataCreateState({ value: studentPayment }));
+		dispatch(setModalState({ value: { modalCreate: true } }));
+	};
 
-	const columns: TablePropsAntd<Classroom>['columns'] = [
+	const columns: TablePropsAntd<StudentPayment>['columns'] = [
 		{
 			title: 'Aksi',
 			type: 'action',
 			key: 'action',
 			textAlign: 'center',
 			width: 80,
-			render: (classroom: Classroom) => {
+			render: (studentPayment: StudentPayment) => {
 				return (
 					<div className="flex items-center gap-x-2">
-						<Table.ButtonAction onClick={() => navigate(`${classroom.id}`)} Icon={Eye} />
-						<Table.ButtonAction onClick={() => onClickButtonUpdate(classroom)} Icon={FilePenLine} />
+						<Table.ButtonAction
+							onClick={() => onClickButtonCreate(studentPayment)}
+							Icon={PlusCircle}
+						/>
 					</div>
 				);
 			},
 		},
 		{
-			title: 'Nama Kelas',
+			title: 'Nama Depan',
+			dataIndex: 'firstName',
+			key: 'firstName',
+			...getColumnSearchProps('firstName'),
+		},
+		{
+			title: 'Nama Belakang',
+			dataIndex: 'lastName',
+			key: 'lastName',
+			...getColumnSearchProps('lastName'),
+		},
+		{
+			title: 'Kelas',
 			dataIndex: 'classroomName',
 			key: 'classroomName',
-			sorter: true,
 			...getColumnSearchProps('classroomName'),
 		},
 		{
-			title: 'Keterangan',
-			dataIndex: 'cycleDescription',
-			key: 'cycleDescription',
-			...getColumnSearchProps('cycleDescription'),
+			title: 'Harga Kelas',
+			dataIndex: 'classroomPrice',
+			key: 'classroomPrice',
+			// sorter: true,
+			render: (text: number) => formatNumber(text),
 		},
 		{
-			title: 'Harga',
-			dataIndex: 'price',
-			key: 'price',
-			...getColumnSearchProps('price'),
+			title: 'Status Pembayaran',
+			dataIndex: 'paymentStatus',
+			key: 'paymentStatus',
+			textAlign: 'center',
+			render: (text: boolean) => (
+				<div className="flex justify-center">
+					{text ? (
+						<Badge variant={'secondary'}>Sudah</Badge>
+					) : (
+						<Badge variant={'destructive'}>Belum</Badge>
+					)}
+				</div>
+			),
 		},
 	];
 
@@ -206,18 +218,11 @@ const TableBrowse = () => {
 	return (
 		<>
 			<Table
-				dataSource={classrooms?.data.classrooms}
+				dataSource={studentPayments?.data.students}
 				columns={columns}
 				loading={isLoading || isFetching}
 				error={isError}
 				success={isSuccess}
-				actions={[
-					{
-						Icon: PlusCircle,
-						text: 'Tambah Kelas',
-						onClick: () => onOpenChange(true),
-					},
-				]}
 				pagination={{
 					totalPages: paginationState.totalPage,
 					itemsPerPage: paginationState.pageSize,
@@ -235,7 +240,7 @@ const TableBrowse = () => {
 							})
 						);
 
-						dispatch(apiSlice.util.invalidateTags(['Classrooms']));
+						dispatch(apiSlice.util.invalidateTags(['Payments']));
 					},
 				}}
 				onChange={(column, sortDirection) => {
@@ -249,15 +254,14 @@ const TableBrowse = () => {
 					);
 				}}
 			/>
-
-			<Dialog open={modalState.modalUpdate} onOpenChange={onOpenChangeUpdate}>
+			<Dialog open={modalState.modalCreate} onOpenChange={onOpenChangeCreate}>
 				<DialogContent>
-					<div className="max-h-96 bg-green-300x px-4 overflow-scroll no-scrollbar bggray">
+					<div className="max-h-96 px-4 overflow-scroll no-scrollbar bggray">
 						<DialogHeader>
-							<DialogTitle>Edit Kelas</DialogTitle>
+							<DialogTitle>Tambah Pembayaran</DialogTitle>
 						</DialogHeader>
 						<hr className="my-4" />
-						<UpdateClassroom />
+						<CreatePayment />
 					</div>
 				</DialogContent>
 			</Dialog>

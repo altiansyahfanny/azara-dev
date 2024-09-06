@@ -15,7 +15,13 @@ import { useParams } from 'react-router-dom';
 const ClassroomId = () => {
 	const { id } = useParams();
 
-	const { data: classroom, isLoading, isError, isSuccess } = useGetClassroomQuery(id as string);
+	const {
+		data: classroom,
+		isLoading,
+		isError,
+		isSuccess,
+		isFetching,
+	} = useGetClassroomQuery(id as string);
 
 	console.log('classroom: ', classroom);
 
@@ -43,8 +49,16 @@ const ClassroomId = () => {
 		<Container title="Kelas">
 			<div className="grid gap-4">
 				<div className="border rounded-lg p-4 flex items-center">{content}</div>
-				<TableTeacherAndCourse isLoading={isLoading} isSuccess={isSuccess} classroom={classroom} />
-				<TableStudent isLoading={isLoading} isSuccess={isSuccess} classroom={classroom} />
+				<TableTeacherAndCourse
+					isLoading={isLoading || isFetching}
+					isSuccess={isSuccess}
+					classroom={classroom}
+				/>
+				<TableStudent
+					isLoading={isLoading || isFetching}
+					isSuccess={isSuccess}
+					classroom={classroom}
+				/>
 			</div>
 			{/* MODAL SISWA */}
 			<ModalEnrollStudent />
