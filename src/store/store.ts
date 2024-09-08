@@ -16,6 +16,7 @@ import PaymentHistorySlice from './features/paymentHistorySlice';
 import PaymentListSlice from './features/paymentListSlice';
 import StudentPaymentSlice from './features/studentPaymentSlice';
 import StudentPaymentListSlice from './features/studentPaymentListSlice';
+import StudentPaymentHistorySlice from './features/studentPaymentHistorySlice';
 
 export const store = configureStore({
 	reducer: {
@@ -36,6 +37,7 @@ export const store = configureStore({
 
 		[StudentPaymentSlice.name]: StudentPaymentSlice.reducer,
 		[StudentPaymentListSlice.name]: StudentPaymentListSlice.reducer,
+		[StudentPaymentHistorySlice.name]: StudentPaymentHistorySlice.reducer,
 	},
 	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
 });

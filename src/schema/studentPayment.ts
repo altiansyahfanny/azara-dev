@@ -35,16 +35,22 @@ export const createStudentPaymentSchema = z.object({
 });
 
 export const updateStudentPaymentHistorySchema = z.object({
-	recipientName: z
-		.string({ required_error: 'Nama Penerima tidak boleh kosong' })
-		.min(1, 'Nama Penerima tidak boleh kosong'),
-	accountNumber: z
-		.string({ required_error: 'Nomor Rekening tidak boleh kosong' })
-		.min(1, 'Nomor Rekening tidak boleh kosong'),
-	bankName: z
-		.string({ required_error: 'Nama Bank tidak boleh kosong' })
-		.min(1, 'Nama Bank tidak boleh kosong'),
+	originalPrice: z
+		.string({ required_error: 'Harga Kelas tidak boleh kosong' })
+		.min(1, 'Harga Kelas tidak boleh kosong'),
+	discount: z
+		.string({ required_error: 'Diskon tidak boleh kosong' })
+		.min(1, 'Diskon tidak boleh kosong'),
 	paymentDate: z.date({
 		required_error: 'Tanggal Pembayaran tidak boleh kosong',
 	}),
+	forMonth: z.date({
+		required_error: 'Untuk Bulan tidak boleh kosong',
+	}),
+	bankName: z
+		.string({ required_error: 'Nama Bank tidak boleh kosong' })
+		.min(1, 'Nama Bank tidak boleh kosong'),
+	accountNumber: z
+		.string({ required_error: 'Nomor Rekening tidak boleh kosong' })
+		.min(1, 'Nomor Rekening tidak boleh kosong'),
 });

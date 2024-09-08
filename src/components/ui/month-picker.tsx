@@ -4,11 +4,11 @@ import {
 	endOfYear,
 	format,
 	isEqual,
-	// isFuture,
 	parse,
 	startOfMonth,
 	startOfToday,
 } from 'date-fns';
+import { id } from 'date-fns/locale'; // Import the locale you want to use
 import { CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import * as React from 'react';
 import { Button, buttonVariants } from '@/components/ui/button';
@@ -26,7 +26,9 @@ interface MonthPickerProps {
 }
 
 export default function MonthPicker({ currentMonth, onMonthChange, value }: MonthPickerProps) {
-	const [currentYear, setCurrentYear] = React.useState(format(currentMonth, 'yyyy'));
+	const [currentYear, setCurrentYear] = React.useState(
+		format(currentMonth, 'yyyy', { locale: id })
+	);
 	const firstDayCurrentYear = parse(currentYear, 'yyyy', new Date());
 
 	const months = eachMonthOfInterval({
@@ -36,12 +38,12 @@ export default function MonthPicker({ currentMonth, onMonthChange, value }: Mont
 
 	function previousYear() {
 		let firstDayNextYear = add(firstDayCurrentYear, { years: -1 });
-		setCurrentYear(format(firstDayNextYear, 'yyyy'));
+		setCurrentYear(format(firstDayNextYear, 'yyyy', { locale: id }));
 	}
 
 	function nextYear() {
 		let firstDayNextYear = add(firstDayCurrentYear, { years: 1 });
-		setCurrentYear(format(firstDayNextYear, 'yyyy'));
+		setCurrentYear(format(firstDayNextYear, 'yyyy', { locale: id }));
 	}
 
 	return (
@@ -51,7 +53,7 @@ export default function MonthPicker({ currentMonth, onMonthChange, value }: Mont
 					variant={'outline'}
 					className={cn('pl-3 text-left font-normal w-full', !value && 'text-muted-foreground')}
 				>
-					{value ? format(value, 'LLLL') : <span>Pilih Bulan</span>}
+					{value ? format(value, 'LLLL', { locale: id }) : <span>Pilih Bulan</span>}
 					<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
 				</Button>
 			</PopoverTrigger>
@@ -66,7 +68,7 @@ export default function MonthPicker({ currentMonth, onMonthChange, value }: Mont
 									role="presentation"
 									id="month-picker"
 								>
-									{format(firstDayCurrentYear, 'yyyy')}
+									{format(firstDayCurrentYear, 'yyyy', { locale: id })}
 								</div>
 								<div className="flex items-center space-x-1">
 									<button
@@ -91,7 +93,6 @@ export default function MonthPicker({ currentMonth, onMonthChange, value }: Mont
 											'absolute right-1 disabled:bg-slate-100'
 										)}
 										type="button"
-										// disabled={isFuture(add(firstDayCurrentYear, { years: 1 }))}
 										onClick={nextYear}
 									>
 										<ChevronRight className="h-4 w-4" />
@@ -119,13 +120,14 @@ export default function MonthPicker({ currentMonth, onMonthChange, value }: Mont
 													isEqual(month, getStartOfCurrentMonth()) &&
 													'bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-50'
 											)}
-											// disabled={isFuture(month)}
 											role="gridcell"
 											tabIndex={-1}
 											type="button"
 											onClick={() => onMonthChange(month)}
 										>
-											<time dateTime={format(month, 'yyyy-MM-dd')}>{format(month, 'MMM')}</time>
+											<time dateTime={format(month, 'yyyy-MM-dd')}>
+												{format(month, 'MMM', { locale: id })}
+											</time>
 										</button>
 									</div>
 								))}

@@ -3,6 +3,11 @@ import { BrowserRouter } from 'react-router-dom';
 import Router from './routes';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Toaster } from 'react-hot-toast';
+import { id } from 'date-fns/locale'; // Import the locale you want to set globally
+import { setDefaultOptions } from 'date-fns';
+
+// Set the default locale globally
+setDefaultOptions({ locale: id });
 
 const App: React.FC = () => {
 	return (
