@@ -21,7 +21,7 @@
 
 ======================================================
 
-[*] Add pagination for siswa di create attendance
+[X] Add pagination for siswa di create attendance
 [X] Fix jumlah pembayaran guru auto ngambil dari table
 [X] Fix edit pada riwayat pembayaran (terdapat 4 kolom)
 [X] Table jadwal mengajar untuk guru

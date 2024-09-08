@@ -19,8 +19,13 @@ import CreatePayment from './create';
 import { useGetStudentPaymentsQuery } from '@/api/studentPaymentApi';
 import { Badge } from '@/components/ui/badge';
 import { StudentPayment, StudentPaymentFilter } from '@/types/stundentPayment.type';
-// import FilterPaymentDate from './filter-payment-date';
-// import { Badge } from "@/components/ui/badge";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select';
 
 export const teacherAttendanceStatusMapper = {
 	present: <p>Hadir</p>,
@@ -96,15 +101,40 @@ const TableBrowse = () => {
 				if (e.key === 'Enter') onSearch();
 			};
 
-			let content = (
-				<Input
-					name={dataIndex}
-					onChange={onChange}
-					value={filter && (filter[dataIndex] as string | undefined)}
-					onKeyDown={onKeyDown}
-					autoComplete="off"
-				/>
-			);
+			let content;
+
+			if (['paymentStatus'].includes(dataIndex)) {
+				content = (
+					<Select
+						onValueChange={(e) =>
+							setFilter((prev) => ({
+								...prev!,
+								paymentStatus: e,
+							}))
+						}
+						value={filter && (filter[dataIndex] as string | undefined)}
+					>
+						<SelectTrigger className="w-40">
+							<SelectValue placeholder={`Pilih Status`} />
+						</SelectTrigger>
+
+						<SelectContent>
+							<SelectItem value={'true'}>Sudah</SelectItem>
+							<SelectItem value={'false'}>Belum</SelectItem>
+						</SelectContent>
+					</Select>
+				);
+			} else {
+				content = (
+					<Input
+						name={dataIndex}
+						onChange={onChange}
+						value={filter && (filter[dataIndex] as string | undefined)}
+						onKeyDown={onKeyDown}
+						autoComplete="off"
+					/>
+				);
+			}
 
 			return (
 				<div className="flex flex-col gap-2">
@@ -130,20 +160,32 @@ const TableBrowse = () => {
 		render: (text: any) => {
 			const searchWords = filter[dataIndex];
 
-			if (searchedColumn === dataIndex) {
+			if (['paymentStatus'].includes(dataIndex)) {
 				return (
-					<Highlighter
-						highlightStyle={{
-							backgroundColor: '#ffc069',
-							padding: 0,
-						}}
-						searchWords={[searchWords as string]}
-						autoEscape
-						textToHighlight={text ? text.toString() : ''}
-					/>
+					<div className="flex justify-center">
+						{text ? (
+							<Badge variant={'secondary'}>Sudah</Badge>
+						) : (
+							<Badge variant={'destructive'}>Belum</Badge>
+						)}
+					</div>
 				);
 			} else {
-				return text ?? '-';
+				if (searchedColumn === dataIndex) {
+					return (
+						<Highlighter
+							highlightStyle={{
+								backgroundColor: '#ffc069',
+								padding: 0,
+							}}
+							searchWords={[searchWords as string]}
+							autoEscape
+							textToHighlight={text ? text.toString() : ''}
+						/>
+					);
+				} else {
+					return text ?? '-';
+				}
 			}
 		},
 	});
@@ -201,15 +243,7 @@ const TableBrowse = () => {
 			dataIndex: 'paymentStatus',
 			key: 'paymentStatus',
 			textAlign: 'center',
-			render: (text: boolean) => (
-				<div className="flex justify-center">
-					{text ? (
-						<Badge variant={'secondary'}>Sudah</Badge>
-					) : (
-						<Badge variant={'destructive'}>Belum</Badge>
-					)}
-				</div>
-			),
+			...getColumnSearchProps('paymentStatus'),
 		},
 	];
 
