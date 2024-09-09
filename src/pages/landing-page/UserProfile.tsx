@@ -106,7 +106,7 @@ const UserProfile = () => {
 					</div>
 
 					<TabsContent value="detail">
-						<div className="grid lg:grid-cols-2 gap-4">
+						<div className="grid lg:grid-cols-1 gap-4">
 							<div className="p-4 border rounded-lg">
 								<p className="text-xl font-semibold">Informasi Pribadi</p>
 								<hr className="mt-2 mb-4" />
@@ -134,24 +134,6 @@ const UserProfile = () => {
 											Alamat
 										</Label>
 										<Input name="address" value={user.data.address ?? '-'} readOnly />
-									</div>
-								</div>
-							</div>
-							<div className="p-4 border rounded-lg">
-								<p className="text-xl font-semibold">Informasi Pembayaran</p>
-								<hr className="mt-2 mb-4" />
-								<div className="grid gap-4">
-									<div>
-										<Label htmlFor="bankName" className="mb-2 block">
-											Nama Bank
-										</Label>
-										<Input name="bankName" value={user.data.bankName ?? '-'} readOnly />
-									</div>
-									<div>
-										<Label htmlFor="accountNumber" className="mb-2 block">
-											Nomor Rekening
-										</Label>
-										<Input name="accountNumber" value={user.data.accountNumber ?? '-'} readOnly />
 									</div>
 								</div>
 							</div>
