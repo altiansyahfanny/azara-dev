@@ -1,4 +1,5 @@
 import { ApiResponse, ErrorResponse } from '@/types/api.type';
+import { format, parse } from 'date-fns';
 import toast from 'react-hot-toast';
 
 export const formatNumber = (numbers: number) => {
@@ -25,4 +26,12 @@ export const teacherAttendaceStatusMapper = {
 	absent: 'Absen',
 	leave: 'Izin',
 	represented: 'Diwakilkan',
+};
+
+export const formatTime = (timeString: string) => {
+	// Parsing string ke objek Date
+	const date = parse(timeString, 'HH:mm:ss', new Date());
+
+	// Format waktu menjadi "HH.mm"
+	return format(date, 'HH.mm');
 };

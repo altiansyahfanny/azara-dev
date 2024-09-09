@@ -19,7 +19,7 @@ import { apiSlice } from '@/api/api';
 import { formatNumber } from '@/helpers/app-helper';
 import CreatePayment from './create';
 import FilterPaymentDate from './filter-payment-date';
-// import { Badge } from "@/components/ui/badge";
+import { endOfMonth, format, startOfMonth } from 'date-fns';
 
 export const teacherAttendanceStatusMapper = {
 	present: <p>Hadir</p>,
@@ -66,8 +66,8 @@ const TableBrowse = () => {
 		accountNumber: '',
 		bankName: '',
 		totalPayment: '',
-		startFrom: '2024-09-01',
-		endTo: '2024-09-30',
+		startFrom: format(startOfMonth(new Date()), 'yyyy-MM-dd'),
+		endTo: format(endOfMonth(new Date()), 'yyyy-MM-dd'),
 	});
 
 	const [searchedColumn, setSearchedColumn] = useState<string>();

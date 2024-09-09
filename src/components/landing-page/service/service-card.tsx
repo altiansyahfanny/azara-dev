@@ -52,7 +52,7 @@ const ServiceCard = ({
 				</div>
 			</div>
 			<Dialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
-				<DialogContent className="min-w-max max-h-[500px] overflow-scroll no-scrollbar">
+				<DialogContent className="max-w-xs lg:min-w-max max-h-[500px] overflow-scroll no-scrollbar">
 					<div className="w-full h-full relative">
 						<div className="p-6">
 							<h1 className="text-center text-3xl uppercase font-medium text-gray-700 tracking-wide">

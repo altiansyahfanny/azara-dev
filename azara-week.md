@@ -25,3 +25,9 @@
 [X] Fix jumlah pembayaran guru auto ngambil dari table
 [X] Fix edit pada riwayat pembayaran (terdapat 4 kolom)
 [X] Table jadwal mengajar untuk guru
+
+=======
+
+[X] Filter bul di pembayaran siswa
+[X] Sorting table pembayaran siswa
+[X] Ubah warna di jadwal siswa

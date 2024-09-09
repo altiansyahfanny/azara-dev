@@ -15,11 +15,12 @@ export type StudentPayment = {
 };
 
 export type StudentPaymentFilter = {
-	forPayment: boolean;
 	paymentStatus?: string;
 	firstName?: string;
 	lastName?: string;
 	classroomName?: string;
+	startFrom?: string;
+	endTo?: string;
 };
 
 export type StudentPaymentsResponse = {

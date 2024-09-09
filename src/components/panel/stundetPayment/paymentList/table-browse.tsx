@@ -12,7 +12,7 @@ import {
 	setSortingState,
 } from '@/store/features/studentPaymentListSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
-import { PlusCircle } from 'lucide-react';
+import { Filter, PlusCircle } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import Highlighter from 'react-highlight-words';
 import CreatePayment from './create';
@@ -26,6 +26,8 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
+import FilterPaymentDate from './filter-payment-date';
+import { endOfMonth, format, startOfMonth } from 'date-fns';
 
 export const teacherAttendanceStatusMapper = {
 	present: <p>Hadir</p>,
@@ -58,11 +60,16 @@ const TableBrowse = () => {
 		dispatch(setModalState({ value: { modalCreate: value } }));
 	};
 
+	const onOpenChangeFilter = (value: boolean) => {
+		dispatch(setModalState({ value: { modalFilter: value } }));
+	};
+
 	//
 
 	const [filter, setFilter] = useState<StudentPaymentFilter>({
-		forPayment: true,
 		classroomName: '',
+		startFrom: format(startOfMonth(new Date()), 'yyyy-MM-dd'),
+		endTo: format(endOfMonth(new Date()), 'yyyy-MM-dd'),
 	});
 
 	const [searchedColumn, setSearchedColumn] = useState<string>();
@@ -72,12 +79,12 @@ const TableBrowse = () => {
 		refetch();
 	}, []);
 
-	const handleSearch = (dataIndex: keyof StudentPayment) => {
+	const handleSearch = (dataIndex: keyof StudentPaymentFilter) => {
 		setSearchedColumn(dataIndex);
 		dispatch(setFilterState({ value: filter }));
 	};
 
-	const handleReset = (dataIndex: keyof StudentPayment) => {
+	const handleReset = (dataIndex: keyof StudentPaymentFilter) => {
 		const newFilter = { ...filter, [dataIndex]: '' };
 		// delete newFilter[dataIndex];
 		setFilter(newFilter);
@@ -217,18 +224,21 @@ const TableBrowse = () => {
 			title: 'Nama Depan',
 			dataIndex: 'firstName',
 			key: 'firstName',
+			sorter: true,
 			...getColumnSearchProps('firstName'),
 		},
 		{
 			title: 'Nama Belakang',
 			dataIndex: 'lastName',
 			key: 'lastName',
+			sorter: true,
 			...getColumnSearchProps('lastName'),
 		},
 		{
 			title: 'Kelas',
 			dataIndex: 'classroomName',
 			key: 'classroomName',
+			sorter: true,
 			...getColumnSearchProps('classroomName'),
 		},
 		{
@@ -243,6 +253,7 @@ const TableBrowse = () => {
 			dataIndex: 'paymentStatus',
 			key: 'paymentStatus',
 			textAlign: 'center',
+			// sorter: true,
 			...getColumnSearchProps('paymentStatus'),
 		},
 	];
@@ -257,6 +268,15 @@ const TableBrowse = () => {
 				loading={isLoading || isFetching}
 				error={isError}
 				success={isSuccess}
+				actions={[
+					{
+						Icon: Filter,
+						text: 'Filter Tanggal',
+						onClick: () => {
+							dispatch(setModalState({ value: { modalFilter: true } }));
+						},
+					},
+				]}
 				pagination={{
 					totalPages: paginationState.totalPage,
 					itemsPerPage: paginationState.pageSize,
@@ -296,6 +316,18 @@ const TableBrowse = () => {
 						</DialogHeader>
 						<hr className="my-4" />
 						<CreatePayment />
+					</div>
+				</DialogContent>
+			</Dialog>
+
+			<Dialog open={modalState.modalFilter} onOpenChange={onOpenChangeFilter}>
+				<DialogContent>
+					<div className="max-h-96 px-4 overflow-scroll no-scrollbar bggray">
+						<DialogHeader>
+							<DialogTitle>Filter Tanggal Pembayaran</DialogTitle>
+						</DialogHeader>
+						<hr className="my-4" />
+						<FilterPaymentDate />
 					</div>
 				</DialogContent>
 			</Dialog>
