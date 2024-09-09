@@ -14,7 +14,7 @@ export const studentPaymentApiSlice = apiSlice.injectEndpoints({
 			ApiResponse<StudentPaymentsResponse>,
 			QueryParam<StudentPaymentFilter>
 		>({
-			query: (q) => `/student?${convertToQueryString(q)}`,
+			query: (q) => `/student-payment/list?${convertToQueryString(q)}`,
 			async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
 				try {
 					const { data } = await queryFulfilled;

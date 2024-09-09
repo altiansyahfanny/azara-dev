@@ -237,12 +237,14 @@ const TableBrowse = () => {
 			title: 'Nama Depan',
 			dataIndex: 'firstName',
 			key: 'firstName',
+			sorter: true,
 			...getColumnSearchProps('firstName'),
 		},
 		{
 			title: 'Nama Belakang',
 			dataIndex: 'lastName',
 			key: 'lastName',
+			sorter: true,
 			...getColumnSearchProps('lastName'),
 		},
 		{
@@ -261,13 +263,14 @@ const TableBrowse = () => {
 			title: 'Untuk Bulan',
 			dataIndex: 'forMonth',
 			key: 'forMonth',
+			sorter: true,
 			...getColumnSearchProps('forMonth'),
 		},
 		{
 			title: 'Tanggal Pembayaran',
 			dataIndex: 'paymentDate',
 			key: 'paymentDate',
-			// sorter: true,
+			sorter: true,
 			...getColumnSearchProps('paymentDate'),
 		},
 		{

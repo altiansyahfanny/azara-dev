@@ -20,9 +20,7 @@ type StudentPaymentListStateType = {
 
 const initialState: StudentPaymentListStateType = {
 	// defaultTab: 'list',
-	filterState: {
-		forPayment: true,
-	},
+	filterState: {},
 	paginationState: { page: 1, totalPage: 1, pageSize: 10 },
 	sortingState: {},
 
